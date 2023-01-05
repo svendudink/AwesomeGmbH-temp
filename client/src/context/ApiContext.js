@@ -1,5 +1,4 @@
 import { createContext, useState } from "react";
-import axios from "axios";
 
 export const ApiContext = createContext();
 
@@ -12,18 +11,36 @@ export const ApiContextProvider = (props) => {
     token: "",
   });
 
-  const ApiCall = async () => {
-    axios
-      .post("/signup", {
-        firstName: "Fred",
-        lastName: "Flintstone",
+  const [receivedData, setReceivedData] = useState("");
+
+  const ApiCall = async (request) => {
+    let route = "";
+    let querys = {};
+    if (request === "login") {
+      route = "/login";
+      querys = {
+        email: userData.email,
+        password: userData.password,
+      };
+    }
+    if (request === "signup") {
+      route = "/signup";
+      querys = {
+        email: userData.email,
+        password: userData.password,
+      };
+    }
+    fetch(route, {
+      method: "POST",
+      body: JSON.stringify(querys),
+      headers: { "Content-type": "application/json" },
+    })
+      .then((res) => res.json())
+      .then((resData) => {
+        setReceivedData(resData);
+        console.log(receivedData);
       })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch((err) => console.log(err));
   };
 
   return (

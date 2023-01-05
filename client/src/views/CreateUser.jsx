@@ -35,7 +35,7 @@ export default function CreateUser() {
         variant="filled"
         onChange={textInputHandler}
       />
-      <button onClick={() => ApiCall()}>Texting</button>
+      <button onClick={() => ApiCall("signup")}>Texting</button>
     </div>
   );
 }
