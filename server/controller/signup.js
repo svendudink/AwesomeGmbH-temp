@@ -1,7 +1,7 @@
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 import validator from "validator";
-import User from "../../schema/User.mjs";
+import User from "../schema/User.js";
 import bcrypt from "bcrypt";
 
 export const signUp = async (req, res) => {
