@@ -2,6 +2,7 @@ import express from "express";
 import signUpRoute from "./routes/signupRoute.js";
 import loginRoute from "./routes/loginRoute.js";
 import uploadRoute from "./routes/uploadRoute.js";
+import employeeRoute from "./routes/employeeRoute.js";
 import bodyParser from "body-parser";
 import cors from "cors";
 import * as dotenv from "dotenv";
@@ -45,4 +46,6 @@ app.listen(port, () => {
 
 app.use("/signup", signUpRoute);
 app.use("/login", loginRoute);
+app.use("/employeeList", employeeRoute);
+
 app.use("/upload", uploadRoute);
