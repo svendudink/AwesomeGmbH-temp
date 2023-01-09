@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const employeeSchema = new mongoose.Schema({
   Vorname: {
     type: String,
-    required: true,
+    required: false,
   },
   Nachname: {
     type: String,
