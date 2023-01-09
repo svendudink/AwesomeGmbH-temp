@@ -3,67 +3,42 @@ import { createContext, useState, useEffect, useRef } from "react";
 export const ApiContext = createContext();
 
 export const ApiContextProvider = (props) => {
+  console.log();
   const [userData, setUserData] = useState({
     password: "",
     email: "",
+    departmentPrivileges: false,
+    employeePrivileges: false,
     loginPassword: "",
     loginEmail: "",
     token: "",
+    department: "",
   });
-
+  const loggedIn = useRef("");
   const updateMongo = useRef([]);
   const originalEmployeeList = useRef([]);
 
   const [rows, setRows] = useState([
     {
       id: 1,
-      Vorname: "sven",
-      Nachname: "",
-      Strasse: "bs",
-      Nr: "",
-      PLZ: "",
-      Ort: "",
-      Land: "",
-      Position: "",
-      Abteilung: "",
-    },
-    {
-      id: 2,
-      Vorname: "paul",
-      Nachname: "",
-      Strasse: "",
-      Nr: "",
-      PLZ: "",
-      Ort: "",
-      Land: "",
-      Position: "",
-      Abteilung: "",
-    },
-    {
-      id: 3,
-      Vorname: "pim",
-      Nachname: "",
-      Strasse: "",
-      Nr: "",
-      PLZ: "",
-      Ort: "",
-      Land: "",
-      Position: "",
-      Abteilung: "",
+      Vorname: "Loading",
+      Nachname: "Loading",
+      Strasse: "Loading",
+      Nr: "Loading",
+      PLZ: "Loading",
+      Ort: "Loading",
+      Land: "Loading",
+      Position: "Loading",
+      Abteilung: "Loading",
     },
   ]);
   useEffect(() => {
-    console.log(rows);
     setRows(
       rows.map((obj, ind) => {
-        console.log(obj);
         return { ...obj, id: ind + 1 };
       })
     );
-    console.log(rows);
   }, []);
-
-  const [receivedData, setReceivedData] = useState("");
 
   const ApiCall = async (request) => {
     let route = "";
@@ -75,11 +50,21 @@ export const ApiContextProvider = (props) => {
         password: userData.password,
       };
     }
+    if (request === "validateProfile") {
+      route = "/login";
+      querys = {
+        email: userData.email,
+        password: userData.password,
+      };
+    }
+
     if (request === "signup") {
       route = "/signup";
       querys = {
         email: userData.email,
         password: userData.password,
+        departmentPrivileges: userData.departmentPrivileges,
+        employeePrivileges: userData.employeePrivileges,
       };
     }
     if (request === "employeeList") {
@@ -93,6 +78,20 @@ export const ApiContextProvider = (props) => {
       route = "/employeeList/save";
       querys = {
         changeList: updateMongo.current,
+        token: localStorage.getItem("token"),
+      };
+    }
+    if (request === "departments") {
+      route = "/departments";
+      querys = {
+        token: localStorage.getItem("token"),
+      };
+    }
+    if (request === "departments/save") {
+      route = "/departments";
+      querys = {
+        token: localStorage.getItem("token"),
+        department: userData.department,
       };
     }
     fetch(route, {
@@ -102,14 +101,44 @@ export const ApiContextProvider = (props) => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        originalEmployeeList.current = resData;
-        console.log(resData);
-        setRows(
-          resData.employees.map((obj, ind) => {
-            console.log(obj);
-            return { ...obj, id: ind + 1 };
-          })
-        );
+        if (request === "employeeList/save" || request === "employeeList") {
+          originalEmployeeList.current = resData;
+          console.log(resData);
+          setRows(
+            resData.employees.map((obj, ind) => {
+              console.log(obj);
+              return { ...obj, id: ind + 1 };
+            })
+          );
+          updateMongo.current = [];
+        }
+        if (request === "login") {
+          console.log(resData.user);
+          if (resData.token) {
+            localStorage.setItem("token", resData.token);
+            localStorage.setItem(
+              "departmentPrivilegessettings",
+              resData.user.departmentPrivileges
+            );
+            localStorage.setItem(
+              "employeePrivilegessettings",
+              resData.user.employeePrivileges
+            );
+            loggedIn.current = true;
+            window.location.reload(false);
+            setUserData({
+              password: "",
+              email: resData.user.email,
+              departmentPrivileges: resData.user.departmentPrivileges,
+              employeePrivileges: resData.user.employeePrivileges,
+              loginPassword: "",
+              loginEmail: resData.user.email,
+            });
+          }
+        }
+        if (request === "departments") {
+          console.log(resData.departments);
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -124,6 +153,7 @@ export const ApiContextProvider = (props) => {
         setRows,
         updateMongo,
         originalEmployeeList,
+        loggedIn,
       }}
     >
       {props.children}

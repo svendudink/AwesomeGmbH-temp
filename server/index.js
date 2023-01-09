@@ -3,6 +3,7 @@ import signUpRoute from "./routes/signupRoute.js";
 import loginRoute from "./routes/loginRoute.js";
 import uploadRoute from "./routes/uploadRoute.js";
 import employeeRoute from "./routes/employeeRoute.js";
+import departmentRoute from "./routes/departmentRoute.js";
 import bodyParser from "body-parser";
 import cors from "cors";
 import * as dotenv from "dotenv";
@@ -49,3 +50,4 @@ app.use("/login", loginRoute);
 app.use("/employeeList", employeeRoute);
 
 app.use("/upload", uploadRoute);
+app.use("/departments", departmentRoute);

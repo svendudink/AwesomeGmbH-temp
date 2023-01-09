@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 
 export const signUp = async (req, res) => {
   try {
-    console.log(req.body);
+    console.log("incoming", req.body);
     if (!validator.isEmail(req.body.email)) {
       res.status(555).json({ msg: "Email adress invalid" });
       return;
@@ -31,6 +31,8 @@ export const signUp = async (req, res) => {
     const user = new User({
       email: req.body.email,
       password: hashedPw,
+      departmentPrivileges: req.body.departmentPrivileges,
+      employeePrivileges: req.body.employeePrivileges,
     });
     console.log(user);
     const createdUser = await user.save();
