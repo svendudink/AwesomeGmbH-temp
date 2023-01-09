@@ -24,6 +24,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { ApiContext } from "../context/ApiContext";
 import { useContext } from "react";
+import TableHeadSD from "./table/TableHead.jsx";
 
 // Creating styles
 const useStyles = makeStyles({
@@ -217,20 +218,8 @@ function TableDemo(props) {
       </div>
 
       <Table>
-        <TableHead>
-          <TableRow key={"row1"}>
-            {Object.keys(rows[0]).map((element) => {
-              console.log(element);
-              return element !== "id" &&
-                element !== "__v" &&
-                element !== "_id" ? (
-                <TableCell key={`${element}`}>{element}</TableCell>
-              ) : (
-                <></>
-              );
-            })}
-          </TableRow>
-        </TableHead>
+        <TableHeadSD rows={rows} />
+
         <TableBody>
           {rows.map((row, i) => {
             return !loggedIn.current ? (
