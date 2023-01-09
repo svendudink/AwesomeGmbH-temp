@@ -219,15 +219,16 @@ function TableDemo(props) {
       <Table>
         <TableHead>
           <TableRow key={"row1"}>
-            <TableCell key={"Vorname"}>Vorname</TableCell>
-            <TableCell key={"Nachname"}>Nachname</TableCell>
-            <TableCell key={"Strasse"}>Strasse</TableCell>
-            <TableCell key={"Nr"}>Nr</TableCell>
-            <TableCell key={"PLZ"}>PLZ</TableCell>
-            <TableCell key={"Ort"}>Ort</TableCell>
-            <TableCell key={"Land"}>Land</TableCell>
-            <TableCell key={"Position"}>Position</TableCell>
-            <TableCell key={"Ateilung"}>Abteilung</TableCell>
+            {Object.keys(rows[0]).map((element) => {
+              console.log(element);
+              return element !== "id" &&
+                element !== "__v" &&
+                element !== "_id" ? (
+                <TableCell key={`${element}`}>{element}</TableCell>
+              ) : (
+                <></>
+              );
+            })}
           </TableRow>
         </TableHead>
         <TableBody>

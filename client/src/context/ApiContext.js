@@ -112,6 +112,7 @@ export const ApiContextProvider = (props) => {
           );
           updateMongo.current = [];
         }
+
         if (request === "login") {
           console.log(resData.user);
           if (resData.token) {
@@ -136,7 +137,7 @@ export const ApiContextProvider = (props) => {
             });
           }
         }
-        if (request === "departments") {
+        if (request === "departments" || request === "departments/save") {
           console.log(resData.departments);
         }
       })

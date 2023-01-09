@@ -22,22 +22,22 @@ export const departmentsSave = async (req, res) => {
         });
       } else {
         const existingDepartment = await Departments.findOne({
-          department: req.body.department,
+          Abteilung: req.body.department,
         });
         if (existingDepartment) {
           return res.status(409).json({ msg: "Department exists allready" });
         }
 
         const department = new Departments({
-          department: req.body.department,
+          Abteilung: req.body.department,
         });
 
         const createdDepartment = await department.save();
 
-        const employees = await Employees.find();
+        const departments = await Departments.find();
         res.status(200).json({
-          msg: "All employees",
-          employees: employees,
+          msg: "All Departments",
+          departments: departments,
         });
       }
     }
