@@ -135,18 +135,29 @@ function TableDemo(props) {
   };
 
   // Handle the case of delete confirmation where
-  // user click yes delete a specific row of i_d:i
+  // user click yes delete a specific row of
   const handleRemoveClick = (i) => {
     console.log(i);
     const list = [...rows];
     list.splice(i, 1);
     setRows(list);
     setShowConfirm(false);
+    setDisable(false);
     //Logic for removing from mongoDB
-    updateMongo.current = [
-      ...updateMongo.current,
-      { ...rows[i], delete: true },
-    ];
+    if (rows[i]._id.substring(0, 4) === "TEMP") {
+      console.log("check");
+      updateMongo.current.splice(
+        updateMongo.current.findIndex((row) => {
+          return row._id === rows[i]._id;
+        }),
+        1
+      );
+    } else {
+      updateMongo.current = [
+        ...updateMongo.current,
+        { ...rows[i], delete: true },
+      ];
+    }
     console.log(updateMongo.current);
   };
 

@@ -92,7 +92,7 @@ export const ApiContextProvider = (props) => {
     if (request === "employeeList/save") {
       route = "/employeeList/save";
       querys = {
-        employeeList: rows,
+        changeList: updateMongo.current,
       };
     }
     fetch(route, {
