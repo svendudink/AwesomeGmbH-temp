@@ -21,7 +21,14 @@ function App() {
               </ApiContextProvider>
             }
           />
-          <Route path="/EmployeeList" element={<EmployeeList />} />
+          <Route
+            path="/EmployeeList"
+            element={
+              <ApiContextProvider>
+                <EmployeeList />
+              </ApiContextProvider>
+            }
+          />
           <Route
             path="/CreateUser"
             element={
