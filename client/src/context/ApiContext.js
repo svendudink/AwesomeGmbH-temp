@@ -88,7 +88,7 @@ export const ApiContextProvider = (props) => {
       };
     }
     if (request === "departments/save") {
-      route = "/departments";
+      route = "/departments/save";
       querys = {
         token: localStorage.getItem("token"),
         department: userData.department,
