@@ -6,6 +6,6 @@ export const departments = async (req, res) => {
   const departments = await Departments.find();
   res.status(200).json({
     msg: "All departments",
-    departments: departments,
+    Abteilung: departments,
   });
 };

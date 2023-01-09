@@ -37,7 +37,7 @@ export const departmentsSave = async (req, res) => {
         const departments = await Departments.find();
         res.status(200).json({
           msg: "All Departments",
-          departments: departments,
+          Abteilung: departments,
         });
       }
     }

@@ -14,8 +14,16 @@ export const ApiContextProvider = (props) => {
     token: "",
     department: "",
   });
+  const [departments, setDepartments] = useState([
+    {
+      id: 1,
+      department: "Loading",
+    },
+  ]);
+
   const loggedIn = useRef("");
   const updateMongo = useRef([]);
+  const updateMongoDepartment = useRef([]);
   const originalEmployeeList = useRef([]);
 
   const [rows, setRows] = useState([
@@ -91,7 +99,7 @@ export const ApiContextProvider = (props) => {
       route = "/departments/save";
       querys = {
         token: localStorage.getItem("token"),
-        department: userData.department,
+        abteilung: userData.department,
       };
     }
     fetch(route, {
@@ -138,7 +146,13 @@ export const ApiContextProvider = (props) => {
           }
         }
         if (request === "departments" || request === "departments/save") {
-          console.log(resData.departments);
+          console.log(resData.Abteilung);
+          setDepartments(
+            resData.Abteilung.map((obj, ind) => {
+              console.log(obj);
+              return { ...obj, id: ind + 1 };
+            })
+          );
         }
       })
       .catch((err) => console.log(err));
@@ -155,6 +169,9 @@ export const ApiContextProvider = (props) => {
         updateMongo,
         originalEmployeeList,
         loggedIn,
+        departments,
+        setDepartments,
+        updateMongoDepartment,
       }}
     >
       {props.children}

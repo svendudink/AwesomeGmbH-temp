@@ -25,6 +25,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { ApiContext } from "../context/ApiContext";
 import { useContext } from "react";
 import TableHeadSD from "./table/TableHead.jsx";
+import TableRowSD from "./table/TableRow";
 
 // Creating styles
 const useStyles = makeStyles({
@@ -218,7 +219,7 @@ function TableDemo(props) {
       </div>
 
       <Table>
-        <TableHeadSD rows={rows} />
+        <TableHeadSD key={"THSD"} rows={rows} />
 
         <TableBody>
           {rows.map((row, i) => {
