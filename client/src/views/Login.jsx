@@ -1,11 +1,22 @@
 import { TextField } from "@mui/material";
 import { ApiContext } from "../context/ApiContext";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
+import { getToken } from "../Helpers/getToken";
 
 export default function Login() {
-  const { ApiCall, userData, setUserData } = useContext(ApiContext);
+  const { ApiCall, userData, setUserData, loggedIn } = useContext(ApiContext);
 
-  const textInputHandler = (e) => {
+  useEffect(() => {
+    const token = getToken();
+    if (token) {
+      console.log("logged in");
+      loggedIn.current = true;
+    } else {
+      console.log("not logged");
+    }
+  });
+
+  const InputHandler = (e) => {
     setUserData({ ...userData, [e.target.id]: e.target.value });
     console.log(userData);
   };
@@ -18,16 +29,16 @@ export default function Login() {
         label="Company Email adress"
         type="Email"
         variant="filled"
-        onChange={textInputHandler}
+        onChange={InputHandler}
       />
       <TextField
         id="password"
         label="Password"
         type="password"
         autoComplete="current-password"
-        onChange={textInputHandler}
+        onChange={InputHandler}
       />
-      <button onClick={() => ApiCall("login")}>Texting</button>
+      <button onClick={() => ApiCall("login")}>Login</button>
     </div>
   );
 }

@@ -46,7 +46,7 @@ function TableDemo(props) {
 
   // Defining a state named rows
   // which we can update by calling on setRows function
-  const { ApiCall, rows, setRows, updateMongo, originalEmployeeList } =
+  const { ApiCall, rows, setRows, updateMongo, loggedIn } =
     useContext(ApiContext);
 
   useEffect(() => {
@@ -181,7 +181,9 @@ function TableDemo(props) {
       </Snackbar>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div>
-          {isEdit ? (
+          {!localStorage.getItem("employeePrivilegessettings") ? (
+            <div></div>
+          ) : isEdit ? (
             <div>
               <Button onClick={handleAdd}>
                 <AddBoxIcon onClick={handleAdd} />
@@ -230,7 +232,10 @@ function TableDemo(props) {
         </TableHead>
         <TableBody>
           {rows.map((row, i) => {
-            return isEdit ? (
+            return !loggedIn.current ? (
+              "Please login to view employee list"
+            ) : localStorage.getItem("employeePrivilegessettings") === "true" &&
+              isEdit ? (
               <TableRow key={`row1${i}`}>
                 <TableCell key={"inputVorname"} padding="none">
                   <input

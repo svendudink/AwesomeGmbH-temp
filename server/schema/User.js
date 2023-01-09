@@ -9,6 +9,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  departmentPrivileges: {
+    type: Boolean,
+    required: true,
+  },
+  employeePrivileges: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const User = mongoose.model("User", userSchema);
