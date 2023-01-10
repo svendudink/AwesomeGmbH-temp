@@ -1,12 +1,12 @@
 import mongoose from "mongoose";
 
-const departmentSchema = new mongoose.Schema({
+const abteilungSchema = new mongoose.Schema({
   abteilung: {
     type: String,
     required: true,
   },
 });
 
-const Departments = mongoose.model("Departments", departmentSchema);
+const Abteilung = mongoose.model("Abteilung", abteilungSchema);
 
-export default Departments;
+export default Abteilung;

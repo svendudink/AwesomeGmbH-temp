@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import User from "../schema/User.js";
 
-const MongoRegistrySave = (req, res, schema) => {
+const MongoRegistrySave = (req, res, schema, area) => {
   jwt.verify(
     req.body.token,
     process.env.SECRET_JWT_KEY,
@@ -10,6 +10,7 @@ const MongoRegistrySave = (req, res, schema) => {
       if (err) {
         return { error: "invalid signature" };
       }
+
       const user = await User.findOne({
         _id: decoded.sub,
       });
@@ -28,17 +29,21 @@ const MongoRegistrySave = (req, res, schema) => {
             console.log(row.Vorname);
             const check = await schema.updateOne(
               { _id: row._id },
-              {
-                Vorname: row.Vorname,
-                Nachname: row.Nachname,
-                Strasse: row.Strasse,
-                Nr: row.Nr,
-                PLZ: row.PLZ,
-                Ort: row.Ort,
-                Land: row.Land,
-                Position: row.Position,
-                Abteilung: row.Abteilung,
-              }
+              area === "Employees "
+                ? {
+                    Vorname: row.Vorname,
+                    Nachname: row.Nachname,
+                    Strasse: row.Strasse,
+                    Nr: row.Nr,
+                    PLZ: row.PLZ,
+                    Ort: row.Ort,
+                    Land: row.Land,
+                    Position: row.Position,
+                    Abteilung: row.Abteilung,
+                  }
+                : {
+                    Abteilung: row.Abteilung,
+                  }
             );
             console.log("check", check);
           }
@@ -49,17 +54,23 @@ const MongoRegistrySave = (req, res, schema) => {
           console.log(row);
 
           if (row._id.substring(0, 4) === "TEMP") {
-            const employee = new schema({
-              Vorname: row.Vorname,
-              Nachname: row.Nachname,
-              Strasse: row.Strasse,
-              Nr: row.Nr,
-              PLZ: row.PLZ,
-              Ort: row.Ort,
-              Land: row.Land,
-              Position: row.Position,
-              Abteilung: row.Abteilung,
-            });
+            const employee = new schema(
+              area === "Employees "
+                ? {
+                    Vorname: row.Vorname,
+                    Nachname: row.Nachname,
+                    Strasse: row.Strasse,
+                    Nr: row.Nr,
+                    PLZ: row.PLZ,
+                    Ort: row.Ort,
+                    Land: row.Land,
+                    Position: row.Position,
+                    Abteilung: row.Abteilung,
+                  }
+                : {
+                    Abteilung: row.Abteilung,
+                  }
+            );
             await employee.save();
           }
         }

@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
-  
   Table,
   TableBody,
   TableCell,
@@ -41,7 +40,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Departments() {
+function Departments() {
   const classes = useStyles();
 
   const {
@@ -55,10 +54,6 @@ export default function Departments() {
   useEffect(() => {
     ApiCall("departments");
   }, []);
-
-  const handleAddClick = (e) => {
-    ApiCall("departments/save");
-  };
 
   const [open, setOpen] = useState(false);
   const [isEdit, setEdit] = useState(false);
@@ -80,18 +75,11 @@ export default function Departments() {
       ...departments,
       {
         _id: `TEMPID${departments.length + 1}`,
-        Vorname: "",
-        Nachname: "",
-        Strasse: "",
-        Nr: "",
-        PLZ: "",
-        Ort: "",
-        Land: "",
-        Position: "",
-        Abteilung: "",
+        abteilung: "",
       },
     ]);
     setEdit(true);
+    console.log(departments);
   };
 
   // Function to handle edit
@@ -103,6 +91,7 @@ export default function Departments() {
 
   // Function to handle save
   const handleSave = async () => {
+    console.log(updateMongoDepartment.current);
     setEdit(!isEdit);
     setDepartments(departments);
     console.log("saved : ", departments);
@@ -110,8 +99,9 @@ export default function Departments() {
     setOpen(true);
     //the idea: compare departments with originalObj, changes are saved in updateMongoDepartment
     // howto, take new array, map over it, search matching object in old array through ID,compare objects, if something chnges, push to mongUpdate
-
-    ApiCall("employeeList/save");
+    console.log(updateMongoDepartment.current);
+    ApiCall("departments/save");
+    console.log(updateMongoDepartment.current);
   };
 
   // The handleInputChange handler can be set up to handle
@@ -120,8 +110,9 @@ export default function Departments() {
   const handleInputChange = (e, index) => {
     setDisable(false);
     const { name, value } = e.target;
-    console.log("checkInputCHange", name, value, "twest", e.target);
+    console.log("checkInputCHange", name, value, e.target);
     const list = [...departments];
+    console.log(list, name, value);
     list[index][name] = value;
     setDepartments(list);
 
@@ -230,8 +221,8 @@ export default function Departments() {
                 <TableRow key={`row1${i}`}>
                   <TableCell key={"inputVorname"} padding="none">
                     <input
-                      value={row.Abteilung}
-                      name="Abteilung"
+                      value={row.abteilung}
+                      name="abteilung"
                       onChange={(e) => handleInputChange(e, i)}
                     />
                   </TableCell>
@@ -280,7 +271,7 @@ export default function Departments() {
               ) : (
                 <TableRow key={`row3${i}`}>
                   <TableCell key={"viewOnlyVorname"} component="th" scope="row">
-                    {row.Abteilung}
+                    {row.abteilung}
                   </TableCell>
                 </TableRow>
               );
@@ -291,3 +282,5 @@ export default function Departments() {
     </div>
   );
 }
+
+export default Departments;

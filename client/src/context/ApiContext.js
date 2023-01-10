@@ -17,7 +17,8 @@ export const ApiContextProvider = (props) => {
   const [departments, setDepartments] = useState([
     {
       id: 1,
-      department: "Loading",
+      _id: "TEMP8",
+      abteilung: "Loading",
     },
   ]);
 
@@ -83,6 +84,7 @@ export const ApiContextProvider = (props) => {
       };
     }
     if (request === "employeeList/save") {
+      console.log(updateMongo.current);
       route = "http://localhost:8080/employeeList/save";
       querys = {
         changeList: updateMongo.current,
@@ -96,10 +98,11 @@ export const ApiContextProvider = (props) => {
       };
     }
     if (request === "departments/save") {
+      console.log(updateMongoDepartment.current);
       route = "http://localhost:8080/departments/save";
       querys = {
-        token: localStorage.getItem("token"),
         changeList: updateMongoDepartment.current,
+        token: localStorage.getItem("token"),
       };
     }
     fetch(route, {
@@ -150,9 +153,9 @@ export const ApiContextProvider = (props) => {
           }
         }
         if (request === "departments" || request === "departments/save") {
-          console.log(resData.Abteilung);
+          console.log(updateMongoDepartment.current);
           setDepartments(
-            resData.Abteilung.map((obj, ind) => {
+            resData.abteilung.map((obj, ind) => {
               console.log(obj);
               return { ...obj, id: ind + 1 };
             })

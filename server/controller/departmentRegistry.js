@@ -1,11 +1,11 @@
-import Departments from "../schema/Departments.js";
+import Abteilung from "../schema/Departments.js";
 
 export const departments = async (req, res) => {
   console.log("test", req.body);
 
-  const departments = await Departments.find();
+  const abteilung = await Abteilung.find();
   res.status(200).json({
     msg: "All departments",
-    Abteilung: departments,
+    abteilung: abteilung,
   });
 };

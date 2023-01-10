@@ -117,6 +117,7 @@ function TableDemo(props) {
     const { name, value } = e.target;
     console.log("checkInputCHange", name, value, e.target);
     const list = [...rows];
+    console.log(list, name, value);
     list[index][name] = value;
     setRows(list);
 
