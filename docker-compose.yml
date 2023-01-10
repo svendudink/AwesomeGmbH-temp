@@ -21,6 +21,3 @@ services:
 
     ports:
       - "3000:80"
-# - HASH_KEY_JWT=27035720753475734845670987fhdgrmfhngfkjzhgfds7676556(&)/()/$&§$%&)//
-#         - HASH_KEY_bcrypt=s7676556(&)/()/$&§$%&)
-#         - SECRET_JWT_KEY=70357207534757348456709
