@@ -2,7 +2,7 @@ import express from "express";
 import { upload } from "../controller/upload.js";
 import multer from "multer";
 import fs from "fs";
-import toJSON from "../utils/toJson.js";
+import toJSON from "../controller/upload.js";
 const router = express.Router();
 
 const fileUpload = multer({

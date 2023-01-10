@@ -12,4 +12,5 @@ const issueToken = (userID) => {
   });
   return jwt;
 };
+
 export { issueToken };
