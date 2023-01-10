@@ -1,9 +1,9 @@
+import { makeStyles } from "@material-ui/styles";
 import React, { useState, useEffect } from "react";
-import CreateIcon from "@material-ui/icons/Create";
 import {
   Box,
   Button,
-  Snackbar,
+  
   Table,
   TableBody,
   TableCell,
@@ -12,11 +12,11 @@ import {
 } from "@material-ui/core";
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import AddBoxIcon from "@material-ui/icons/AddBox";
+import CreateIcon from "@material-ui/icons/Create";
 
 import SaveIcon from "@mui/icons-material/Save";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Alert from "@material-ui/lab/Alert";
+// import Alert from "@material-ui/lab/Alert";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -173,26 +173,17 @@ export default function Departments() {
     setShowConfirm(false);
   };
 
+  console.log(localStorage.getItem("departmentPrivilegessettings"));
+
   return (
     <div>
       <div> Departments</div>
 
-      <input id="department" onChange={(e) => handleInputChange(e)} />
-      <Button onClick={handleAddClick}>Add</Button>
       <div>
-        <Snackbar
-          open={open}
-          autoHideDuration={2000}
-          onClose={handleClose}
-          className={classes.snackbar}
-        >
-          <Alert onClose={handleClose} severity="success">
-            Record saved successfully!
-          </Alert>
-        </Snackbar>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
-            {!localStorage.getItem("employeePrivilegessettings") ? (
+            {localStorage.getItem("departmentPrivilegessettings") === "false" ||
+            localStorage.getItem("departmentPrivilegessettings") === null ? (
               <div></div>
             ) : isEdit ? (
               <div>

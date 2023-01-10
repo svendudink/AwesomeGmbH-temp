@@ -1,5 +1,6 @@
+import { makeStyles } from "@material-ui/styles";
 import React, { useState, useEffect } from "react";
-import CreateIcon from "@material-ui/icons/Create";
+
 import {
   Box,
   Button,
@@ -15,8 +16,7 @@ import AddBoxIcon from "@material-ui/icons/AddBox";
 
 import SaveIcon from "@mui/icons-material/Save";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Alert from "@material-ui/lab/Alert";
+// import Alert from "@material-ui/lab/Alert";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -25,7 +25,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { ApiContext } from "../context/ApiContext";
 import { useContext } from "react";
 import TableHeadSD from "./table/TableHead.jsx";
-import TableRowSD from "./table/TableRow";
 
 // Creating styles
 const useStyles = makeStyles({
@@ -171,16 +170,6 @@ function TableDemo(props) {
 
   return (
     <div>
-      <Snackbar
-        open={open}
-        autoHideDuration={2000}
-        onClose={handleClose}
-        className={classes.snackbar}
-      >
-        <Alert onClose={handleClose} severity="success">
-          Record saved successfully!
-        </Alert>
-      </Snackbar>
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <div>
           {!localStorage.getItem("employeePrivilegessettings") ? (
@@ -210,7 +199,7 @@ function TableDemo(props) {
                 ADD
               </Button>
               <Button align="right" onClick={handleEdit}>
-                <CreateIcon />
+                <SaveIcon />
                 EDIT
               </Button>
             </div>
