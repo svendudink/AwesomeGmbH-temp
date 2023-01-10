@@ -1,21 +1,16 @@
 version: "3"
 
 services:
-  admin:
-    container_name: server
+  server:
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        - BUILD_CONTEXT=server
+      dockerfile: server.Dockerfile
     ports:
-      - "8080:80"
-  product:
-    container_name: client
+      - "8080:8080"
+
+  client:
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        - BUILD_CONTEXT=client
+      dockerfile: client.Dockerfile
     ports:
       - "3000:80"

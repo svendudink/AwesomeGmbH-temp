@@ -24,7 +24,7 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 /////////////////////////////////////Sven's//Coding/ Date: 05-01-2023 09:57 ////////////
 // MongoDB Login

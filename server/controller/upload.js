@@ -3,25 +3,6 @@ import xlsConvert from "../utils/XLSConvert.js";
 import Employees from "../schema/Employees.js";
 
 export const upload = async (req, res) => {
-  jwt.verify(
-    req.body.token,
-    process.env.SECRET_JWT_KEY,
-    async function (err, decoded) {
-      if (err) {
-        return { error: "invalid signature" };
-      }
-      const user = await User.findOne({
-        _id: decoded.sub,
-      });
-      if (!user.employeePrivileges) {
-        res.status(401).json({
-          msg: "not authorized",
-        });
-      } else {
-      }
-    }
-  );
-
   try {
     if (req.file) {
       res.send({
