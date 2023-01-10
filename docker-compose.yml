@@ -1,21 +1,26 @@
 version: "3"
 
 services:
-  admin:
-    container_name: server
+  server:
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        - BUILD_CONTEXT=server
+      dockerfile: server.Dockerfile
+    environment:
+      MONGO_URI: "mongodb+srv://AwesomeGmbH:HbmGemosewA@cluster0.vdurq8l.mongodb.net/?retryWrites=true&w=majority"
+      HASH_KEY_JWT: "27035720753475734845670987fhdgrmfhngfkjzhgfds7676556(&)/()/$&§$%&)//"
+      HASH_KEY_bcrypt: "s7676556(&)/()/$&§$%&)"
+      SECRET_JWT_KEY: "70357207534757348456709"
+
     ports:
-      - "8080:80"
-  product:
-    container_name: client
+      - "8080:8080"
+
+  client:
     build:
       context: .
-      dockerfile: Dockerfile
-      args:
-        - BUILD_CONTEXT=client
+      dockerfile: client.Dockerfile
+
     ports:
       - "3000:80"
+# - HASH_KEY_JWT=27035720753475734845670987fhdgrmfhngfkjzhgfds7676556(&)/()/$&§$%&)//
+#         - HASH_KEY_bcrypt=s7676556(&)/()/$&§$%&)
+#         - SECRET_JWT_KEY=70357207534757348456709

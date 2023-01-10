@@ -125,6 +125,7 @@ export const ApiContextProvider = (props) => {
               return { ...obj, id: ind + 1 };
             })
           );
+
           updateMongo.current = [];
         }
 
@@ -154,12 +155,15 @@ export const ApiContextProvider = (props) => {
         }
         if (request === "departments" || request === "departments/save") {
           console.log(updateMongoDepartment.current);
-          setDepartments(
-            resData.abteilung.map((obj, ind) => {
-              console.log(obj);
-              return { ...obj, id: ind + 1 };
-            })
-          );
+          if (resData.abteilung !== 0) {
+            setDepartments(
+              resData.abteilung.map((obj, ind) => {
+                console.log(obj);
+                return { ...obj, id: ind + 1 };
+              })
+            );
+          }
+          updateMongoDepartment.current = [];
         }
       })
       .catch((err) => console.log(err));

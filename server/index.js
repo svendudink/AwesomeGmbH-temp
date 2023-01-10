@@ -24,7 +24,7 @@ dotenv.config();
 const app = express();
 app.use(bodyParser.json());
 
-app.use(cors(corsOptions));
+app.use(cors());
 
 /////////////////////////////////////Sven's//Coding/ Date: 05-01-2023 09:57 ////////////
 // MongoDB Login
@@ -44,10 +44,8 @@ app.use(cors(corsOptions));
 app.listen(port, () => {
   console.log(`server running on port: ${port}`);
 });
-
 app.use("/signup", signUpRoute);
 app.use("/login", loginRoute);
 app.use("/employeeList", employeeRoute);
-
 app.use("/upload", uploadRoute);
 app.use("/departments", departmentRoute);

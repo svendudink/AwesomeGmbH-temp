@@ -47,11 +47,12 @@ function TableDemo(props) {
 
   // Defining a state named rows
   // which we can update by calling on setRows function
-  const { ApiCall, rows, setRows, updateMongo, loggedIn } =
+  const { ApiCall, rows, setRows, updateMongo, loggedIn, departments } =
     useContext(ApiContext);
-
+  console.log(departments);
   useEffect(() => {
     ApiCall("employeeList");
+    ApiCall("departments");
   }, []);
 
   // Initial states
@@ -62,12 +63,6 @@ function TableDemo(props) {
   const [deleteRow, setDeleteRow] = useState(0);
 
   // Function For closing the alert snackbar
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
 
   // Function For adding new row object
   const handleAdd = () => {
@@ -113,6 +108,7 @@ function TableDemo(props) {
   // many different inputs in the form, listen for changes
   // to input elements and record their values in state
   const handleInputChange = (e, index) => {
+    console.log(e, index);
     setDisable(false);
     const { name, value } = e.target;
     console.log("checkInputCHange", name, value, e.target);
@@ -274,12 +270,28 @@ function TableDemo(props) {
                     onChange={(e) => handleInputChange(e, i)}
                   />
                 </TableCell>
-                <TableCell key={"inputAbteilung"} padding="none">
-                  <input
-                    value={row.Abteilung}
+                <TableCell padding="none">
+                  <select
+                    style={{ width: "100px" }}
                     name="Abteilung"
+                    value={row.city}
                     onChange={(e) => handleInputChange(e, i)}
-                  />
+                  >
+                    <option value={row.Abteilung}>
+                      {row.Abteilung ? row.Abteilung : "Not assigned"}
+                    </option>
+                    {departments.map((option, i) => {
+                      console.log(row.Abteilung, option.abteilung);
+
+                      return row.Abteilung !== option.abteilung ? (
+                        <option value={option.abteilung}>
+                          {option.abteilung}
+                        </option>
+                      ) : (
+                        <></>
+                      );
+                    })}
+                  </select>
                 </TableCell>
                 <td>
                   <Button className="mr10" onClick={() => handleConfirm(i)}>
