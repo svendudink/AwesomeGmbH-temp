@@ -14,8 +14,16 @@ export const ApiContextProvider = (props) => {
     token: "",
     department: "",
   });
+  const [departments, setDepartments] = useState([
+    {
+      id: 1,
+      department: "Loading",
+    },
+  ]);
+
   const loggedIn = useRef("");
   const updateMongo = useRef([]);
+  const updateMongoDepartment = useRef([]);
   const originalEmployeeList = useRef([]);
 
   const [rows, setRows] = useState([
@@ -44,14 +52,14 @@ export const ApiContextProvider = (props) => {
     let route = "";
     let querys = {};
     if (request === "login") {
-      route = "/login";
+      route = "http://localhost:8080/login";
       querys = {
         email: userData.email,
         password: userData.password,
       };
     }
     if (request === "validateProfile") {
-      route = "/login";
+      route = "http://localhost:8080/login";
       querys = {
         email: userData.email,
         password: userData.password,
@@ -59,7 +67,7 @@ export const ApiContextProvider = (props) => {
     }
 
     if (request === "signup") {
-      route = "/signup";
+      route = "http://localhost:8080/signup";
       querys = {
         email: userData.email,
         password: userData.password,
@@ -68,36 +76,40 @@ export const ApiContextProvider = (props) => {
       };
     }
     if (request === "employeeList") {
-      route = "/employeeList";
+      route = "http://localhost:8080/employeeList";
       querys = {
         email: userData.email,
         password: userData.password,
       };
     }
     if (request === "employeeList/save") {
-      route = "/employeeList/save";
+      route = "http://localhost:8080/employeeList/save";
       querys = {
         changeList: updateMongo.current,
         token: localStorage.getItem("token"),
       };
     }
     if (request === "departments") {
-      route = "/departments";
+      route = "http://localhost:8080/departments";
       querys = {
         token: localStorage.getItem("token"),
       };
     }
     if (request === "departments/save") {
-      route = "/departments/save";
+      route = "http://localhost:8080/departments/save";
       querys = {
         token: localStorage.getItem("token"),
-        department: userData.department,
+        changeList: updateMongoDepartment.current,
       };
     }
     fetch(route, {
       method: "POST",
+      mode: "cors",
       body: JSON.stringify(querys),
-      headers: { "Content-type": "application/json" },
+
+      headers: {
+        "Content-type": "application/json",
+      },
     })
       .then((res) => res.json())
       .then((resData) => {
@@ -138,7 +150,13 @@ export const ApiContextProvider = (props) => {
           }
         }
         if (request === "departments" || request === "departments/save") {
-          console.log(resData.departments);
+          console.log(resData.Abteilung);
+          setDepartments(
+            resData.Abteilung.map((obj, ind) => {
+              console.log(obj);
+              return { ...obj, id: ind + 1 };
+            })
+          );
         }
       })
       .catch((err) => console.log(err));
@@ -155,6 +173,9 @@ export const ApiContextProvider = (props) => {
         updateMongo,
         originalEmployeeList,
         loggedIn,
+        departments,
+        setDepartments,
+        updateMongoDepartment,
       }}
     >
       {props.children}

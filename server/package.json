@@ -5,12 +5,12 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "build": "npm install"
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",
     "@material-ui/icons": "^4.11.3",
-    "@material-ui/lab": "^4.0.0-alpha.61",
     "bcrypt": "^5.1.0",
     "cors": "^2.8.5",
     "csvtojson": "^2.0.10",
@@ -23,6 +23,11 @@
     "validator": "^13.7.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "webpack-cli": "^5.0.1",
+    "requirejs": "~2.0.4",
+    "commander": "~0.5",
+    "uglify-js": "~1.2",
+    "less": "~1.3"
   }
 }
