@@ -302,22 +302,6 @@ function TableDemo() {
                       onChange={(e) => handleInputChange(e, i)}
                     />
                   </TableCell>
-
-                  {/* <TableCell padding="none">
-                          <select
-                            style={{ width: "100px" }}
-                            name="city"
-                            value={row.city}
-                            onChange={(e) => handleInputChange(e, i)}
-                          >
-                            <option value=""></option>
-                            <option value="Karanja">Karanja</option>
-                            <option value="Hingoli">Hingoli</option>
-                            <option value="Bhandara">Bhandara</option>
-                            <option value="Amaravati">Amaravati</option>
-                            <option value="Pulgaon">Pulgaon</option>
-                          </select>
-                        </TableCell> */}
                 </TableRow>
               ) : (
                 <TableRow>
