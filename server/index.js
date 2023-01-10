@@ -44,10 +44,8 @@ app.use(cors());
 app.listen(port, () => {
   console.log(`server running on port: ${port}`);
 });
-
 app.use("/signup", signUpRoute);
 app.use("/login", loginRoute);
 app.use("/employeeList", employeeRoute);
-
 app.use("/upload", uploadRoute);
 app.use("/departments", departmentRoute);

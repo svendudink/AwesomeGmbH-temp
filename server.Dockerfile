@@ -4,6 +4,6 @@ WORKDIR /app
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 COPY server server
-RUN yarn install
+RUN yarn install  --network-timeout 12000000
 
-CMD ["node" "/app/server/index.js"]
+CMD ["node", "/app/server/index.js"]

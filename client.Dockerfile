@@ -7,7 +7,7 @@ WORKDIR /app
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 COPY client client
-RUN yarn install
+RUN yarn install --network-timeout 12000000
 RUN yarn build:client
 
 #webserver
