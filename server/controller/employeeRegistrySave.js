@@ -5,10 +5,9 @@ import User from "../schema/User.js";
 import { verifyPriviliges } from "../utils/jwt.js";
 
 export const employeeRegistrySave = async (req, res) => {
-  await verifyPriviliges(
-    req.body.token,
-    res,
-    "employees",
+  let privileges = await verifyPriviliges(req.body.token, res, "departments");
+
+  if (privileges.departmentPrivileges) {
     (async function () {
       const markForDelete = await req.body.changeList.map((row) => {
         return row.delete ? row._id : null;
@@ -61,6 +60,6 @@ export const employeeRegistrySave = async (req, res) => {
         msg: "All employees",
         employees: employees,
       });
-    })()
-  );
+    })();
+  }
 };

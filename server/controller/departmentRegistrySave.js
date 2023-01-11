@@ -4,10 +4,9 @@ import jwt from "jsonwebtoken";
 import { verifyPriviliges } from "../utils/jwt.js";
 
 export const departmentsSave = async (req, res) => {
-  await verifyPriviliges(
-    req.body.token,
-    res,
-    "departments",
+  let privileges = await verifyPriviliges(req.body.token, res, "departments");
+
+  if (privileges.departmentPrivileges) {
     (async function () {
       const markForDelete = await req.body.changeList.map((row) => {
         return row.delete ? row._id : null;
@@ -26,7 +25,6 @@ export const departmentsSave = async (req, res) => {
       }
       //create new mongoDB
       for (const row of req.body.changeList) {
-        console.log("row from depreg", row);
         if (row._id.substring(0, 4) === "TEMP") {
           const department = new Abteilung({
             abteilung: row.abteilung,
@@ -39,6 +37,8 @@ export const departmentsSave = async (req, res) => {
         msg: "All departments",
         abteilung: abteilung,
       });
-    })()
-  );
+    })();
+  } else {
+    res.status(403).json({ msg: "permission denied" });
+  }
 };
