@@ -27,6 +27,21 @@ export const ApiContextProvider = (props) => {
   const updateMongoDepartment = useRef([]);
   const originalEmployeeList = useRef([]);
 
+  const Employeesempty = [
+    {
+      id: 1,
+      Vorname: "Empty",
+      Nachname: "Empty",
+      Strasse: "Empty",
+      Nr: "Empty",
+      PLZ: "Empty",
+      Ort: "Empty",
+      Land: "Empty",
+      Position: "Empty",
+      Abteilung: "Empty",
+    },
+  ];
+
   const [rows, setRows] = useState([
     {
       id: 1,
@@ -117,16 +132,21 @@ export const ApiContextProvider = (props) => {
       .then((res) => res.json())
       .then((resData) => {
         if (request === "employeeList/save" || request === "employeeList") {
-          originalEmployeeList.current = resData;
-          console.log(resData);
-          setRows(
-            resData.employees.map((obj, ind) => {
-              console.log(obj);
-              return { ...obj, id: ind + 1 };
-            })
-          );
+          if (resData.employees.length === 0) {
+            setRows(Employeesempty);
+          } else {
+            originalEmployeeList.current = resData;
+            console.log(resData);
+            setRows(
+              resData.employees.map((obj, ind) => {
+                console.log(obj);
+                return { ...obj, id: ind + 1 };
+              })
+            );
+          }
           updateMongo.current = [];
         }
+        console.log(rows);
 
         if (request === "login") {
           console.log(resData.user);

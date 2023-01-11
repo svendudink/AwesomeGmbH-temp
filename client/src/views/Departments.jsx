@@ -138,9 +138,15 @@ function Departments() {
     console.log(i);
     const list = [...departments];
     list.splice(i, 1);
-    setDepartments(list);
-    setShowConfirm(false);
-    setDisable(false);
+    if (list.length === 0) {
+      setDepartments([{ abteilung: "empty" }]);
+      setShowConfirm(false);
+      setDisable(false);
+    } else {
+      setDepartments(list);
+      setShowConfirm(false);
+      setDisable(false);
+    }
     //Logic for removing from mongoDB
     if (departments[i]._id.substring(0, 4) === "TEMP") {
       console.log("check");
@@ -169,8 +175,6 @@ function Departments() {
 
   return (
     <div>
-      <div> Departments</div>
-
       <div>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div>

@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import { verifyPriviliges } from "../utils/jwt.js";
 
 export const departmentsSave = async (req, res) => {
+
   await verifyPriviliges(
     req.body.token,
     res,
@@ -40,5 +41,5 @@ export const departmentsSave = async (req, res) => {
         abteilung: abteilung,
       });
     })()
-  );
-};
+  )
+}

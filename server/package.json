@@ -5,8 +5,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon index.js",
-    "build": "npm install"
+    "start": "nodemon index.js"
   },
   "dependencies": {
     "@material-ui/core": "^4.12.4",

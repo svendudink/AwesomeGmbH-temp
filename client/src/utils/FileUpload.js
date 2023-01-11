@@ -7,16 +7,16 @@ function FileUpload() {
     setFileData(e.target.files[0]);
   };
 
-  const uploadFile = (e) => {
+  const uploadFile = async (e) => {
     e.preventDefault();
     const data = new FormData();
     data.append("file", fileData);
 
-    axios({
+    await axios({
       method: "POST",
       url: "http://localhost:8080/upload",
       data: data,
-      body: "teststring",
+      body: JSON.stringify(localStorage.getItem("token")),
     }).then((res) => {
       alert(res.data.message);
     });

@@ -1,5 +1,5 @@
 {
-  "name": "CodingChallangeAutohaus",
+  "name": "awesomegmbh",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
@@ -10,8 +10,7 @@
   ],
   "scripts": {
     "start": "concurrently \"yarn workspace server start\" \"yarn workspace client start\"",
-    "build:client": "yarn workspace client build",
-    "build:server": "yarn workspace server build"
+    "build:client": "yarn workspace client build"
   },
   "devDependencies": {
     "concurrently": "^7.6.0"
