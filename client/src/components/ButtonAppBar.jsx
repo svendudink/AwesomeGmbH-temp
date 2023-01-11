@@ -14,10 +14,11 @@ import { useState } from "react";
 
 export default function ButtonAppBar() {
   const navigate = useNavigate();
-  const { loggedIn, updateMongo } = useContext(ApiContext);
+  const { loggedIn, rows, ApiCall } = useContext(ApiContext);
   const [appBarLoggedIn, setAppBarLoggedIn] = useState();
 
   useEffect(() => {
+    ApiCall("employeeList");
     const token = getToken();
     if (token) {
       loggedIn.current = true;
@@ -46,7 +47,14 @@ export default function ButtonAppBar() {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Awesome Company GmbH: Employee Registry
+            Awesome Company GmbH: Employee Registry.
+            <h1 style={{ textAlign: "center", fontSize: "1em" }}>
+              {!rows.length
+                ? ""
+                : rows.length === 1
+                ? "1 Employee And still growing"
+                : `${rows.length} Employees and still growing`}
+            </h1>
           </Typography>
           {!appBarLoggedIn ? (
             <Button onClick={login} color="inherit">
