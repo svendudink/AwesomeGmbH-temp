@@ -37,6 +37,10 @@ const employeeSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
+  assignedBy: {
+    type: String,
+    required: false,
+  },
 });
 
 const Employees = mongoose.model("Employees", employeeSchema);

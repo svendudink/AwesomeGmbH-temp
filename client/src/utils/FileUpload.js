@@ -11,12 +11,15 @@ function FileUpload() {
     e.preventDefault();
     const data = new FormData();
     data.append("file", fileData);
+    data.append("token", localStorage.getItem("token"));
 
     await axios({
       method: "POST",
       url: "http://localhost:8080/upload",
       data: data,
-      body: JSON.stringify(localStorage.getItem("token")),
+      // headers: {
+      //   "Content-Type": "multipart/form-data",
+      // },
     }).then((res) => {
       alert(res.data.message);
     });

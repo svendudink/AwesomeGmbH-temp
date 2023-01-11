@@ -14,37 +14,30 @@ const issueToken = (userID) => {
   return jwt;
 };
 
-const verifyPriviliges = async (token, res, type, myFunction) => {
-  jsonwebtoken.verify(
-    token,
-    process.env.SECRET_JWT_KEY,
+const verifyPriviliges = async (token, res, type) => {
+  if (!token) {
+    console.log("no token");
+    return false;
+  } else {
+    return jsonwebtoken.verify(
+      token,
+      process.env.SECRET_JWT_KEY,
 
-    async function (err, decoded) {
-      if (err) {
-        return { error: "invalid signature" };
-      }
-      const user = await User.findOne({
-        _id: decoded.sub,
-      });
-      if (type === "employees") {
-        if (!user.employeePrivileges) {
-          res.status(401).json({
-            msg: "not authorized",
-          });
-        } else if (type === "departments") {
-          myFunction;
+      async function (err, decoded) {
+        if (err) {
+          return { error: "invalid signature" };
         }
-      } else {
-        if (!user.departmentPrivileges) {
-          res.status(401).json({
-            msg: "not authorized",
-          });
-        } else {
-          myFunction;
-        }
+        const user = await User.find({
+          _id: decoded.sub,
+        });
+        return {
+          employeePrivileges: user[0].employeePrivileges,
+          departmentPrivileges: user[0].departmentPrivileges,
+          user: user[0].email,
+        };
       }
-    }
-  );
+    );
+  }
 };
 
 export { issueToken, verifyPriviliges };

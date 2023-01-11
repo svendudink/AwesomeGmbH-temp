@@ -11,13 +11,10 @@ export const xlsxAndCsvToObj = (path) => {
         let jsonObj = [];
         xlsConvert(path);
         path = path.replace(".xlsx", ".csv");
-
-        console.log("path", path);
       }
       csvtojsonV2()
         .fromFile(path)
         .then((jsonObj) => {
-          console.log("jsonobj", jsonObj);
           resolve(jsonObj);
         });
     } catch {
