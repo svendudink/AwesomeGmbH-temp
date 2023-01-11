@@ -9,7 +9,7 @@ export const upload = async (req, res) => {
   let privileges = await verifyPriviliges(req.body.token, res, "departments");
   console.log(privileges);
 
-  if (!privileges.departmentprivileges && !privileges.employeePrivileges) {
+  if (!privileges.departmentPrivileges && !privileges.employeePrivileges) {
     console.log("something happened");
     res.status(403).json({
       msg: "Not permitted",
