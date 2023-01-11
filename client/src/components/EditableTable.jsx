@@ -25,6 +25,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import { ApiContext } from "../context/ApiContext";
 import { useContext } from "react";
 import TableHeadSD from "./table/TableHead.jsx";
+import TableCellEditSD from "./table/TableCell.jsx";
 
 // Creating styles
 const useStyles = makeStyles({
@@ -49,7 +50,7 @@ function TableDemo(props) {
   // which we can update by calling on setRows function
   const { ApiCall, rows, setRows, updateMongo, loggedIn, departments } =
     useContext(ApiContext);
-  console.log(departments);
+
   useEffect(() => {
     ApiCall("employeeList");
     ApiCall("departments");
@@ -214,6 +215,25 @@ function TableDemo(props) {
             ) : localStorage.getItem("employeePrivilegessettings") === "true" &&
               isEdit ? (
               <TableRow key={`row1${i}`}>
+                {Object.keys(row).map((cell) => {
+                  // console.log(cell);
+                  return cell !== "id" && cell !== "__v" && cell !== "_id" ? (
+                    <TableCellEditSD
+                      updateMongo={updateMongo}
+                      setRows={setRows}
+                      rows={rows}
+                      setDisable={setDisable}
+                      value={row[cell]}
+                      rowname={cell}
+                      index={i}
+                    />
+                  ) : (
+                    <></>
+                  );
+                })}
+
+                {/* 
+                
                 <TableCell key={"inputVorname"} padding="none">
                   <input
                     value={row.Vorname}
@@ -269,7 +289,7 @@ function TableDemo(props) {
                     name="Position"
                     onChange={(e) => handleInputChange(e, i)}
                   />
-                </TableCell>
+                </TableCell> */}
                 <TableCell padding="none">
                   <select
                     style={{ width: "100px" }}
@@ -281,8 +301,6 @@ function TableDemo(props) {
                       {row.Abteilung ? row.Abteilung : "Not assigned"}
                     </option>
                     {departments.map((option, i) => {
-                      console.log(row.Abteilung, option.abteilung);
-
                       return row.Abteilung !== option.abteilung ? (
                         <option value={option.abteilung}>
                           {option.abteilung}
