@@ -1,6 +1,7 @@
-import csvtojsonV2 from "csvtojson";
-import xlsConvert from "../utils/XLSConvert.js";
+import fs from "fs";
 import Employees from "../schema/Employees.js";
+
+import { xlsxAndCsvToObj } from "../utils/xlsxAndCsvToObj.js";
 
 export const upload = async (req, res) => {
   try {
@@ -20,30 +21,23 @@ export const upload = async (req, res) => {
   }
 };
 
-const toJSON = (path) => {
+export const fileEdit = async function (req, res, cb) {
   try {
-    path = path.toLowerCase();
+    console.log("req.file", req.file);
+    const fileName = `uploads/${Date.now()}${req.file.originalname}`;
 
-    if (("check", path.substr(path.length - 4) === "xlsx")) {
-      let jsonObj = [];
-      xlsConvert(path);
-      path = path.replace(".xlsx", ".csv");
-
-      console.log("path", path);
-    }
-    csvtojsonV2()
-      .fromFile(path)
-      .then((jsonObj) => {
-        controller(jsonObj);
-      });
+    fs.rename(`csvuploads/${req.file.filename}`, fileName, function (err) {
+      if (err) console.log("ERROR: " + err);
+    });
+    const json = await xlsxAndCsvToObj(fileName);
+    console.log(json);
   } catch {
-    console.log("toJSONerror");
+    console.log("error");
   }
   return null;
 };
 
-const controller = async (json) => {
-  addUploadUser(json);
+const controller = (json) => {
   Employees.insertMany(json)
     .then((value) => {
       console.log("Saved Successfully");
@@ -52,13 +46,3 @@ const controller = async (json) => {
       console.log(error);
     });
 };
-
-const addUploadUser = async (json) => {
-  console.log(
-    json.map((row) => {
-      return { ...row, Creator: "Sven" };
-    })
-  );
-};
-
-export default toJSON;

@@ -1,6 +1,3 @@
-import fs from "fs";
-import xlsx from "node-xlsx";
-
 const xlsConvert = (path) => {
   console.log("checkthispath", path);
   let obj = xlsx.parse(path);
