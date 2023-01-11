@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { fileEdit } from "../controller/upload.js";
+import { upload } from "../controller/upload.js";
 
 const router = express.Router();
 
@@ -13,7 +13,7 @@ router.post(
   "/",
 
   fileUpload.single("file"),
-  fileEdit
+  upload
 );
 
 export default router;

@@ -174,17 +174,13 @@ export const ApiContextProvider = (props) => {
         }
         if (request === "departments" || request === "departments/save") {
           console.log(updateMongoDepartment.current);
-          if (resData.abteilung.length === 0) {
-            setDepartments([{ abteilung: "Empty" }]);
-          } else {
-            setDepartments(
-              resData.abteilung.map((obj, ind) => {
-                console.log(obj);
-                return { ...obj, id: ind + 1 };
-              })
-            );
-          }
-          updateMongoDepartment.current = [];
+
+          setDepartments(
+            resData.abteilung.map((obj, ind) => {
+              console.log(obj);
+              return { ...obj, id: ind + 1 };
+            })
+          );
         }
       })
       .catch((err) => console.log(err));

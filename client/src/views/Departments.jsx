@@ -84,6 +84,7 @@ function Departments() {
 
   // Function to handle edit
   const handleEdit = (i) => {
+    console.log(departments);
     // If edit mode is true setEdit will
     // set it to false and vice versa
     setEdit(!isEdit);
@@ -212,76 +213,83 @@ function Departments() {
             )}
           </div>
         </div>
+        {departments.length ? (
+          <Table>
+            <TableHeadSD rows={departments} />
 
-        <Table>
-          <TableHeadSD rows={departments} />
+            <TableBody>
+              {departments.map((row, i) => {
+                return !loggedIn.current ? (
+                  "Please login to view Departments list"
+                ) : localStorage.getItem("departmentPrivilegessettings") ===
+                    "true" && isEdit ? (
+                  <TableRow key={`row1${i}`}>
+                    <TableCell key={"inputVorname"} padding="none">
+                      <input
+                        value={row.abteilung}
+                        name="abteilung"
+                        onChange={(e) => handleInputChange(e, i)}
+                      />
+                    </TableCell>
 
-          <TableBody>
-            {departments.map((row, i) => {
-              return !loggedIn.current ? (
-                "Please login to view Departments list"
-              ) : localStorage.getItem("departmentPrivilegessettings") ===
-                  "true" && isEdit ? (
-                <TableRow key={`row1${i}`}>
-                  <TableCell key={"inputVorname"} padding="none">
-                    <input
-                      value={row.abteilung}
-                      name="abteilung"
-                      onChange={(e) => handleInputChange(e, i)}
-                    />
-                  </TableCell>
-
-                  <td>
-                    <Button className="mr10" onClick={() => handleConfirm(i)}>
-                      <DeleteOutlineIcon />
-                    </Button>
-                    {showConfirm && (
-                      <div>
-                        <Dialog
-                          open={showConfirm}
-                          onClose={handleNo}
-                          aria-labelledby="alert-dialog-title"
-                          aria-describedby="alert-dialog-description"
-                        >
-                          <DialogTitle i_d="alert-dialog-title">
-                            {"Confirm Delete"}
-                          </DialogTitle>
-                          <DialogContent>
-                            <DialogContentText i_d="alert-dialog-description">
-                              Are you sure to delete
-                            </DialogContentText>
-                          </DialogContent>
-                          <DialogActions>
-                            <Button
-                              onClick={() => handleRemoveClick(deleteRow)}
-                              color="primary"
-                              autoFocus
-                            >
-                              Yes
-                            </Button>
-                            <Button
-                              onClick={handleNo}
-                              color="primary"
-                              autoFocus
-                            >
-                              No
-                            </Button>
-                          </DialogActions>
-                        </Dialog>
-                      </div>
-                    )}
-                  </td>
-                </TableRow>
-              ) : (
-                <TableRow key={`row3${i}`}>
-                  <TableCell key={"viewOnlyVorname"} component="th" scope="row">
-                    {row.abteilung}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                    <td>
+                      <Button className="mr10" onClick={() => handleConfirm(i)}>
+                        <DeleteOutlineIcon />
+                      </Button>
+                      {showConfirm && (
+                        <div>
+                          <Dialog
+                            open={showConfirm}
+                            onClose={handleNo}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                          >
+                            <DialogTitle i_d="alert-dialog-title">
+                              {"Confirm Delete"}
+                            </DialogTitle>
+                            <DialogContent>
+                              <DialogContentText i_d="alert-dialog-description">
+                                Are you sure to delete
+                              </DialogContentText>
+                            </DialogContent>
+                            <DialogActions>
+                              <Button
+                                onClick={() => handleRemoveClick(deleteRow)}
+                                color="primary"
+                                autoFocus
+                              >
+                                Yes
+                              </Button>
+                              <Button
+                                onClick={handleNo}
+                                color="primary"
+                                autoFocus
+                              >
+                                No
+                              </Button>
+                            </DialogActions>
+                          </Dialog>
+                        </div>
+                      )}
+                    </td>
+                  </TableRow>
+                ) : (
+                  <TableRow key={`row3${i}`}>
+                    <TableCell
+                      key={"viewOnlyVorname"}
+                      component="th"
+                      scope="row"
+                    >
+                      {row.abteilung}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        ) : (
+          <div>Empty</div>
+        )}
       </div>
     </div>
   );
