@@ -9,11 +9,6 @@ const fileUpload = multer({
   preservePath: true,
 });
 
-router.post(
-  "/",
-
-  fileUpload.single("file"),
-  upload
-);
+router.post("/", fileUpload.single("file"), upload);
 
 export default router;

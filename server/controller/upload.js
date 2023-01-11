@@ -1,24 +1,40 @@
 import fs from "fs";
 import Employees from "../schema/Employees.js";
+import { verifyPriviliges } from "../utils/jwt.js";
 
 import { xlsxAndCsvToObj } from "../utils/xlsxAndCsvToObj.js";
 
 export const upload = async (req, res) => {
+  console.log(req.file.filename);
+  let privileges = await verifyPriviliges(req.body.token, res, "departments");
+  console.log(privileges);
+
+  if (!privileges.departmentprivileges && !privileges.employeePrivileges) {
+    console.log("something happened");
+    res.status(403).json({
+      msg: "Not permitted",
+    });
+  }
+
   try {
-    console.log("req.file", req.file);
     const fileName = `uploads/${Date.now()}${req.file.originalname}`;
 
     fs.rename(`csvuploads/${req.file.filename}`, fileName, function (err) {
       if (err) console.log("ERROR: " + err);
     });
     const json = await xlsxAndCsvToObj(fileName);
-    console.log(json);
+    saveToMongoAndAddUser(json, privileges.user);
   } catch {
     console.log("error");
   }
 };
 
-const controller = (json) => {
+const saveToMongoAndAddUser = async (json, user) => {
+  json = await json.map((employee) => {
+    return { ...employee, assignedBy: user };
+  });
+  console.log(json);
+
   Employees.insertMany(json)
     .then((value) => {
       console.log("Saved Successfully");
@@ -27,4 +43,3 @@ const controller = (json) => {
       console.log(error);
     });
 };
-
