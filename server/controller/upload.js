@@ -5,24 +5,6 @@ import { xlsxAndCsvToObj } from "../utils/xlsxAndCsvToObj.js";
 
 export const upload = async (req, res) => {
   try {
-    if (req.file) {
-      res.send({
-        status: true,
-        message: "File Uploaded!",
-      });
-    } else {
-      res.status(400).send({
-        status: false,
-        data: "File Not Found :(",
-      });
-    }
-  } catch (err) {
-    res.status(500).send(err);
-  }
-};
-
-export const fileEdit = async function (req, res, cb) {
-  try {
     console.log("req.file", req.file);
     const fileName = `uploads/${Date.now()}${req.file.originalname}`;
 
@@ -34,7 +16,6 @@ export const fileEdit = async function (req, res, cb) {
   } catch {
     console.log("error");
   }
-  return null;
 };
 
 const controller = (json) => {
@@ -46,3 +27,19 @@ const controller = (json) => {
       console.log(error);
     });
 };
+
+// try {
+//   if (req.file) {
+//     res.send({
+//       status: true,
+//       message: "File Uploaded!",
+//     });
+//   } else {
+//     res.status(400).send({
+//       status: false,
+//       data: "File Not Found :(",
+//     });
+//   }
+// } catch (err) {
+//   res.status(500).send(err);
+// }

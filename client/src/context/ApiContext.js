@@ -154,6 +154,7 @@ export const ApiContextProvider = (props) => {
         }
         if (request === "departments" || request === "departments/save") {
           console.log(updateMongoDepartment.current);
+
           setDepartments(
             resData.abteilung.map((obj, ind) => {
               console.log(obj);
