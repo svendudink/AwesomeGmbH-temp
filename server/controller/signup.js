@@ -33,8 +33,9 @@ export const signUp = async (req, res) => {
       password: hashedPw,
       departmentPrivileges: req.body.departmentPrivileges,
       employeePrivileges: req.body.employeePrivileges,
+      assignedDepartment: req.body.assignedDepartment,
     });
-    console.log(user);
+    console.log("seeandcheck", user);
     const createdUser = await user.save();
     console.log("whatis", createdUser);
   } catch {

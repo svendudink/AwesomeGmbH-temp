@@ -12,8 +12,7 @@ export const ApiContextProvider = (props) => {
     loginPassword: "",
     loginEmail: "",
     token: "",
-    department: "",
-    AssignedDepartment: "",
+    assignedDepartment: "",
   });
   const [departments, setDepartments] = useState([
     {
@@ -91,6 +90,7 @@ export const ApiContextProvider = (props) => {
         password: userData.password,
         departmentPrivileges: userData.departmentPrivileges,
         employeePrivileges: userData.employeePrivileges,
+        assignedDepartment: userData.assignedDepartment,
       };
     }
     if (request === "employeeList") {
@@ -153,15 +153,21 @@ export const ApiContextProvider = (props) => {
           if (resData.token) {
             localStorage.setItem("token", resData.token);
             localStorage.setItem(
+              "assignedDepartment",
+              resData.user.assignedDepartment
+            );
+            localStorage.setItem(
               "departmentPrivilegessettings",
               resData.user.departmentPrivileges
             );
+
             localStorage.setItem(
               "employeePrivilegessettings",
               resData.user.employeePrivileges
             );
             loggedIn.current = true;
             window.location.reload(false);
+            console.log(resData.user);
             setUserData({
               password: "",
               email: resData.user.email,
@@ -169,6 +175,7 @@ export const ApiContextProvider = (props) => {
               employeePrivileges: resData.user.employeePrivileges,
               loginPassword: "",
               loginEmail: resData.user.email,
+              assignedDepartment: resData.user.assignedDepartment,
             });
           }
         }

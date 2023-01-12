@@ -32,6 +32,7 @@ export default function ButtonAppBar() {
     localStorage.removeItem("token");
     localStorage.removeItem("departmentPrivilegessettings");
     localStorage.removeItem("employeePrivilegessettings");
+    localStorage.removeItem("assignedDepartment");
 
     loggedIn.current = false;
     setAppBarLoggedIn(false);

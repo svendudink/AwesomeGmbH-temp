@@ -68,12 +68,11 @@ export default function CreateUser() {
       Assign to department
       <select
         style={{ width: "100px" }}
-        id="AssignedDepartment"
+        id="assignedDepartment"
         name="Abteilung"
-        value={"Abteilung"}
         onChange={(e) => handleInputChange(e)}
       >
-        <option value={"none"}>{"none (View only)"}</option>;
+        <option value={""}>{"none (View only)"}</option>;
         {departments.map((option, i) => {
           return <option value={option.abteilung}>{option.abteilung}</option>;
         })}
