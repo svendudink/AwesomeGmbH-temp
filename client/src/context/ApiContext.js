@@ -27,42 +27,42 @@ export const ApiContextProvider = (props) => {
   const updateMongoDepartment = useRef([]);
   const originalEmployeeList = useRef([]);
 
+  const [rows, setRows] = useState([
+    {
+      _id: `TEMPID${Math.random()}`,
+      Vorname: "",
+      Nachname: "",
+      Strasse: "",
+      Nr: "",
+      PLZ: "",
+      Ort: "",
+      Land: "",
+      Position: "",
+      Abteilung: "",
+    },
+  ]);
   const Employeesempty = [
     {
-      id: 1,
-      Vorname: "Empty",
-      Nachname: "Empty",
-      Strasse: "Empty",
-      Nr: "Empty",
-      PLZ: "Empty",
-      Ort: "Empty",
-      Land: "Empty",
-      Position: "Empty",
-      Abteilung: "Empty",
+      _id: `TEMPID${rows.length + 1}`,
+      Vorname: "",
+      Nachname: "",
+      Strasse: "",
+      Nr: "",
+      PLZ: "",
+      Ort: "",
+      Land: "",
+      Position: "",
+      Abteilung: "",
     },
   ];
 
-  const [rows, setRows] = useState([
-    {
-      id: 1,
-      Vorname: "Loading",
-      Nachname: "Loading",
-      Strasse: "Loading",
-      Nr: "Loading",
-      PLZ: "Loading",
-      Ort: "Loading",
-      Land: "Loading",
-      Position: "Loading",
-      Abteilung: "Loading",
-    },
-  ]);
-  useEffect(() => {
-    setRows(
-      rows.map((obj, ind) => {
-        return { ...obj, id: ind + 1 };
-      })
-    );
-  }, []);
+  // useEffect(() => {
+  //   setRows(
+  //     rows.map((obj, ind) => {
+  //       return { ...obj, id: ind + 1 };
+  //     })
+  //   );
+  // }, []);
 
   const ApiCall = async (request) => {
     let route = "";
@@ -200,6 +200,7 @@ export const ApiContextProvider = (props) => {
         departments,
         setDepartments,
         updateMongoDepartment,
+        Employeesempty,
       }}
     >
       {props.children}
