@@ -7,7 +7,7 @@ export const departmentsSave = async (req, res) => {
   let privileges = await verifyPriviliges(req.body.token, res, "departments");
 
   if (privileges.departmentPrivileges) {
-    (async function () {
+    await (async function () {
       const markForDelete = await req.body.changeList.map((row) => {
         return row.delete ? row._id : null;
       });

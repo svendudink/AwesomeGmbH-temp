@@ -1,6 +1,6 @@
 import { TableCell, TableHead, TableRow } from "@material-ui/core";
 import { useContext } from "react";
-import uuid from "react-uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export default function TableCellSD(props) {
   const handleInputChange = (e, index) => {
@@ -25,7 +25,7 @@ export default function TableCellSD(props) {
   };
   if (props.type === "editable") {
     return (
-      <TableCell key={uuid} padding="none">
+      <TableCell padding="none">
         <input
           value={props.value}
           name={props.rowname}
@@ -36,22 +36,19 @@ export default function TableCellSD(props) {
   }
   if (props.type === "dropdown") {
     return (
-      <TableCell key={uuid} padding="none">
+      <TableCell padding="none">
         <select
-          key={uuid}
           style={{ width: "100px" }}
           name="Abteilung"
           value={props.row.city}
           onChange={(e) => handleInputChange(e, props.index)}
         >
-          <option key={uuid} value={props.row.Abteilung}>
+          <option value={props.row.Abteilung}>
             {props.row.Abteilung ? props.row.Abteilung : "Not assigned"}
           </option>
           {props.departments.map((option, i) => {
             return props.row.Abteilung !== option.abteilung ? (
-              <option key={uuid} value={option.abteilung}>
-                {option.abteilung}
-              </option>
+              <option value={option.abteilung}>{option.abteilung}</option>
             ) : (
               <></>
             );
@@ -62,11 +59,7 @@ export default function TableCellSD(props) {
   }
   if (props.type === "static") {
     return (
-      <TableCell
-        key={`static${props.index}${props.name}`}
-        component="th"
-        scope="row"
-      >
+      <TableCell component="th" scope="row">
         {props.value}
       </TableCell>
     );

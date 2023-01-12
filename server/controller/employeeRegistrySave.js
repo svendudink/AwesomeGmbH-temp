@@ -6,6 +6,7 @@ import { verifyPriviliges } from "../utils/jwt.js";
 
 export const employeeRegistrySave = async (req, res) => {
   let privileges = await verifyPriviliges(req.body.token, res, "departments");
+  console.log(privileges);
 
   if (privileges.departmentPrivileges) {
     (async function () {
@@ -13,13 +14,13 @@ export const employeeRegistrySave = async (req, res) => {
         return row.delete ? row._id : null;
       });
 
-      (async function () {
+      await (async function () {
         try {
           await Employees.deleteMany({ _id: markForDelete });
 
           for (const row of req.body.changeList) {
             if (!row.delete && row._id.substring(0, 4) !== "TEMP") {
-              console.log(row.Vorname);
+              console.log(privileges.user);
               const check = await Employees.updateOne(
                 { _id: row._id },
                 {
@@ -32,6 +33,7 @@ export const employeeRegistrySave = async (req, res) => {
                   Land: row.Land,
                   Position: row.Position,
                   Abteilung: row.Abteilung,
+                  assignedBy: row.Abteilung !== "" ? privileges.user : "",
                 }
               );
             }
@@ -56,6 +58,7 @@ export const employeeRegistrySave = async (req, res) => {
             Land: row.Land,
             Position: row.Position,
             Abteilung: row.Abteilung,
+            assignedBy: row.Abteilung !== "" ? privileges.user : "",
           });
           await employee.save();
         }

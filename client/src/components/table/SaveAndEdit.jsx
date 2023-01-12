@@ -9,12 +9,22 @@ export default function SaveAndEdit(props) {
   };
 
   const handleAdd = () => {
-    props.setRows([...props.rows, props.fields]);
-    props.setEdit(true);
+    if (props.rows.length === 1) {
+      const emptyCheck = Object.values(props.rows[0]).filter((el) => {
+        console.log(el);
+        return el !== "";
+      });
+      if (emptyCheck.length === 1) {
+        props.setEdit(true);
+      } else {
+        props.setRows([...props.rows, props.fields]);
+        props.setEdit(true);
+      }
+    } else {
+      props.setRows([...props.rows, props.fields]);
+      props.setEdit(true);
+    }
   };
-
-  console.log(props.fields);
-  console.log(props.rows);
 
   // Function to handle save
   const handleSave = async () => {

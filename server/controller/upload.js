@@ -31,7 +31,12 @@ export const upload = async (req, res) => {
 
 const saveToMongoAndAddUser = async (json, user) => {
   json = await json.map((employee) => {
-    return { ...employee, assignedBy: user };
+    console.log(employee.Abteilung);
+    return {
+      ...employee,
+      Abteilung: employee.Abteilung ? employee.Abteilung : "",
+      assignedBy: user,
+    };
   });
   console.log(json);
 

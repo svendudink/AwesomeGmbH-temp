@@ -1,14 +1,14 @@
 import { TableCell, TableHead, TableRow } from "@material-ui/core";
-import uuid from "react-uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export default function TableHeadSD(props) {
-  console.log(props);
+
   return (
-    <TableHead key={uuid}>
-      <TableRow key={uuid}>
+    <TableHead>
+      <TableRow>
         {Object.keys(props.rows[0]).map((element, i) => {
           return element !== "id" && element !== "__v" && element !== "_id" ? (
-            <TableCell key={uuid}>{element}</TableCell>
+            <TableCell>{element}</TableCell>
           ) : (
             <></>
           );
