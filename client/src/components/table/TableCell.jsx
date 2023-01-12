@@ -40,7 +40,7 @@ export default function TableCellSD(props) {
         <select
           style={{ width: "100px" }}
           name="Abteilung"
-          value={props.row.city}
+          value={props.row.Abteilung}
           onChange={(e) => handleInputChange(e, props.index)}
         >
           <option value={props.row.Abteilung}>

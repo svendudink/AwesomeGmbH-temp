@@ -18,7 +18,7 @@ export const ApiContextProvider = (props) => {
     {
       id: 1,
       _id: "TEMP8",
-      abteilung: "Loading",
+      abteilung: "",
     },
   ]);
 
@@ -39,7 +39,7 @@ export const ApiContextProvider = (props) => {
       Land: "",
       Position: "",
       Abteilung: "",
-      assignedBy: "Sven",
+      assignedBy: "",
     },
   ]);
   const Employeesempty = [
@@ -55,6 +55,13 @@ export const ApiContextProvider = (props) => {
       Position: "",
       Abteilung: "",
       assignedBy: "",
+    },
+  ];
+
+  const Departmentsempty = [
+    {
+      _id: `TEMPID${rows.length + 1}`,
+      abteilung: "",
     },
   ];
 
@@ -130,7 +137,7 @@ export const ApiContextProvider = (props) => {
             setRows(Employeesempty);
           } else {
             originalEmployeeList.current = resData;
-            console.log(resData.employees);
+
             setRows(
               resData.employees.map((obj, ind) => {
                 return { ...obj, id: ind + 1 };
@@ -165,13 +172,16 @@ export const ApiContextProvider = (props) => {
           }
         }
         if (request === "departments" || request === "departments/save") {
-          console.log(updateMongoDepartment.current);
-
-          setDepartments(
-            resData.abteilung.map((obj, ind) => {
-              return { ...obj, id: ind + 1 };
-            })
-          );
+          if (resData.abteilung.length === 0) {
+            setRows(Departmentsempty);
+          } else {
+            setDepartments(
+              resData.abteilung.map((obj, ind) => {
+                return { ...obj, id: ind + 1 };
+              })
+            );
+          }
+          updateMongoDepartment.current = [];
         }
       })
       .catch((err) => console.log(err));

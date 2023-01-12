@@ -1,12 +1,16 @@
 import fs from "fs";
 import Employees from "../schema/Employees.js";
+import Abteilung from "../schema/Departments.js";
 import { verifyPriviliges } from "../utils/jwt.js";
+import { departments } from "./departmentRegistry.js";
 
 import { xlsxAndCsvToObj } from "../utils/xlsxAndCsvToObj.js";
 
+let privileges = [];
+
 export const upload = async (req, res) => {
   console.log(req.file.filename);
-  let privileges = await verifyPriviliges(req.body.token, res, "departments");
+  privileges = await verifyPriviliges(req.body.token, res, "departments");
   console.log(privileges);
 
   if (!privileges.departmentPrivileges && !privileges.employeePrivileges) {
@@ -29,22 +33,89 @@ export const upload = async (req, res) => {
   }
 };
 
-const saveToMongoAndAddUser = async (json, user) => {
-  json = await json.map((employee) => {
-    console.log(employee.Abteilung);
-    return {
-      ...employee,
-      Abteilung: employee.Abteilung ? employee.Abteilung : "",
-      assignedBy: user,
-    };
-  });
-  console.log(json);
+// const checkPermissionLogic = async (department) => {
+//   const reqObj = { internal: true, data: "none" };
+//   const departmentArray = await departments(reqObj);
 
-  Employees.insertMany(json)
-    .then((value) => {
-      console.log("Saved Successfully");
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+//   const result = departmentArray.filter((dep) => {
+//     if (dep.abteilung === department) {
+//       return dep.abteilung;
+//     }
+//   });
+//   if (result.length) {
+//     console.log(result[0].abteilung);
+//     return result[0].abteilung;
+//   } else return "";
+// };
+
+const departmentReturn = async (department) => {
+  const reqObj = { internal: true, data: "none" };
+  const departmentArray = await departments(reqObj);
+
+  const result = departmentArray.map((dep) => {
+    return dep.abteilung;
+  });
+  return result;
+};
+
+const saveToMongoAndAddUser = async (json, user) => {
+  const departmentArray = await departmentReturn();
+  let newDepartments = [];
+
+  json = await json.map((employee) => {
+    if (!privileges.departmentPrivileges && privileges.employeePrivileges) {
+      console.log("nodep");
+      return {
+        ...employee,
+        Abteilung: departmentArray.includes(employee.Abteilung)
+          ? employee.Abteilung
+          : "",
+        assignedBy: user,
+      };
+    } else if (
+      privileges.departmentPrivileges &&
+      privileges.employeePrivileges
+    ) {
+      console.log("maxpriv");
+      if (
+        !departmentArray.includes(employee.Abteilung) &&
+        employee.Abteilung !== undefined
+      ) {
+        console.log(
+          "depaertmentArray",
+          departmentArray,
+          "employee.Abteilung",
+          employee.Abteilung
+        );
+        newDepartments = [...newDepartments, { abteilung: employee.Abteilung }];
+      }
+      return {
+        ...employee,
+        Abteilung: employee.Abteilung ? employee.Abteilung : "",
+        assignedBy: user,
+      };
+    }
+  });
+
+  if (privileges.departmentPrivileges) {
+    console.log(newDepartments);
+    Abteilung.insertMany(newDepartments)
+      .then((value) => {
+        console.log("Departments Saved Successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  if (privileges.employeePrivileges) {
+    console.log(json);
+    Employees.insertMany(json)
+      .then((value) => {
+        console.log("Employees Saved Successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 };

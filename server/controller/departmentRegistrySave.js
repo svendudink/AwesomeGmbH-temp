@@ -24,6 +24,7 @@ export const departmentsSave = async (req, res) => {
         }
       }
       //create new mongoDB
+      console.log(req.body.changeList);
       for (const row of req.body.changeList) {
         if (row._id.substring(0, 4) === "TEMP") {
           const department = new Abteilung({
