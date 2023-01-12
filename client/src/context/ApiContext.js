@@ -13,6 +13,7 @@ export const ApiContextProvider = (props) => {
     loginEmail: "",
     token: "",
     department: "",
+    AssignedDepartment: "",
   });
   const [departments, setDepartments] = useState([
     {
