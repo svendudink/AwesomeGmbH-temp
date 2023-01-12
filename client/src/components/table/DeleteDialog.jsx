@@ -18,8 +18,13 @@ export default function DeleteDialog(props) {
   const handleRemoveClick = (i) => {
     console.log(i);
     const list = [...props.rows];
-    list.splice(i, 1);
-    props.setRows(list);
+    if (props.rows.length === 1) {
+      props.setRows([props.fields]);
+    } else {
+      list.splice(i, 1);
+      props.setRows(list);
+    }
+
     setShowConfirm(false);
     props.setDisable(false);
     //Logic for removing from mongoDB
@@ -37,7 +42,6 @@ export default function DeleteDialog(props) {
         { ...props.rows[i], delete: true },
       ];
     }
-    console.log(props.updateMongo.current);
   };
   const handleNo = () => {
     setShowConfirm(false);

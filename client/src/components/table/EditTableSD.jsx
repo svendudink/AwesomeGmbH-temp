@@ -5,7 +5,7 @@ import TableHeadSD from "./TableHead.jsx";
 import TableCellSD from "./TableCell.jsx";
 import DeleteDialog from "./DeleteDialog.jsx";
 import SaveAndEdit from "./SaveAndEdit.jsx";
-import uuid from "react-uuid";
+import { v4 as uuidv4 } from "uuid";
 
 export default function EditTableSD(props) {
   const [edit, setEdit] = useState(false);
@@ -25,19 +25,17 @@ export default function EditTableSD(props) {
         fields={props.fields}
       />
       <Table>
-        <TableHeadSD key={uuid} rows={props.rows} />
+        <TableHeadSD rows={props.rows} />
 
         <TableBody>
           {props.rows.map((row, i) => {
             return !props.loggedIn.current ? (
               "Please login to view employee list"
             ) : props.privilege === "true" && edit ? (
-              <TableRow key={uuid}>
+              <TableRow>
                 {Object.keys(row).map((cell) => {
-                  console.log(cell === "Abteilung");
                   return cell !== "id" && cell !== "__v" && cell !== "_id" ? (
                     <TableCellSD
-                      key={uuid}
                       updateMongo={props.updateMongo}
                       setRows={props.setRows}
                       rows={props.rows}
@@ -45,7 +43,13 @@ export default function EditTableSD(props) {
                       value={row[cell]}
                       rowname={cell}
                       index={i}
-                      type={cell === "Abteilung" ? "dropdown" : "editable"}
+                      type={
+                        cell === "assignedBy"
+                          ? "static"
+                          : cell === "Abteilung"
+                          ? "dropdown"
+                          : "editable"
+                      }
                       row={row}
                       departments={props.departments}
                     />
@@ -58,14 +62,15 @@ export default function EditTableSD(props) {
                   rows={props.rows}
                   updateMongo={props.updateMongo}
                   index={i}
+                  setDisable={setDisable}
+                  fields={props.fields}
                 />
               </TableRow>
             ) : (
-              <TableRow key={`${uuid}L${i}`}>
+              <TableRow>
                 {Object.keys(row).map((cell) => {
                   return cell !== "id" && cell !== "__v" && cell !== "_id" ? (
                     <TableCellSD
-                      key={uuid}
                       updateMongo={props.updateMongo}
                       setRows={props.setRows}
                       rows={props.rows}

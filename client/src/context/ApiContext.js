@@ -39,6 +39,7 @@ export const ApiContextProvider = (props) => {
       Land: "",
       Position: "",
       Abteilung: "",
+      assignedBy: "Sven",
     },
   ]);
   const Employeesempty = [
@@ -53,16 +54,9 @@ export const ApiContextProvider = (props) => {
       Land: "",
       Position: "",
       Abteilung: "",
+      assignedBy: "",
     },
   ];
-
-  // useEffect(() => {
-  //   setRows(
-  //     rows.map((obj, ind) => {
-  //       return { ...obj, id: ind + 1 };
-  //     })
-  //   );
-  // }, []);
 
   const ApiCall = async (request) => {
     let route = "";
@@ -136,17 +130,15 @@ export const ApiContextProvider = (props) => {
             setRows(Employeesempty);
           } else {
             originalEmployeeList.current = resData;
-            console.log(resData);
+            console.log(resData.employees);
             setRows(
               resData.employees.map((obj, ind) => {
-                console.log(obj);
                 return { ...obj, id: ind + 1 };
               })
             );
           }
           updateMongo.current = [];
         }
-        console.log(rows);
 
         if (request === "login") {
           console.log(resData.user);
@@ -177,7 +169,6 @@ export const ApiContextProvider = (props) => {
 
           setDepartments(
             resData.abteilung.map((obj, ind) => {
-              console.log(obj);
               return { ...obj, id: ind + 1 };
             })
           );
