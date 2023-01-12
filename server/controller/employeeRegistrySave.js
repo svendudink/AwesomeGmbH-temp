@@ -33,7 +33,7 @@ export const employeeRegistrySave = async (req, res) => {
                   Land: row.Land,
                   Position: row.Position,
                   Abteilung: row.Abteilung,
-                  assignedBy: row.Abteilung !== "" ? privileges.user : "",
+                  assignedBy: row.Abteilung ? privileges.user : "",
                 }
               );
             }
@@ -58,7 +58,7 @@ export const employeeRegistrySave = async (req, res) => {
             Land: row.Land,
             Position: row.Position,
             Abteilung: row.Abteilung,
-            assignedBy: row.Abteilung !== "" ? privileges.user : "",
+            assignedBy: row.Abteilung ? privileges.user : "",
           });
           await employee.save();
         }

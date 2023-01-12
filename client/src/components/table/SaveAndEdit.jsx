@@ -9,6 +9,7 @@ export default function SaveAndEdit(props) {
   };
 
   const handleAdd = () => {
+    console.log(props.rows.length);
     if (props.rows.length === 1) {
       const emptyCheck = Object.values(props.rows[0]).filter((el) => {
         console.log(el);
