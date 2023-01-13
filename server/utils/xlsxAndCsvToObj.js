@@ -12,21 +12,29 @@ export const xlsxAndCsvToObj = (path) => {
         xlsConvert(path);
         path = path.replace(".xlsx", ".csv");
       }
-      csvtojsonV2()
-        .fromFile(path)
-        .then((jsonObj) => {
-          resolve(jsonObj);
-        });
+      resolve(
+        csvtojsonV2()
+          .fromFile(path)
+          .then((jsonObj) => {
+            return jsonObj;
+          })
+      );
     } catch {
-      console.log("toJSONerror");
+      reject("something went wrong");
     }
   });
+};
+
+const XLStoObj = (path) => {
+  console.log("find error here", path);
+  return xlsx.parse(path);
 };
 
 const xlsConvert = (path) => {
   try {
     console.log("checkthispath", path);
-    let obj = xlsx.parse(path);
+    let obj = XLStoObj(path);
+
     let rows = [];
     let writeStr = "";
 
@@ -49,6 +57,6 @@ const xlsConvert = (path) => {
     });
     return null;
   } catch {
-    console.log("Failed to convert XLSX to CSV");
+    console.log("Failed");
   }
 };

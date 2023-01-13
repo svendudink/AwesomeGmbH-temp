@@ -24,6 +24,8 @@ export const upload = async (req, res) => {
     });
     const json = await xlsxAndCsvToObj(fileName);
     const counter = await saveToMongoAndAddUser(json, privileges.user);
+    deleteFile(fileName);
+    console.log("check");
     if (privileges.all) {
       res.status(200).send({
         msg: `Employees added: ${counter.employees}. Departments added: ${counter.departments}.`,
@@ -51,6 +53,28 @@ export const upload = async (req, res) => {
     }
   } catch {
     console.log("error");
+  }
+};
+
+// Deleting files after processing
+const deleteFile = (fileName) => {
+  console.log("seeee", fileName);
+  // delete a file
+  fs.unlink(`${fileName}`, (err) => {
+    if (err) {
+      console.log(err);
+      throw err;
+    }
+
+    console.log("file deleted");
+  });
+  if (fileName.includes("xlsx")) {
+    fs.unlink(`${fileName.replace("xlsx", "csv")}`, (err) => {
+      if (err) {
+        throw err;
+      }
+    });
+    console.log("second file deleted");
   }
 };
 

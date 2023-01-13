@@ -30,6 +30,7 @@ const verifyPriviliges = async (token, res, type) => {
         const user = await User.find({
           _id: decoded.sub,
         });
+        console.log(user);
         return {
           employeePrivileges: user[0].employeePrivileges,
           departmentPrivileges: user[0].departmentPrivileges,
