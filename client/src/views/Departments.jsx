@@ -27,6 +27,7 @@ function Departments() {
   return (
     <>
       <EditTableSD
+        src={"dep"}
         key={"HEADxcm"}
         privilege={localStorage.getItem("departmentPrivilegessettings")}
         setRows={setDepartments}
