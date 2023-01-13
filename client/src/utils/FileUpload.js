@@ -29,7 +29,14 @@ function FileUpload() {
 
   return (
     <form onSubmit={uploadFile}>
-      <input type="file" name="file" onChange={getFile} required />
+      <input
+        type="file"
+        accept=".xlsx,.csv"
+        name="file"
+        onChange={getFile}
+        required
+      />
+      Accepted files, .CSV and .XLSX
       <input type="submit" name="upload" value="Upload" />
     </form>
   );

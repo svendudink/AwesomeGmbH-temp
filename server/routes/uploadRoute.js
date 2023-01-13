@@ -6,7 +6,6 @@ const router = express.Router();
 
 const fileUpload = multer({
   dest: "csvuploads/",
-  preservePath: true,
 });
 
 router.post("/", fileUpload.single("file"), upload);
