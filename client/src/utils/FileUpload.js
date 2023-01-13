@@ -18,7 +18,8 @@ function FileUpload() {
       url: "http://localhost:8080/upload",
       data: data,
     }).then((res) => {
-      alert(res.msg);
+      console.log(res);
+      alert(res.data.msg);
     });
   };
 

@@ -72,7 +72,7 @@ export const employeeRegistrySave = async (req, res) => {
       }
       const employees = await Employees.find();
       res.status(200).json({
-        msg: "All employees",
+        msg: "Changes are saved",
         employees: employees,
       });
     })();

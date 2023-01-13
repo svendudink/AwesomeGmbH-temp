@@ -11,11 +11,7 @@ let privileges = [];
 export const upload = async (req, res) => {
   privileges = await verifyPriviliges(req.body.token, res, "departments");
 
-  if (
-    !privileges.departmentPrivileges &&
-    !privileges.employeePrivileges &&
-    !privileges.assignedDepartment
-  ) {
+  if (privileges.none) {
     console.log("something happened");
     res.json({ error: "You dont have permission to change rows" });
   }
@@ -27,7 +23,32 @@ export const upload = async (req, res) => {
       if (err) console.log("ERROR: " + err);
     });
     const json = await xlsxAndCsvToObj(fileName);
-    await saveToMongoAndAddUser(json, privileges.user);
+    const counter = await saveToMongoAndAddUser(json, privileges.user);
+    if (privileges.all) {
+      res.status(200).send({
+        msg: `Employees added: ${counter.employees}. Departments added: ${counter.departments}.`,
+      });
+    } else if (privileges.employeeOnly) {
+      res.status(200).send({
+        msg: `Employees added: ${counter.employees}.`,
+      });
+    } else if (privileges.departmentOnly) {
+      res.status(200).send({
+        msg: `Departments added: ${counter.departments}.`,
+      });
+    } else if (privileges.assignedDepartment) {
+      res.status(200).send({
+        msg: `Employees added: ${counter.employees}. ${
+          json.length !== counter.employees
+            ? `${
+                json.length - counter.employees
+              } entries where skipped since they do not belong to the ${
+                privileges.assignedDepartment
+              } department`
+            : ""
+        }`,
+      });
+    }
   } catch {
     console.log("error");
   }
@@ -51,7 +72,7 @@ const saveToMongoAndAddUser = async (json, user) => {
   //Return the different scenarios
   json = await json.map((employee) => {
     // user has employee privileges but no department privileges
-    if (!privileges.departmentPrivileges && privileges.employeePrivileges) {
+    if (privileges.employeeOnly) {
       return {
         ...employee,
         Abteilung: departmentArray.includes(employee.Abteilung)
@@ -60,10 +81,7 @@ const saveToMongoAndAddUser = async (json, user) => {
         assignedBy: user,
       };
       //user has all privileges
-    } else if (
-      (privileges.departmentPrivileges && privileges.employeePrivileges) ||
-      privileges.departmentPrivileges
-    ) {
+    } else if (privileges.all || privileges.departmentOnly) {
       console.log("dps");
       if (
         !departmentArray.includes(employee.Abteilung) &&
@@ -99,11 +117,13 @@ const saveToMongoAndAddUser = async (json, user) => {
     });
   })();
 
+  let counter = { departments: "", employees: "" };
+
   if (privileges.departmentPrivileges) {
-    console.log("befoireInswerting", newDepartments);
-    Abteilung.insertMany(newDepartments)
+    await Abteilung.insertMany(newDepartments)
       .then((value) => {
-        console.log("Departments Saved Successfully");
+        console.log("Departments Saved Successfully", value.length);
+        counter.departments = value.length;
       })
 
       .catch((error) => {
@@ -113,13 +133,15 @@ const saveToMongoAndAddUser = async (json, user) => {
 
   if (privileges.employeePrivileges || privileges.assignedDepartment) {
     console.log("before inserting employees", json);
-    Employees.insertMany(json)
+    await Employees.insertMany(json)
       .then((value) => {
-        console.log("Employees Saved Successfully");
+        console.log("Employees Saved Successfully", value.length);
+        counter.employees = value.length;
       })
 
       .catch((error) => {
         console.log(error);
       });
   }
+  return counter;
 };

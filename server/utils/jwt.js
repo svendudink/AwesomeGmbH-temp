@@ -35,6 +35,24 @@ const verifyPriviliges = async (token, res, type) => {
           departmentPrivileges: user[0].departmentPrivileges,
           assignedDepartment: user[0].assignedDepartment,
           user: user[0].email,
+          none:
+            !user[0].departmentPrivileges &&
+            !user[0].employeePrivileges &&
+            !user[0].assignedDepartment
+              ? true
+              : false,
+          all:
+            user[0].departmentPrivileges && user[0].employeePrivileges
+              ? true
+              : false,
+          employeeOnly:
+            !user[0].departmentPrivileges && user[0].employeePrivileges
+              ? true
+              : false,
+          departmentOnly:
+            !user[0].departmentPrivileges && user[0].departmentPrivileges
+              ? true
+              : false,
         };
       }
     );

@@ -38,7 +38,6 @@ export default function EmployeeList(props) {
 
   return (
     <>
-      <FileUpload />
       <EditTableSD
         privilege={localStorage.getItem("employeePrivilegessettings")}
         setRows={setRows}
