@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
+import { ApiContext } from "../context/ApiContext";
 
 function FileUpload() {
+  const { ApiCall } = useContext(ApiContext);
   const [fileData, setFileData] = useState("");
   const getFile = (e) => {
     setFileData(e.target.files[0]);
@@ -20,6 +22,8 @@ function FileUpload() {
     }).then((res) => {
       console.log(res);
       alert(res.data.msg);
+      ApiCall("employeeList");
+      ApiCall("departments");
     });
   };
 
