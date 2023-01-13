@@ -5,13 +5,10 @@ import TableHeadSD from "./TableHead.jsx";
 import TableCellSD from "./TableCell.jsx";
 import DeleteDialog from "./DeleteDialog.jsx";
 import SaveAndEdit from "./SaveAndEdit.jsx";
-import { v4 as uuidv4 } from "uuid";
 
 export default function EditTableSD(props) {
   const [edit, setEdit] = useState(false);
   const [disable, setDisable] = useState(true);
-
-  console.log(props.assignedDepartment);
 
   if (props.assignedDepartment) {
     props.fields["Abteilung"] = props.assignedDepartment;
@@ -82,7 +79,8 @@ export default function EditTableSD(props) {
                     <></>
                   );
                 })}
-                {row["Abteilung"] === props.assignedDepartment && (
+                {(row["Abteilung"] === props.assignedDepartment ||
+                  props.privilege === "true") && (
                   <DeleteDialog
                     setRows={props.setRows}
                     rows={props.rows}

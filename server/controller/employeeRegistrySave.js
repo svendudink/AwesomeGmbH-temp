@@ -8,8 +8,15 @@ export const employeeRegistrySave = async (req, res) => {
   let privileges = await verifyPriviliges(req.body.token, res, "departments");
   console.log(privileges);
 
-  if (privileges.departmentPrivileges) {
-    (async function () {
+  console.log("tstst", req.body.changeList);
+
+  if (privileges.departmentPrivileges || privileges.assignedDepartment) {
+    (function () {
+      req.body.changeList = req.body.changeList.filter((row) => {
+        return privileges.assignedDepartment === row.Abteilung;
+      });
+    })();
+    await (async function () {
       const markForDelete = await req.body.changeList.map((row) => {
         return row.delete ? row._id : null;
       });
