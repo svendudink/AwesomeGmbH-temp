@@ -5,7 +5,7 @@ import { upload } from "../controller/upload.js";
 const router = express.Router();
 
 const fileUpload = multer({
-  dest: "csvuploads/",
+  dest: "uploads/",
 });
 
 router.post("/", fileUpload.single("file"), upload);

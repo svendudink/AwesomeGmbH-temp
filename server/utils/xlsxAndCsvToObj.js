@@ -3,18 +3,20 @@ import xlsx from "node-xlsx";
 import csvtojsonV2 from "csvtojson";
 
 export const xlsxAndCsvToObj = (path) => {
+  console.log(path);
   return new Promise((resolve, reject) => {
     try {
       path = path.toLowerCase();
 
       if (("check", path.substr(path.length - 4) === "xlsx")) {
         let jsonObj = [];
-        xlsConvert(path);
+        console.log(path);
+        xlsConvert(`uploads/${path}`);
         path = path.replace(".xlsx", ".csv");
       }
       resolve(
         csvtojsonV2()
-          .fromFile(path)
+          .fromFile(`uploads/${path}`)
           .then((jsonObj) => {
             return jsonObj;
           })
