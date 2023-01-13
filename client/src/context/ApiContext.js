@@ -142,6 +142,7 @@ export const ApiContextProvider = (props) => {
           }
 
           if (request === "employeeList/save" || request === "employeeList") {
+            console.log("readched");
             if (resData.employees.length === 0) {
               setRows(Employeesempty);
             } else {
