@@ -33,6 +33,7 @@ export default function ButtonAppBar() {
     localStorage.removeItem("departmentPrivilegessettings");
     localStorage.removeItem("employeePrivilegessettings");
     localStorage.removeItem("assignedDepartment");
+    alert("You are logged out");
 
     loggedIn.current = false;
     setAppBarLoggedIn(false);

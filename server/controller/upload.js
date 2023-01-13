@@ -17,9 +17,7 @@ export const upload = async (req, res) => {
     !privileges.assignedDepartment
   ) {
     console.log("something happened");
-    res.status(403).json({
-      msg: "Not permitted",
-    });
+    res.json({ error: "You dont have permission to change rows" });
   }
 
   try {
@@ -29,7 +27,7 @@ export const upload = async (req, res) => {
       if (err) console.log("ERROR: " + err);
     });
     const json = await xlsxAndCsvToObj(fileName);
-    saveToMongoAndAddUser(json, privileges.user);
+    await saveToMongoAndAddUser(json, privileges.user);
   } catch {
     console.log("error");
   }

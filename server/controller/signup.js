@@ -8,7 +8,7 @@ export const signUp = async (req, res) => {
   try {
     console.log("incoming", req.body);
     if (!validator.isEmail(req.body.email)) {
-      res.status(555).json({ msg: "Email adress invalid" });
+      res.json({ error: "Email adress is invalid" });
       return;
     }
 
@@ -16,7 +16,7 @@ export const signUp = async (req, res) => {
       validator.isEmpty(req.body.password) ||
       !validator.isLength(req.body.password, { min: 4 })
     ) {
-      res.status(405).json({ msg: "Email adress invalid" });
+      res.json({ error: "Password is to short, use minimum 4 characters" });
       return;
     }
 
@@ -24,7 +24,9 @@ export const signUp = async (req, res) => {
       email: req.body.email,
     });
     if (existingUser) {
-      return res.status(409).json({ msg: "User exist allready" });
+      return res.json({
+        error: "User exists allready",
+      });
     }
     const hashedPw = await bcrypt.hash(req.body.password, 12);
     console.log(hashedPw, req.body.email);
@@ -35,7 +37,6 @@ export const signUp = async (req, res) => {
       employeePrivileges: req.body.employeePrivileges,
       assignedDepartment: req.body.assignedDepartment,
     });
-    console.log("seeandcheck", user);
     const createdUser = await user.save();
     console.log("whatis", createdUser);
   } catch {

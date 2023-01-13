@@ -7,7 +7,6 @@ export const departments = async (req, res) => {
     return abteilung;
   } else {
     res.status(200).json({
-      msg: "All departments",
       abteilung: abteilung,
     });
   }

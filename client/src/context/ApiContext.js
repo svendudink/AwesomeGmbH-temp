@@ -6,6 +6,7 @@ export const ApiContextProvider = (props) => {
   console.log();
   const [userData, setUserData] = useState({
     password: "",
+    confirmPassword: "",
     email: "",
     departmentPrivileges: false,
     employeePrivileges: false,
@@ -133,66 +134,74 @@ export const ApiContextProvider = (props) => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        if (request === "employeeList/save" || request === "employeeList") {
-          if (resData.employees.length === 0) {
-            setRows(Employeesempty);
-          } else {
-            originalEmployeeList.current = resData;
-
-            setRows(
-              resData.employees.map((obj, ind) => {
-                return { ...obj, id: ind + 1 };
-              })
-            );
+        if (resData.error) {
+          errorhandler(resData.error);
+        } else {
+          if (resData.msg) {
+            alert(resData.msg);
           }
-          updateMongo.current = [];
-        }
 
-        if (request === "login") {
-          console.log(resData.user);
-          if (resData.token) {
-            localStorage.setItem("token", resData.token);
-            localStorage.setItem(
-              "assignedDepartment",
-              resData.user.assignedDepartment
-            );
-            localStorage.setItem(
-              "departmentPrivilegessettings",
-              resData.user.departmentPrivileges
-            );
+          if (request === "employeeList/save" || request === "employeeList") {
+            if (resData.employees.length === 0) {
+              setRows(Employeesempty);
+            } else {
+              originalEmployeeList.current = resData;
 
-            localStorage.setItem(
-              "employeePrivilegessettings",
-              resData.user.employeePrivileges
-            );
-            loggedIn.current = true;
-            window.location.reload(false);
+              setRows(
+                resData.employees.map((obj, ind) => {
+                  return { ...obj, id: ind + 1 };
+                })
+              );
+            }
+            updateMongo.current = [];
+          }
+
+          if (request === "login") {
             console.log(resData.user);
-            setUserData({
-              password: "",
-              email: resData.user.email,
-              departmentPrivileges: resData.user.departmentPrivileges,
-              employeePrivileges: resData.user.employeePrivileges,
-              loginPassword: "",
-              loginEmail: resData.user.email,
-              assignedDepartment: resData.user.assignedDepartment,
-            });
+            if (resData.token) {
+              localStorage.setItem("token", resData.token);
+              localStorage.setItem(
+                "assignedDepartment",
+                resData.user.assignedDepartment
+              );
+              localStorage.setItem(
+                "departmentPrivilegessettings",
+                resData.user.departmentPrivileges
+              );
+
+              localStorage.setItem(
+                "employeePrivilegessettings",
+                resData.user.employeePrivileges
+              );
+              loggedIn.current = true;
+              window.location.reload(false);
+              console.log(resData.user);
+              setUserData({
+                password: "",
+                email: resData.user.email,
+                departmentPrivileges: resData.user.departmentPrivileges,
+                employeePrivileges: resData.user.employeePrivileges,
+                loginPassword: "",
+                loginEmail: resData.user.email,
+                assignedDepartment: resData.user.assignedDepartment,
+              });
+            }
           }
-        }
-        if (request === "departments" || request === "departments/save") {
-          if (resData.abteilung.length === 0) {
-            setRows(Departmentsempty);
-          } else {
-            setDepartments(
-              resData.abteilung.map((obj, ind) => {
-                return { ...obj, id: ind + 1 };
-              })
-            );
+          if (request === "departments" || request === "departments/save") {
+            if (resData.abteilung.length === 0) {
+              setRows(Departmentsempty);
+            } else {
+              setDepartments(
+                resData.abteilung.map((obj, ind) => {
+                  return { ...obj, id: ind + 1 };
+                })
+              );
+            }
+            updateMongoDepartment.current = [];
           }
-          updateMongoDepartment.current = [];
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("chicken e", err));
   };
 
   return (
@@ -215,4 +224,8 @@ export const ApiContextProvider = (props) => {
       {props.children}
     </ApiContext.Provider>
   );
+};
+
+const errorhandler = (error) => {
+  alert(error);
 };
