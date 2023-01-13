@@ -3,6 +3,7 @@ import Employees from "../schema/Employees.js";
 import Abteilung from "../schema/Departments.js";
 import { verifyPriviliges } from "../utils/jwt.js";
 import { departments } from "./departmentRegistry.js";
+import path from "path";
 
 import { xlsxAndCsvToObj } from "../utils/xlsxAndCsvToObj.js";
 
@@ -17,11 +18,16 @@ export const upload = async (req, res) => {
   }
 
   try {
-    const fileName = `uploads/${Date.now()}${req.file.originalname}`;
+    const fileName = `${req.file.originalname}`;
 
-    fs.rename(`csvuploads/${req.file.filename}`, fileName, function (err) {
-      if (err) console.log("ERROR: " + err);
-    });
+    fs.rename(
+      `uploads/${req.file.filename}`,
+      `uploads/${fileName}`,
+      function (err) {
+        if (err) console.log("ERROR: " + err);
+      }
+    );
+
     const json = await xlsxAndCsvToObj(fileName);
     const counter = await saveToMongoAndAddUser(json, privileges.user);
     deleteFile(fileName);
@@ -52,30 +58,25 @@ export const upload = async (req, res) => {
       });
     }
   } catch {
-    console.log("error");
+    res.status(200).send({
+      error: `something went wrong`,
+    });
   }
 };
 
 // Deleting files after processing
 const deleteFile = (fileName) => {
   console.log("seeee", fileName);
-  // delete a file
-  fs.unlink(`${fileName}`, (err) => {
-    if (err) {
-      console.log(err);
-      throw err;
-    }
+  const directory = "uploads";
+  fs.readdir(directory, (err, files) => {
+    if (err) throw err;
 
-    console.log("file deleted");
+    for (const file of files) {
+      fs.unlink(path.join(directory, file), (err) => {
+        if (err) throw err;
+      });
+    }
   });
-  if (fileName.includes("xlsx")) {
-    fs.unlink(`${fileName.replace("xlsx", "csv")}`, (err) => {
-      if (err) {
-        throw err;
-      }
-    });
-    console.log("second file deleted");
-  }
 };
 
 // receives an array with departments and compares it with mongo, returns all new departments

@@ -10,7 +10,9 @@ function FileUpload() {
   };
 
   const uploadFile = async (e) => {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     const data = new FormData();
     data.append("file", fileData);
     data.append("token", localStorage.getItem("token"));
@@ -20,10 +22,16 @@ function FileUpload() {
       url: "http://localhost:8080/upload",
       data: data,
     }).then((res) => {
-      console.log(res);
-      alert(res.data.msg);
-      ApiCall("employeeList");
-      ApiCall("departments");
+      console.log();
+      if (res.data.error) {
+        console.log("really");
+        uploadFile();
+      } else {
+        console.log(res);
+        alert(res.data.msg);
+        ApiCall("employeeList");
+        ApiCall("departments");
+      }
     });
   };
 
