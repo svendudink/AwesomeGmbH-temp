@@ -5,7 +5,6 @@ export const employeeRegistry = async (req, res) => {
 
   const employees = await Employees.find();
   res.status(200).json({
-    msg: "All employees",
     employees: employees,
   });
 };

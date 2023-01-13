@@ -11,24 +11,25 @@ export const login = async (req, res, next) => {
     console.log(user);
     if (!user) {
       console.log("line");
-      res.status(401).json({ msg: "user not found" });
+      res.json({ error: "User not found" });
     } else {
       try {
         const verified = await verifyPassword(req.body.password, user.password);
         console.log("verified", verified);
         if (!verified) {
-          res.status(401).json({ msg: "wrong password" });
+          res.json({ error: "Wrong password" });
         } else {
           console.log("user singin", user);
           const token = issueToken(user._id);
           console.log("user singin2", user);
           res.status(200).json({
-            msg: "login worked",
+            msg: "you are logged in",
             user: {
               email: user.email,
               id: user._id,
               departmentPrivileges: user.departmentPrivileges,
               employeePrivileges: user.employeePrivileges,
+              assignedDepartment: user.assignedDepartment,
             },
             token,
           });

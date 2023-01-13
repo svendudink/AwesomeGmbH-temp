@@ -17,11 +17,8 @@ function FileUpload() {
       method: "POST",
       url: "http://localhost:8080/upload",
       data: data,
-      // headers: {
-      //   "Content-Type": "multipart/form-data",
-      // },
     }).then((res) => {
-      alert(res.data.message);
+      alert(res.msg);
     });
   };
 

@@ -9,15 +9,15 @@ import { xlsxAndCsvToObj } from "../utils/xlsxAndCsvToObj.js";
 let privileges = [];
 
 export const upload = async (req, res) => {
-  console.log(req.file.filename);
   privileges = await verifyPriviliges(req.body.token, res, "departments");
-  console.log(privileges);
 
-  if (!privileges.departmentPrivileges && !privileges.employeePrivileges) {
+  if (
+    !privileges.departmentPrivileges &&
+    !privileges.employeePrivileges &&
+    !privileges.assignedDepartment
+  ) {
     console.log("something happened");
-    res.status(403).json({
-      msg: "Not permitted",
-    });
+    res.json({ error: "You dont have permission to change rows" });
   }
 
   try {
@@ -27,27 +27,13 @@ export const upload = async (req, res) => {
       if (err) console.log("ERROR: " + err);
     });
     const json = await xlsxAndCsvToObj(fileName);
-    saveToMongoAndAddUser(json, privileges.user);
+    await saveToMongoAndAddUser(json, privileges.user);
   } catch {
     console.log("error");
   }
 };
 
-// const checkPermissionLogic = async (department) => {
-//   const reqObj = { internal: true, data: "none" };
-//   const departmentArray = await departments(reqObj);
-
-//   const result = departmentArray.filter((dep) => {
-//     if (dep.abteilung === department) {
-//       return dep.abteilung;
-//     }
-//   });
-//   if (result.length) {
-//     console.log(result[0].abteilung);
-//     return result[0].abteilung;
-//   } else return "";
-// };
-
+// receives an array with departments and compares it with mongo, returns all new departments
 const departmentReturn = async (department) => {
   const reqObj = { internal: true, data: "none" };
   const departmentArray = await departments(reqObj);
@@ -62,9 +48,10 @@ const saveToMongoAndAddUser = async (json, user) => {
   const departmentArray = await departmentReturn();
   let newDepartments = [];
 
+  //Return the different scenarios
   json = await json.map((employee) => {
+    // user has employee privileges but no department privileges
     if (!privileges.departmentPrivileges && privileges.employeePrivileges) {
-      console.log("nodep");
       return {
         ...employee,
         Abteilung: departmentArray.includes(employee.Abteilung)
@@ -72,48 +59,65 @@ const saveToMongoAndAddUser = async (json, user) => {
           : "",
         assignedBy: user,
       };
+      //user has all privileges
     } else if (
-      privileges.departmentPrivileges &&
-      privileges.employeePrivileges
+      (privileges.departmentPrivileges && privileges.employeePrivileges) ||
+      privileges.departmentPrivileges
     ) {
-      console.log("maxpriv");
+      console.log("dps");
       if (
         !departmentArray.includes(employee.Abteilung) &&
         employee.Abteilung !== undefined
       ) {
-        console.log(
-          "depaertmentArray",
-          departmentArray,
-          "employee.Abteilung",
-          employee.Abteilung
-        );
         newDepartments = [...newDepartments, { abteilung: employee.Abteilung }];
       }
+
       return {
         ...employee,
         Abteilung: employee.Abteilung ? employee.Abteilung : "",
         assignedBy: user,
       };
+      //user has privleges to import data from own department
+    } else if (privileges.assignedDepartment) {
+      return privileges.assignedDepartment === employee.Abteilung
+        ? {
+            ...employee,
+            Abteilung: departmentArray.includes(employee.Abteilung)
+              ? employee.Abteilung
+              : "",
+            assignedBy: user,
+          }
+        : "";
+
+      // user has Deparment privileges, but no employee privileges
     }
   });
+  //Cleanup after Mapping
+  (function () {
+    json = json.filter((e) => {
+      return e !== "" && e.abteilung !== "undefined";
+    });
+  })();
 
   if (privileges.departmentPrivileges) {
-    console.log(newDepartments);
+    console.log("befoireInswerting", newDepartments);
     Abteilung.insertMany(newDepartments)
       .then((value) => {
         console.log("Departments Saved Successfully");
       })
+
       .catch((error) => {
-        console.log(error);
+        console.log("this", error);
       });
   }
 
-  if (privileges.employeePrivileges) {
-    console.log(json);
+  if (privileges.employeePrivileges || privileges.assignedDepartment) {
+    console.log("before inserting employees", json);
     Employees.insertMany(json)
       .then((value) => {
         console.log("Employees Saved Successfully");
       })
+
       .catch((error) => {
         console.log(error);
       });

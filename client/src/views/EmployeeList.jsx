@@ -5,8 +5,15 @@ import { ApiContext } from "../context/ApiContext";
 import { useContext } from "react";
 import EditTableSD from "../components/table/EditTableSD";
 export default function EmployeeList(props) {
-  const { ApiCall, rows, setRows, updateMongo, loggedIn, departments } =
-    useContext(ApiContext);
+  const {
+    ApiCall,
+    rows,
+    setRows,
+    updateMongo,
+    loggedIn,
+    departments,
+    userData,
+  } = useContext(ApiContext);
 
   useEffect(() => {
     ApiCall("employeeList");
@@ -36,6 +43,7 @@ export default function EmployeeList(props) {
         privilege={localStorage.getItem("employeePrivilegessettings")}
         setRows={setRows}
         rows={rows}
+        assignedDepartment={localStorage.getItem("assignedDepartment")}
         apiCall={() => ApiCall("employeeList/save")}
         fields={fields}
         updateMongo={updateMongo}

@@ -40,6 +40,16 @@ export default function CreateUser() {
     }
   };
 
+  const registerHandler = () => {
+    if (userData.password === userData.confirmPassword) {
+      ApiCall("signup");
+    } else if (userData.password.length < 4) {
+      alert("Password is to short");
+    } else {
+      alert("Passwords do not match");
+    }
+  };
+
   return (
     <div style={{ paddingTop: "20px" }}>
       {" "}
@@ -58,7 +68,7 @@ export default function CreateUser() {
         onChange={textInputHandler}
       />
       <TextField
-        id="password"
+        id="confirmPassword"
         label=" Confirm Password"
         type="password"
         autoComplete="current-password"
@@ -68,12 +78,11 @@ export default function CreateUser() {
       Assign to department
       <select
         style={{ width: "100px" }}
-        id="AssignedDepartment"
+        id="assignedDepartment"
         name="Abteilung"
-        value={"Abteilung"}
         onChange={(e) => handleInputChange(e)}
       >
-        <option value={"none"}>{"none (View only)"}</option>;
+        <option value={""}>{"none (View only)"}</option>;
         {departments.map((option, i) => {
           return <option value={option.abteilung}>{option.abteilung}</option>;
         })}
@@ -82,7 +91,7 @@ export default function CreateUser() {
       <Checkbox id="departmentPrivileges" onChange={checkBoxHandler} />
       Request employee modification privileges{" "}
       <Checkbox id="employeePrivileges" onChange={checkBoxHandler} />
-      <button onClick={() => ApiCall("signup")}>Register</button>
+      <button onClick={registerHandler}>Register</button>
     </div>
   );
 }

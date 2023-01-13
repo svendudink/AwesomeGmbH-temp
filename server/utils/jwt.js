@@ -33,6 +33,7 @@ const verifyPriviliges = async (token, res, type) => {
         return {
           employeePrivileges: user[0].employeePrivileges,
           departmentPrivileges: user[0].departmentPrivileges,
+          assignedDepartment: user[0].assignedDepartment,
           user: user[0].email,
         };
       }

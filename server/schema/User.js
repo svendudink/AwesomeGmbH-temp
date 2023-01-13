@@ -17,9 +17,9 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
-  AssignedDepartment: {
-    type: Boolean,
-    required: true,
+  assignedDepartment: {
+    type: String,
+    required: false,
   },
 });
 
