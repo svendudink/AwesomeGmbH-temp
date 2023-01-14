@@ -1,3 +1,8 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// Handling the removal of rows and gives a popup when file is deleted,
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+// imports
 import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -8,8 +13,10 @@ import { Button } from "@material-ui/core";
 import { useState } from "react";
 
 export default function DeleteDialog(props) {
+  //usestates
   const [deleteRow, setDeleteRow] = useState(0);
   const [showConfirm, setShowConfirm] = useState(false);
+
   const handleConfirm = (i) => {
     setDeleteRow(i);
     setShowConfirm(true);

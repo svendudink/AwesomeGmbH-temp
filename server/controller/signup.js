@@ -19,7 +19,7 @@ export const signUp = async (req, res) => {
       res.json({ error: "Password is to short, use minimum 4 characters" });
       return;
     }
-
+    // check if user allready exists
     const existingUser = await User.findOne({
       email: req.body.email,
     });

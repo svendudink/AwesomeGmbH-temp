@@ -5,22 +5,23 @@ import { verifyPriviliges } from "../utils/jwt.js";
 import { departments } from "./departmentRegistry.js";
 import path from "path";
 import { employeeRegistry } from "./employeeRegistry.js";
-
 import { xlsxAndCsvToObj } from "../utils/xlsxAndCsvToObj.js";
 
 let privileges = [];
+let counter = { departments: "", employees: "" };
 
 export const upload = async (req, res) => {
-  privileges = await verifyPriviliges(req.body.token, res, "departments");
+  privileges = await verifyPriviliges(req.body.token);
 
+  // No privileges, extra security layer but in general should not happen since allready filtered in React
   if (privileges.none) {
     console.log("something happened");
     res.json({ error: "You dont have permission to change rows" });
   }
 
   try {
+    // Change from Multer filename to original filename
     const fileName = `${req.file.originalname}`;
-
     fs.rename(
       `uploads/${req.file.filename}`,
       `uploads/${fileName}`,
@@ -28,11 +29,17 @@ export const upload = async (req, res) => {
         if (err) console.log("ERROR: " + err);
       }
     );
-
+    // Convertz XLSX and CSV into an object
     const json = await xlsxAndCsvToObj(fileName);
+
+    // Saves to mongo and gets back counter saying how many employees have been added
     const counter = await saveToMongoAndAddUser(json, privileges.user);
+    // Deletes file after being processed
     deleteFile(fileName);
-    console.log("check");
+
+    //return messages in different scenarios
+
+    // User with all privileges
     if (privileges.all) {
       res.status(200).send({
         msg: `Employees added: ${counter.employees}. Departments added: ${
@@ -45,11 +52,10 @@ export const upload = async (req, res) => {
             : ""
         }`,
       });
+      //user with privlegesd to modify employee fileds only
     } else if (privileges.employeeOnly) {
       res.status(200).send({
-        msg: `Employees added: ${counter.employees}. Departments added: ${
-          counter.departments
-        }.${
+        msg: `Employees added: ${counter.employees}.${
           json.length !== counter.employees
             ? ` ${
                 json.length - counter.employees
@@ -57,10 +63,12 @@ export const upload = async (req, res) => {
             : ""
         }`,
       });
+      // user with privleges to modify Depaertments only
     } else if (privileges.departmentOnly) {
       res.status(200).send({
         msg: `Departments added: ${counter.departments}.`,
       });
+      // user with privilege to add to one specific department
     } else if (privileges.assignedDepartment) {
       res.status(200).send({
         msg: `Employees added: ${counter.employees}. ${
@@ -74,6 +82,7 @@ export const upload = async (req, res) => {
         }`,
       });
     }
+    // return message if something went wrong
   } catch {
     res.status(200).send({
       error: `something went wrong`,
@@ -107,6 +116,8 @@ const departmentReturn = async (department) => {
   return result;
 };
 
+
+// save files to mongo 
 const saveToMongoAndAddUser = async (json, user) => {
   const departmentArray = await departmentReturn();
   let newDepartments = [];
@@ -148,8 +159,6 @@ const saveToMongoAndAddUser = async (json, user) => {
             assignedBy: user,
           }
         : "";
-
-      // user has Deparment privileges, but no employee privileges
     }
   });
   //Cleanup after Mapping
@@ -159,6 +168,7 @@ const saveToMongoAndAddUser = async (json, user) => {
     });
   })();
 
+  // Check if entries are unqiue, comparison does not include who it is assigned by
   const checkDoubleEntries = async (json) => {
     const reqObj = { internal: true, data: "none" };
     const employeeArray = await employeeRegistry(reqObj);
@@ -180,11 +190,9 @@ const saveToMongoAndAddUser = async (json, user) => {
     });
     return json;
   };
-
   json = await checkDoubleEntries(json);
 
-  let counter = { departments: "", employees: "" };
-
+  // Save new departments if user has privlieges to save departments
   if (privileges.departmentPrivileges) {
     await Abteilung.insertMany(newDepartments)
       .then((value) => {
@@ -197,6 +205,7 @@ const saveToMongoAndAddUser = async (json, user) => {
       });
   }
 
+  // save employees if user has privileges to save employees
   if (privileges.employeePrivileges || privileges.assignedDepartment) {
     console.log("before inserting employees", json);
     await Employees.insertMany(json)

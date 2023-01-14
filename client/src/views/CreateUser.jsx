@@ -1,16 +1,28 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////  
+ // Create a new user 
+ /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+
+// import
 import { TextField } from "@mui/material";
 import { ApiContext } from "../context/ApiContext";
 import { useContext, useState, useEffect } from "react";
 import Checkbox from "@mui/material/Checkbox";
+import keyGen from "../utils/keyGen.js";
+
+
 
 export default function CreateUser() {
+
+
+
+  const [departmentMod, setDepartmentMod] = useState(false);
   const { ApiCall, userData, setUserData, departments } =
     useContext(ApiContext);
   useEffect(() => {
     ApiCall("departments");
   }, []);
 
-  const [departmentMod, setDepartmentMod] = useState(false);
 
   const textInputHandler = (e) => {
     setUserData({ ...userData, [e.target.id]: e.target.value });
@@ -28,6 +40,7 @@ export default function CreateUser() {
         setDepartmentMod(true);
       }
     }
+  
     if (
       e.target.id === "departmentPrivileges" ||
       e.target.id === "employeePrivileges"
@@ -79,9 +92,16 @@ export default function CreateUser() {
         name="Abteilung"
         onChange={(e) => handleInputChange(e)}
       >
-        <option value={""}>{"none (View only)"}</option>;
+        <option key={keyGen} value={""}>
+          {"none (View only)"}
+        </option>
+        ;
         {departments.map((option, i) => {
-          return <option value={option.abteilung}>{option.abteilung}</option>;
+          return (
+            <option key={keyGen} value={option.abteilung}>
+              {option.abteilung}
+            </option>
+          );
         })}
       </select>
       Request all department modification privleges

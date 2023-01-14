@@ -1,7 +1,14 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+//issue the token and verify different privlege scenarios
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+// Imports
 import jsonwebtoken from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import User from "../schema/User.js";
 dotenv.config();
+
+// issue a token
 const issueToken = (userID) => {
   const expiresIn = "30d";
   const payload = {
@@ -14,7 +21,8 @@ const issueToken = (userID) => {
   return jwt;
 };
 
-const verifyPriviliges = async (token, res, type) => {
+// verify privlieges and return an object with combinations of privileges
+const verifyPriviliges = async (token) => {
   if (!token) {
     console.log("no token");
     return false;

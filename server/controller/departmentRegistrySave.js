@@ -9,12 +9,12 @@ export const departmentsSave = async (req, res) => {
   let privileges = await verifyPriviliges(req.body.token, res, "departments");
   if (privileges.departmentPrivileges) {
     await (async function () {
-      // delete from MongoDB
+      // delete all marked for delete from MongoDB
       const markForDelete = await req.body.changeList.map((row) => {
         return row.delete ? row._id : null;
       });
       await Abteilung.deleteMany({ _id: markForDelete });
-      //Update for MongoDB
+      //Update Department into MongoDB Departments,
       for (const row of req.body.changeList) {
         let originalname;
         if (!row.delete && row._id.substring(0, 4) !== "TEMP") {
@@ -27,7 +27,7 @@ export const departmentsSave = async (req, res) => {
             }
           );
         }
-
+        //Change updated department name with assigned employees
         if (originalname) {
           await Employees.updateMany(
             {
@@ -37,6 +37,7 @@ export const departmentsSave = async (req, res) => {
               Abteilung: row.abteilung,
             }
           );
+          // Change updated departments with assigned Users
           await User.updateMany(
             {
               assignedDepartment: originalname[0].abteilung,
@@ -57,6 +58,8 @@ export const departmentsSave = async (req, res) => {
           await department.save();
         }
       }
+
+      // Returns all departments back to front End
       const abteilung = await Abteilung.find();
       res.status(200).json({
         msg: "Changes are saved",
@@ -64,6 +67,7 @@ export const departmentsSave = async (req, res) => {
       });
     })();
   } else {
+    // No Permission
     res.status(403).json({ msg: "permission denied" });
   }
 };

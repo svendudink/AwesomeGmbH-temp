@@ -5,8 +5,8 @@ import User from "../schema/User.js";
 import { verifyPriviliges } from "../utils/jwt.js";
 
 export const employeeRegistrySave = async (req, res) => {
-  let privileges = await verifyPriviliges(req.body.token, res, "departments");
-  console.log(privileges);
+  //Check for privileges
+  let privileges = await verifyPriviliges(req.body.token);
 
   if (privileges.assignedDepartment) {
     (function () {
@@ -18,6 +18,7 @@ export const employeeRegistrySave = async (req, res) => {
 
   console.log("validate", req.body.changeList);
   await (async function () {
+    // delete all marked for delete from MongoDB
     const markForDelete = await req.body.changeList.map((row) => {
       console.log("individualrow", row);
       return row.delete ? row._id : null;
@@ -25,6 +26,7 @@ export const employeeRegistrySave = async (req, res) => {
     console.log("marked", markForDelete);
     await Employees.deleteMany({ _id: markForDelete });
 
+    //Update MongoDB Employee List
     await (async function () {
       try {
         for (const row of req.body.changeList) {

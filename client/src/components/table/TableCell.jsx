@@ -1,19 +1,17 @@
-import { TableCell, TableHead, TableRow } from "@material-ui/core";
-import { useContext } from "react";
-import KeyGen from "../../utils/keyGen.js";
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// Individual cells
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+// import
+import { TableCell } from "@material-ui/core";
 
 export default function TableCellSD(props) {
   const handleInputChange = (e, index) => {
     props.setDisable(false);
-
     const { name, value } = e.target;
-
     const list = [...props.rows];
-
     list[index][name] = value;
-
     props.setRows(list);
-
     const temp = props.updateMongo.current.filter((row) => {
       return row._id === props.rows[index]._id;
     });
