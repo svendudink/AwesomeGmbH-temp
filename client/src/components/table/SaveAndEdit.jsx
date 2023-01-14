@@ -7,6 +7,7 @@ export default function SaveAndEdit(props) {
   const handleEdit = (i) => {
     props.setEdit(!props.edit);
   };
+  const [addFirstmode, setAddFirstMode] = useState(true);
 
   const handleAdd = () => {
     console.log(props.rows.length);
@@ -15,8 +16,9 @@ export default function SaveAndEdit(props) {
         console.log(el);
         return el !== "";
       });
-      if (emptyCheck.length === 1) {
+      if (emptyCheck.length === 1 && addFirstmode) {
         props.setEdit(true);
+        setAddFirstMode(false);
       } else {
         props.setRows([...props.rows, props.fields]);
         props.setEdit(true);

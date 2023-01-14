@@ -24,7 +24,6 @@
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
     "react-table": "^7.8.0",
-    "react-uuidv4": "^2.0.0",
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4"
   },

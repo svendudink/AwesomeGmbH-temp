@@ -23,6 +23,7 @@ function Departments() {
   };
 
   console.log(departments);
+  console.log(loggedIn);
 
   return (
     <>
