@@ -19,7 +19,6 @@
     "mongoose": "^6.8.2",
     "multer": "^1.4.5-lts.1",
     "node-xlsx": "^0.21.0",
-    "uuidv4": "^9.0.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {

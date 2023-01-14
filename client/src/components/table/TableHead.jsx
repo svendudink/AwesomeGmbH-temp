@@ -1,8 +1,6 @@
 import { TableCell, TableHead, TableRow } from "@material-ui/core";
-import { v4 as uuidv4 } from "uuid";
 
 export default function TableHeadSD(props) {
-
   return (
     <TableHead>
       <TableRow>

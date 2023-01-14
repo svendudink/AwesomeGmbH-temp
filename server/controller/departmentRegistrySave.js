@@ -28,22 +28,24 @@ export const departmentsSave = async (req, res) => {
           );
         }
 
-        await Employees.updateMany(
-          {
-            Abteilung: originalname[0].abteilung,
-          },
-          {
-            Abteilung: row.abteilung,
-          }
-        );
-        await User.updateMany(
-          {
-            assignedDepartment: originalname[0].abteilung,
-          },
-          {
-            assignedDepartment: row.abteilung,
-          }
-        );
+        if (originalname) {
+          await Employees.updateMany(
+            {
+              Abteilung: originalname[0].abteilung,
+            },
+            {
+              Abteilung: row.abteilung,
+            }
+          );
+          await User.updateMany(
+            {
+              assignedDepartment: originalname[0].abteilung,
+            },
+            {
+              assignedDepartment: row.abteilung,
+            }
+          );
+        }
       }
       //create new mongoDB
       console.log(req.body.changeList);
