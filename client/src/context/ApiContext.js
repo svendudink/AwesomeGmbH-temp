@@ -1,8 +1,10 @@
 import { createContext, useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router";
 
 export const ApiContext = createContext();
 
 export const ApiContextProvider = (props) => {
+  const location = useLocation();
   const [userData, setUserData] = useState({
     password: "",
     confirmPassword: "",
@@ -21,6 +23,7 @@ export const ApiContextProvider = (props) => {
       abteilung: "",
     },
   ]);
+  console.log(userData.token);
 
   const loggedIn = useRef(false);
   const updateMongo = useRef([]);
@@ -94,6 +97,12 @@ export const ApiContextProvider = (props) => {
         assignedDepartment: userData.assignedDepartment,
       };
     }
+    if (request === "verification") {
+      route = "http://localhost:8080/verification";
+      querys = {
+        token: location.pathname.split("/")[2],
+      };
+    }
     if (request === "employeeList") {
       route = "http://localhost:8080/employeeList";
       querys = {
@@ -132,7 +141,10 @@ export const ApiContextProvider = (props) => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        if (resData.error) {
+        console.log(resData);
+        if (resData.verification) {
+          window.close();
+        } else if (resData.error) {
           errorhandler(resData.error);
         } else {
           if (resData.msg) {
@@ -155,7 +167,11 @@ export const ApiContextProvider = (props) => {
           }
 
           if (request === "login") {
-            if (resData.token) {
+            if (resData.user.disabled) {
+              alert(
+                "Account is not yet approved by your system administrator, this can take up to 24 hours"
+              );
+            } else if (resData.token) {
               localStorage.setItem("token", resData.token);
               localStorage.setItem(
                 "assignedDepartment",
@@ -172,7 +188,12 @@ export const ApiContextProvider = (props) => {
               );
               loggedIn.current = true;
               window.location.reload(false);
+              alert("your are logged in");
             }
+          }
+
+          if (request === "signup") {
+            console.log(resData);
           }
           if (request === "departments" || request === "departments/save") {
             if (resData.abteilung.length === 0) {

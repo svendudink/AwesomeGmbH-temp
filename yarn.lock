@@ -460,7 +460,7 @@
     "@aws-sdk/util-middleware" "3.226.0"
     "@aws-sdk/util-retry" "3.229.0"
     tslib "^2.3.1"
-  
+    uuid "^8.3.2"
 
 "@aws-sdk/middleware-sdk-sts@3.226.0":
   version "3.226.0"
@@ -8154,6 +8154,11 @@ node-xlsx@^0.21.0:
   dependencies:
     xlsx "^0.17.4"
 
+nodemailer@^6.9.0:
+  version "6.9.0"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.9.0.tgz#a17488ff470ff9edf1bb31d9ec23079bc94f7dd3"
+  integrity sha512-jFaCEGTeT3E/m/5R2MHWiyQH3pSARECRUDM+1hokOYc3lQAAG7ASuy+2jIsYVf+RVa9zePopSQwKNVFH8DKUpA==
+
 nodemon@^2.0.20:
   version "2.0.20"
   resolved "https://registry.npmjs.org/nodemon/-/nodemon-2.0.20.tgz"
@@ -9438,8 +9443,6 @@ react-transition-group@^4.4.0, react-transition-group@^4.4.5:
     loose-envify "^1.4.0"
     prop-types "^15.6.2"
 
-
-
 react@^18.2.0:
   version "18.2.0"
   resolved "https://registry.npmjs.org/react/-/react-18.2.0.tgz"
@@ -9993,6 +9996,7 @@ sockjs@^0.3.24:
   integrity sha512-GJgLTZ7vYb/JtPSSZ10hsOYIvEYsjbNU+zPdIHcUaWVNUEPivzxku31865sSSud0Da0W4lEeOPlmw93zLQchuQ==
   dependencies:
     faye-websocket "^0.11.3"
+    uuid "^8.3.2"
     websocket-driver "^0.7.4"
 
 socks@^2.7.1:
@@ -10791,8 +10795,6 @@ utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz"
   integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==
-
-
 
 v8-to-istanbul@^8.1.0:
   version "8.1.1"

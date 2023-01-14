@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import validator from "validator";
 import User from "../schema/User.js";
 import bcrypt from "bcrypt";
+import { mailSender } from "./verificationMail.js";
 
 export const signUp = async (req, res) => {
   try {
@@ -36,9 +37,15 @@ export const signUp = async (req, res) => {
       departmentPrivileges: req.body.departmentPrivileges,
       employeePrivileges: req.body.employeePrivileges,
       assignedDepartment: req.body.assignedDepartment,
+      disabled: true,
     });
     const createdUser = await user.save();
+    mailSender(req, "signup");
+    mailSender(req, "admin");
     console.log("whatis", createdUser);
+    res.status(200).json({
+      msg: "your account has been created, Your account still needs to be approved by a supervisor ((For demonstration purposes you will also receive the administrator email))",
+    });
   } catch {
     console.log("unknown error");
   }

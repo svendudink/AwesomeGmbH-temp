@@ -56,8 +56,6 @@ export const employeeRegistrySave = async (req, res) => {
 
     //create new mongoDB
     for (const row of req.body.changeList) {
-      console.log("row from employeereg", row);
-
       if (row._id.substring(0, 4) === "TEMP") {
         const employee = new Employees({
           Vorname: row.Vorname,
