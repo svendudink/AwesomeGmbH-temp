@@ -1,3 +1,4 @@
+import { useDebugValue } from "react";
 import User from "../schema/User.js";
 import { verifyPassword } from "../utils/bcrypt.js";
 import { issueToken } from "../utils/jwt.js";
@@ -23,13 +24,13 @@ export const login = async (req, res, next) => {
         } else {
           const token = issueToken(user._id);
           res.status(200).json({
-            msg: "you are logged in",
             user: {
               email: user.email,
               id: user._id,
               departmentPrivileges: user.departmentPrivileges,
               employeePrivileges: user.employeePrivileges,
               assignedDepartment: user.assignedDepartment,
+              disabled: user.disabled,
             },
             token,
           });

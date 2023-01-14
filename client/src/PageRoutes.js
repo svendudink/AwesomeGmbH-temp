@@ -2,6 +2,7 @@ import Login from "./views/Login.jsx";
 import EmployeeList from "./views/EmployeeList.jsx";
 import CreateUser from "./views/CreateUser.jsx";
 import Departments from "./views/Departments.jsx";
+import Verification from "./views/Verification.jsx";
 import { Route, Routes } from "react-router-dom";
 import { ApiContext } from "./context/ApiContext.js";
 import { useContext } from "react";
@@ -24,6 +25,7 @@ function PageRoutes() {
         element={loggedIn.current ? <Departments /> : <Login />}
       />
       <Route path="*" element={<Login />} />
+      <Route path="/verification/:token/" element={<Verification />} />
     </Routes>
   );
 }

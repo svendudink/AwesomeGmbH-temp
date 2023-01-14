@@ -9,16 +9,31 @@ import User from "../schema/User.js";
 dotenv.config();
 
 // issue a token
-const issueToken = (userID) => {
+const issueToken = (message) => {
   const expiresIn = "30d";
   const payload = {
-    sub: userID,
+    sub: message,
   };
 
   const jwt = jsonwebtoken.sign(payload, process.env.SECRET_JWT_KEY, {
     expiresIn,
   });
   return jwt;
+};
+
+const decodeToken = async (token) => {
+  let secret = "";
+  jsonwebtoken.verify(
+    token,
+    process.env.SECRET_JWT_KEY,
+    async function (err, decoded) {
+      if (err) {
+        return { error: "invalid signature" };
+      }
+      secret = decoded.sub;
+    }
+  );
+  return secret;
 };
 
 // verify privlieges and return an object with combinations of privileges
@@ -68,4 +83,4 @@ const verifyPriviliges = async (token) => {
   }
 };
 
-export { issueToken, verifyPriviliges };
+export { issueToken, verifyPriviliges, decodeToken };
