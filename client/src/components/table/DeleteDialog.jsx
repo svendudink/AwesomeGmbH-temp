@@ -16,7 +16,6 @@ export default function DeleteDialog(props) {
   };
 
   const handleRemoveClick = (i) => {
-    console.log(i);
     const list = [...props.rows];
     if (props.rows.length === 1) {
       props.setRows([props.fields]);
@@ -29,7 +28,6 @@ export default function DeleteDialog(props) {
     props.setDisable(false);
     //Logic for removing from mongoDB
     if (props.rows[i]._id.substring(0, 4) === "TEMP") {
-      console.log("check");
       props.updateMongo.current.splice(
         props.updateMongo.current.findIndex((row) => {
           return row._id === props.rows[i]._id;

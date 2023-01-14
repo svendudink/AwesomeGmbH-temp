@@ -14,7 +14,6 @@ export default function EditTableSD(props) {
   if (props.assignedDepartment) {
     props.fields["Abteilung"] = props.assignedDepartment;
   }
-  console.log(props.privilege);
 
   return (
     <div>
@@ -46,9 +45,6 @@ export default function EditTableSD(props) {
                 edit ? (
                 <TableRow>
                   {Object.keys(row).map((cell) => {
-                    // console.log(
-                    //   row["Abteilung"] === props.assignedDepartment ? row : ""
-                    // );
                     let cellType = "";
                     if (props.privilege === "true") {
                       if (cell === "assignedBy") {

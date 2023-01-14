@@ -1,17 +1,16 @@
 import { TableCell, TableHead, TableRow } from "@material-ui/core";
 import { useContext } from "react";
+import KeyGen from "../../utils/keyGen.js";
 
 export default function TableCellSD(props) {
   const handleInputChange = (e, index) => {
     props.setDisable(false);
-    console.log(e.target);
+
     const { name, value } = e.target;
-    console.log(name, value);
+
     const list = [...props.rows];
-    console.log(list, name, value);
+
     list[index][name] = value;
-    console.log(list[index][value]);
-    console.log(list[index]);
 
     props.setRows(list);
 

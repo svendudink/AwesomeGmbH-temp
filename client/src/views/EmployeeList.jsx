@@ -34,7 +34,7 @@ export default function EmployeeList(props) {
     assignedBy: "",
   };
 
-  console.log(rows);
+
 
   return (
     <>

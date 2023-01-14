@@ -9,16 +9,13 @@ export default function Login() {
   useEffect(() => {
     const token = getToken();
     if (token) {
-      console.log("logged in");
       loggedIn.current = true;
     } else {
-      console.log("not logged");
     }
   });
 
   const InputHandler = (e) => {
     setUserData({ ...userData, [e.target.id]: e.target.value });
-    console.log(userData);
   };
 
   return (

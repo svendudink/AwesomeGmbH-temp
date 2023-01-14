@@ -10,10 +10,8 @@ export default function SaveAndEdit(props) {
   const [addFirstmode, setAddFirstMode] = useState(true);
 
   const handleAdd = () => {
-    console.log(props.rows.length);
     if (props.rows.length === 1) {
       const emptyCheck = Object.values(props.rows[0]).filter((el) => {
-        console.log(el);
         return el !== "";
       });
       if (emptyCheck.length === 1 && addFirstmode) {
@@ -33,7 +31,7 @@ export default function SaveAndEdit(props) {
   const handleSave = async () => {
     props.setEdit(!props.edit);
     props.setRows(props.rows);
-    console.log("saved : ", props.rows);
+
     props.setDisable(true);
     props.apiCall();
   };
