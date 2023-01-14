@@ -4,6 +4,7 @@ import Abteilung from "../schema/Departments.js";
 import { verifyPriviliges } from "../utils/jwt.js";
 import { departments } from "./departmentRegistry.js";
 import path from "path";
+import { employeeRegistry } from "./employeeRegistry.js";
 
 import { xlsxAndCsvToObj } from "../utils/xlsxAndCsvToObj.js";
 
@@ -34,11 +35,27 @@ export const upload = async (req, res) => {
     console.log("check");
     if (privileges.all) {
       res.status(200).send({
-        msg: `Employees added: ${counter.employees}. Departments added: ${counter.departments}.`,
+        msg: `Employees added: ${counter.employees}. Departments added: ${
+          counter.departments
+        }.${
+          json.length !== counter.employees
+            ? ` ${
+                json.length - counter.employees
+              } entries where skipped, Identical entries are not added`
+            : ""
+        }`,
       });
     } else if (privileges.employeeOnly) {
       res.status(200).send({
-        msg: `Employees added: ${counter.employees}.`,
+        msg: `Employees added: ${counter.employees}. Departments added: ${
+          counter.departments
+        }.${
+          json.length !== counter.employees
+            ? ` ${
+                json.length - counter.employees
+              } entries where skipped, Identical entries are not added`
+            : ""
+        }`,
       });
     } else if (privileges.departmentOnly) {
       res.status(200).send({
@@ -50,9 +67,9 @@ export const upload = async (req, res) => {
           json.length !== counter.employees
             ? `${
                 json.length - counter.employees
-              } entries where skipped since they do not belong to the ${
+              } entries where skipped, they do not belong to the ${
                 privileges.assignedDepartment
-              } department`
+              } department or they where identical`
             : ""
         }`,
       });
@@ -141,6 +158,30 @@ const saveToMongoAndAddUser = async (json, user) => {
       return e !== "" && e.abteilung !== "undefined";
     });
   })();
+
+  const checkDoubleEntries = async (json) => {
+    const reqObj = { internal: true, data: "none" };
+    const employeeArray = await employeeRegistry(reqObj);
+    json = await json.filter((jsonE) => {
+      const same = employeeArray.filter((empE) => {
+        return (
+          empE.Vorname === jsonE.Vorname &&
+          empE.Nachname === jsonE.Nachname &&
+          empE.Strasse === jsonE.Strasse &&
+          empE.Nr === jsonE.Nr &&
+          empE.PLZ === jsonE.PLZ &&
+          empE.Ort === jsonE.Ort &&
+          empE.Land === jsonE.Land &&
+          empE.Abteilung === jsonE.Abteilung &&
+          empE.Position === jsonE.Position
+        );
+      });
+      return same.length === 0;
+    });
+    return json;
+  };
+
+  json = await checkDoubleEntries(json);
 
   let counter = { departments: "", employees: "" };
 
