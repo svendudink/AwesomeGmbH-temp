@@ -1,6 +1,8 @@
 import { useState, useContext } from "react";
 import axios from "axios";
 import { ApiContext } from "../context/ApiContext";
+import { Input } from "@mui/material";
+import FormControl from "@mui/material/FormControl";
 
 function FileUpload() {
   const { ApiCall } = useContext(ApiContext);
@@ -34,7 +36,7 @@ function FileUpload() {
 
   return (
     <form onSubmit={uploadFile}>
-      <input
+      <Input
         type="file"
         accept=".xlsx,.csv"
         name="file"
