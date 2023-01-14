@@ -7,9 +7,6 @@ import ButtonAppBar from "./components/ButtonAppBar.jsx";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import { ApiContextProvider } from "./context/ApiContext.js";
 
-
-
-
 function App() {
   return (
     <BrowserRouter>

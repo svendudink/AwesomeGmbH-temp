@@ -22,12 +22,9 @@ function FileUpload() {
       url: "http://localhost:8080/upload",
       data: data,
     }).then((res) => {
-      console.log();
       if (res.data.error) {
-        console.log("really");
         uploadFile();
       } else {
-        console.log(res);
         alert(res.data.msg);
         ApiCall("employeeList");
         ApiCall("departments");

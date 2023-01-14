@@ -14,12 +14,10 @@ export default function CreateUser() {
 
   const textInputHandler = (e) => {
     setUserData({ ...userData, [e.target.id]: e.target.value });
-    console.log(userData);
   };
 
   const handleInputChange = (e) => {
     setUserData({ ...userData, [e.target.id]: e.target.value });
-    console.log(userData);
   };
 
   const checkBoxHandler = (e) => {
@@ -36,7 +34,6 @@ export default function CreateUser() {
     ) {
       setUserData({ ...userData, [e.target.id]: e.target.checked });
     } else {
-      console.log(userData);
     }
   };
 

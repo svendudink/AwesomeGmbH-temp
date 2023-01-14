@@ -3,7 +3,6 @@ import { createContext, useState, useEffect, useRef } from "react";
 export const ApiContext = createContext();
 
 export const ApiContextProvider = (props) => {
-  console.log();
   const [userData, setUserData] = useState({
     password: "",
     confirmPassword: "",
@@ -69,6 +68,7 @@ export const ApiContextProvider = (props) => {
   const ApiCall = async (request) => {
     let route = "";
     let querys = {};
+
     if (request === "login") {
       route = "http://localhost:8080/login";
       querys = {
@@ -102,7 +102,6 @@ export const ApiContextProvider = (props) => {
       };
     }
     if (request === "employeeList/save") {
-      console.log(updateMongo.current);
       route = "http://localhost:8080/employeeList/save";
       querys = {
         changeList: updateMongo.current,
@@ -116,7 +115,6 @@ export const ApiContextProvider = (props) => {
       };
     }
     if (request === "departments/save") {
-      console.log(updateMongoDepartment.current);
       route = "http://localhost:8080/departments/save";
       querys = {
         changeList: updateMongoDepartment.current,
@@ -142,7 +140,6 @@ export const ApiContextProvider = (props) => {
           }
 
           if (request === "employeeList/save" || request === "employeeList") {
-            console.log("readched");
             if (resData.employees.length === 0) {
               setRows(Employeesempty);
             } else {
@@ -158,7 +155,6 @@ export const ApiContextProvider = (props) => {
           }
 
           if (request === "login") {
-            console.log(resData.user);
             if (resData.token) {
               localStorage.setItem("token", resData.token);
               localStorage.setItem(
@@ -176,16 +172,6 @@ export const ApiContextProvider = (props) => {
               );
               loggedIn.current = true;
               window.location.reload(false);
-              console.log(resData.user);
-              setUserData({
-                password: "",
-                email: resData.user.email,
-                departmentPrivileges: resData.user.departmentPrivileges,
-                employeePrivileges: resData.user.employeePrivileges,
-                loginPassword: "",
-                loginEmail: resData.user.email,
-                assignedDepartment: resData.user.assignedDepartment,
-              });
             }
           }
           if (request === "departments" || request === "departments/save") {

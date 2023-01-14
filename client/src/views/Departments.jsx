@@ -22,9 +22,6 @@ function Departments() {
     abteilung: "",
   };
 
-  console.log(departments);
-  console.log(loggedIn);
-
   return (
     <>
       <EditTableSD
