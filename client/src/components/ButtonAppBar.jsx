@@ -28,6 +28,8 @@ export default function ButtonAppBar() {
     }
   }, [loggedIn]);
 
+  console.log(loggedIn);
+
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("departmentPrivilegessettings");
@@ -70,12 +72,16 @@ export default function ButtonAppBar() {
           <Button onClick={() => navigate("/CreateUser")} color="inherit">
             Create Account
           </Button>
-          <Button onClick={() => navigate("/EmployeeList")} color="inherit">
-            Employee list
-          </Button>
-          <Button onClick={() => navigate("/Departments")} color="inherit">
-            Departments
-          </Button>
+          {loggedIn.current && (
+            <Button onClick={() => navigate("/EmployeeList")} color="inherit">
+              Employee list
+            </Button>
+          )}
+          {loggedIn.current && (
+            <Button onClick={() => navigate("/Departments")} color="inherit">
+              Departments
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

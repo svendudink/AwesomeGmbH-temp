@@ -22,7 +22,7 @@ export const ApiContextProvider = (props) => {
     },
   ]);
 
-  const loggedIn = useRef("");
+  const loggedIn = useRef(false);
   const updateMongo = useRef([]);
   const updateMongoDepartment = useRef([]);
   const originalEmployeeList = useRef([]);
