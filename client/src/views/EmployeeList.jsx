@@ -5,15 +5,8 @@ import { ApiContext } from "../context/ApiContext";
 import { useContext } from "react";
 import EditTableSD from "../components/table/EditTableSD";
 export default function EmployeeList(props) {
-  const {
-    ApiCall,
-    rows,
-    setRows,
-    updateMongo,
-    loggedIn,
-    departments,
-    userData,
-  } = useContext(ApiContext);
+  const { ApiCall, rows, setRows, updateMongo, loggedIn, departments } =
+    useContext(ApiContext);
 
   useEffect(() => {
     ApiCall("employeeList");
@@ -33,8 +26,6 @@ export default function EmployeeList(props) {
     Abteilung: "",
     assignedBy: "",
   };
-
-
 
   return (
     <>

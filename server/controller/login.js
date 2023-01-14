@@ -2,26 +2,26 @@ import User from "../schema/User.js";
 import { verifyPassword } from "../utils/bcrypt.js";
 import { issueToken } from "../utils/jwt.js";
 
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// Login
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
 export const login = async (req, res, next) => {
   try {
-    console.log("body", req.body.email, req.body.password);
     const user = await User.findOne({
       email: req.body.email,
     });
-    console.log(user);
+
     if (!user) {
-      console.log("line");
       res.json({ error: "User not found" });
     } else {
       try {
         const verified = await verifyPassword(req.body.password, user.password);
-        console.log("verified", verified);
+
         if (!verified) {
           res.json({ error: "Wrong password" });
         } else {
-          console.log("user singin", user);
           const token = issueToken(user._id);
-          console.log("user singin2", user);
           res.status(200).json({
             msg: "you are logged in",
             user: {
@@ -41,7 +41,7 @@ export const login = async (req, res, next) => {
   } catch (error) {
     res.status(500).json({
       error: error,
-      msg: "broken stuff",
+      msg: "something went wrong",
     });
   }
 };

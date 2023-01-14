@@ -1,13 +1,20 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////  
+ // Editable Table 
+ /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+
+// Imports
 import React, { useState } from "react";
 import { Table, TableBody, TableRow } from "@material-ui/core";
 import FileUpload from "../../utils/FileUpload.js";
-
 import TableHeadSD from "./TableHead.jsx";
 import TableCellSD from "./TableCell.jsx";
 import DeleteDialog from "./DeleteDialog.jsx";
 import SaveAndEdit from "./SaveAndEdit.jsx";
 
 export default function EditTableSD(props) {
+
+  // useStates
   const [edit, setEdit] = useState(false);
   const [disable, setDisable] = useState(true);
 

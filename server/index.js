@@ -1,3 +1,8 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// Entry file for basic paramters, routes and initial connect to mong
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+// Imports
 import express from "express";
 import signUpRoute from "./routes/signupRoute.js";
 import loginRoute from "./routes/loginRoute.js";
@@ -9,26 +14,16 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 
-/////////////////////////////////////Sven's//Coding/ Date: 05-01-2023 10:11 ////////////
-// Config Parameters
-/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
-const port = 8080;
-
-const corsOptions = {
-  origin: "http://localhost:3000",
-  credentials: true,
-};
-
-dotenv.config();
-
+// initial values
 const app = express();
+dotenv.config();
+app.use(cors());
 app.use(bodyParser.json());
 
-app.use(cors());
+// Config parameters
+const port = 8080;
 
-/////////////////////////////////////Sven's//Coding/ Date: 05-01-2023 09:57 ////////////
-// MongoDB Login
-/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+// Connect to mongo
 (async function () {
   try {
     await mongoose.connect(process.env.MONGO_URI);
@@ -38,9 +33,7 @@ app.use(cors());
   }
 })();
 
-/////////////////////////////////////Sven's//Coding/ Date: 05-01-2023 10:12 ////////////
-// Routes
-/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+// Different routes
 app.listen(port, () => {
   console.log(`server running on port: ${port}`);
 });
