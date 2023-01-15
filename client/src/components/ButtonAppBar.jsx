@@ -16,6 +16,7 @@ import { ListItem } from "@mui/material";
 import { ApiContext } from "../context/ApiContext";
 import { getToken } from "../Helpers/getToken";
 import { useState } from "react";
+import { visitForAll } from "../config/config";
 
 export default function ButtonAppBar() {
   const navigate = useNavigate();
@@ -55,7 +56,6 @@ export default function ButtonAppBar() {
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Awesome Company GmbH: Employee Registry.
-            <h1 style={{ textAlign: "center", fontSize: "1em" }}></h1>
           </Typography>
           {!appBarLoggedIn ? (
             <Button onClick={login} color="inherit">
@@ -69,12 +69,12 @@ export default function ButtonAppBar() {
           <Button onClick={() => navigate("/CreateUser")} color="inherit">
             Create Account
           </Button>
-          {loggedIn.current && (
+          {(loggedIn.current || visitForAll) && (
             <Button onClick={() => navigate("/EmployeeList")} color="inherit">
               Employee list
             </Button>
           )}
-          {loggedIn.current && (
+          {(loggedIn.current || visitForAll) && (
             <Button onClick={() => navigate("/Departments")} color="inherit">
               Departments
             </Button>
