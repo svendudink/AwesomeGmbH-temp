@@ -1,5 +1,3 @@
-import FileUpload from "../utils/FileUpload";
-
 import React, { useEffect } from "react";
 import { ApiContext } from "../context/ApiContext";
 import { useContext } from "react";
@@ -12,7 +10,8 @@ export default function EmployeeList(props) {
     updateMongo,
     loggedIn,
     departments,
-    privileges,employeeCount
+    privileges,
+    employeeCount,
   } = useContext(ApiContext);
 
   useEffect(() => {
@@ -37,7 +36,31 @@ export default function EmployeeList(props) {
   };
 
   return (
-    <>
+    <div
+      style={{
+        position: "obsolute",
+        textAlign: "center",
+        height: "auto",
+        width: "auto",
+        top: "0",
+        bottom: "0",
+        left: "0",
+        right: "0",
+        margin: "auto",
+        // top: "50%",
+        // left: "50%",
+        marginTop: "50px",
+        marginLeft: "40px",
+        marginRight: "40px",
+        // height: "600px",
+        // width: "200px",
+        paddingTop: "10px",
+        paddingLeft: "20px",
+        paddingReft: "20px",
+        border: "solid 3px #1976D2",
+        borderRadius: "10px",
+      }}
+    >
       <EditTableSD
         employeeCount={employeeCount}
         src={"emp"}
@@ -51,6 +74,6 @@ export default function EmployeeList(props) {
         loggedIn={loggedIn}
         departments={departments}
       />
-    </>
+    </div>
   );
 }

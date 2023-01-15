@@ -87,7 +87,7 @@ export const upload = async (req, res) => {
               ? `${
                   json.length - counter.employees
                 } entries where skipped, they do not belong to the ${
-                  privileges.assignedDepartment
+                  privileges.assignedDepartmentName
                 } department or they where identical`
               : ""
           }`,
@@ -164,7 +164,7 @@ const saveToMongoAndAddUser = async (json, user) => {
       };
       //user has privleges to import data from own department
     } else if (privileges.assignedDepartment) {
-      return privileges.assignedDepartment === employee.Abteilung
+      return privileges.assignedDepartmentName === employee.Abteilung
         ? {
             ...employee,
             Abteilung: departmentArray.includes(employee.Abteilung)

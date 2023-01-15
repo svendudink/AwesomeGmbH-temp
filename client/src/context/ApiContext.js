@@ -37,6 +37,7 @@ export const ApiContextProvider = (props) => {
   });
 
   const location = useLocation();
+  const [appBarLoggedIn, setAppBarLoggedIn] = useState();
   const [userData, setUserData] = useState({
     password: "",
     confirmPassword: "",
@@ -203,6 +204,17 @@ export const ApiContextProvider = (props) => {
           if (resData.msg) {
             alert(resData.msg);
           }
+          console.log(resData);
+          if (resData.tokenReset) {
+            console.log("check this out");
+            localStorage.removeItem("token");
+            localStorage.removeItem("departmentPrivilegessettings");
+            localStorage.removeItem("employeePrivilegessettings");
+            localStorage.removeItem("assignedDepartment");
+            loggedIn.current = false;
+            setAppBarLoggedIn(false);
+            window.location.reload(false);
+          }
 
           if (request === "employeeList/save" || request === "employeeList") {
             if (resData.employees.length === 0) {
@@ -287,6 +299,8 @@ export const ApiContextProvider = (props) => {
         privileges,
         employeeCount,
         employeeCounter,
+        appBarLoggedIn,
+        setAppBarLoggedIn,
       }}
     >
       {props.children}

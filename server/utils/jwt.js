@@ -21,6 +21,7 @@ const issueToken = (message) => {
   return jwt;
 };
 
+// decode token message
 const decodeToken = async (token) => {
   let secret = "";
   jsonwebtoken.verify(
@@ -53,12 +54,18 @@ const verifyPriviliges = async (token) => {
         const user = await User.find({
           _id: decoded.sub,
         });
-        console.log(user);
+        console.log(
+          "validateUser",
+          user,
+          "checkifValid",
+          user[0].assignedDepartment === true
+        );
         return {
           employeePrivileges: user[0].employeePrivileges,
           departmentPrivileges: user[0].departmentPrivileges,
-          assignedDepartment: user[0].assignedDepartment,
+          assignedDepartment: user[0].assignedDepartment === "" ? false : true,
           user: user[0].email,
+          assignedDepartmentName: user[0].assignedDepartment,
           none:
             !user[0].departmentPrivileges &&
             !user[0].employeePrivileges &&

@@ -1,21 +1,15 @@
-/////////////////////////////////////////Sven's//Coding////////////////////////////////  
- // Create a new user 
- /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// Create a new user
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
 
-
-// import
+// imports
 import { TextField } from "@mui/material";
 import { ApiContext } from "../context/ApiContext";
 import { useContext, useState, useEffect } from "react";
 import Checkbox from "@mui/material/Checkbox";
-import keyGen from "../utils/keyGen.js";
-
-
+import { Button } from "@mui/material";
 
 export default function CreateUser() {
-
-
-
   const [departmentMod, setDepartmentMod] = useState(false);
   const { ApiCall, userData, setUserData, departments } =
     useContext(ApiContext);
@@ -23,7 +17,7 @@ export default function CreateUser() {
     ApiCall("departments");
   }, []);
 
-
+  // Data input handlers
   const textInputHandler = (e) => {
     setUserData({ ...userData, [e.target.id]: e.target.value });
   };
@@ -40,7 +34,6 @@ export default function CreateUser() {
         setDepartmentMod(true);
       }
     }
-  
     if (
       e.target.id === "departmentPrivileges" ||
       e.target.id === "employeePrivileges"
@@ -60,55 +53,99 @@ export default function CreateUser() {
     }
   };
 
+  //JSX Code
+
   return (
-    <div style={{ paddingTop: "20px" }}>
-      {" "}
-      <TextField
-        id="email"
-        label="Company Email adress"
-        type="Email"
-        variant="filled"
-        onChange={textInputHandler}
-      />
-      <TextField
-        id="password"
-        label="Password"
-        type="password"
-        autoComplete="current-password"
-        onChange={textInputHandler}
-      />
-      <TextField
-        id="confirmPassword"
-        label=" Confirm Password"
-        type="password"
-        autoComplete="current-password"
-        variant="filled"
-        onChange={textInputHandler}
-      />{" "}
-      Assign to department
-      <select
-        style={{ width: "100px" }}
-        id="assignedDepartment"
-        name="Abteilung"
-        onChange={(e) => handleInputChange(e)}
-      >
-        <option key={keyGen} value={""}>
-          {"none (View only)"}
-        </option>
-        ;
-        {departments.map((option, i) => {
-          return (
-            <option key={keyGen} value={option.abteilung}>
-              {option.abteilung}
-            </option>
-          );
-        })}
-      </select>
-      Request all department modification privleges
-      <Checkbox id="departmentPrivileges" onChange={checkBoxHandler} />
-      Request employee modification privileges{" "}
-      <Checkbox id="employeePrivileges" onChange={checkBoxHandler} />
-      <button onClick={registerHandler}>Register</button>
+    <div
+      style={{
+        position: "obsolute",
+        textAlign: "center",
+        height: "650px",
+        width: "300px",
+        top: "0",
+        bottom: "0",
+        left: "0",
+        right: "0",
+        margin: "auto",
+        // top: "50%",
+        // left: "50%",
+        marginTop: "50px",
+        // marginLeft: "-100px",
+        // height: "600px",
+        // width: "200px",
+        paddingTop: "10px",
+        border: "solid 3px #1976D2",
+        borderRadius: "10px",
+      }}
+    >
+      <div style={{ paddingTop: "20px" }}>
+        {" "}
+        <TextField
+          id="email"
+          label="Company Email adress"
+          type="Email"
+          variant="filled"
+          onChange={textInputHandler}
+        />
+        <br />
+        <br />
+        <TextField
+          id="password"
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          onChange={textInputHandler}
+        />
+        <br />
+        <br />
+        <TextField
+          id="confirmPassword"
+          label=" Confirm Password"
+          type="password"
+          autoComplete="current-password"
+          variant="filled"
+          onChange={textInputHandler}
+        />{" "}
+        <br />
+        <br />
+        <br />
+        Assign to department
+        <select
+          style={{ width: "100px" }}
+          id="assignedDepartment"
+          name="Abteilung"
+          onChange={(e) => handleInputChange(e)}
+        >
+          <option key={`Number0`} value={""}>
+            {"(View only)"}
+          </option>
+          ;
+          {departments.map((option, i) => {
+            return (
+              <option key={`number${i}`} value={option.abteilung}>
+                {option.abteilung}
+              </option>
+            );
+          })}
+        </select>
+        <br />
+        <br />
+        <br />
+        Request privileges <br />
+        to edit delete and
+        <br /> modify departments
+        <Checkbox id="departmentPrivileges" onChange={checkBoxHandler} />
+        <br />
+        <br />
+        <br />
+        Request privileges to
+        <br />
+        edit delete and modify all employee entries{" "}
+        <Checkbox id="employeePrivileges" onChange={checkBoxHandler} />
+        <br />
+        <br />
+        <Button onClick={registerHandler}>Register</Button>
+      </div>
     </div>
   );
 }

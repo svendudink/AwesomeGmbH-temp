@@ -69,12 +69,7 @@ export default function EditTableSD(props) {
                         }
                       } else {
                         // Scenario where user has pribileges to modify its own department
-                        console.log(
-                          row["Abteilung"] ===
-                            props.privileges.current.assignedDepartment,
-                          row["Abteilung"],
-                          props.privileges.current.assignedDepartment
-                        );
+
                         if (
                           row["Abteilung"] ===
                           props.privileges.current.assignedDepartment
