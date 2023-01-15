@@ -15,15 +15,13 @@ import cors from "cors";
 import * as dotenv from "dotenv";
 import mongoose from "mongoose";
 import nodemailer from "nodemailer";
+import { serverPort } from "./config/config.js";
 
 // initial values
 const app = express();
 dotenv.config();
 app.use(cors());
 app.use(bodyParser.json());
-
-// Config parameters
-const port = 8080;
 
 // Connect to mongo
 (async function () {
@@ -58,8 +56,8 @@ transporter.verify((error, success) => {
 });
 
 // Different routes
-app.listen(port, () => {
-  console.log(`server running on port: ${port}`);
+app.listen(serverPort, () => {
+  console.log(`server running on port: ${serverPort}`);
 });
 app.use("/signup", signUpRoute);
 app.use("/login", loginRoute);
