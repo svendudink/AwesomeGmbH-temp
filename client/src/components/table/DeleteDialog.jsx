@@ -46,6 +46,7 @@ export default function DeleteDialog(props) {
         ...props.updateMongo.current,
         { ...props.rows[i], delete: true },
       ];
+      console.log(props.updateMongo.current);
     }
   };
   const handleNo = () => {

@@ -11,6 +11,7 @@ function Departments() {
     setDepartments,
     loggedIn,
     updateMongoDepartment,
+    privileges,
   } = useContext(ApiContext);
 
   useEffect(() => {
@@ -27,7 +28,7 @@ function Departments() {
       <EditTableSD
         src={"dep"}
         key={"HEADxcm"}
-        privilege={localStorage.getItem("departmentPrivilegessettings")}
+        privileges={privileges}
         setRows={setDepartments}
         rows={departments}
         apiCall={() => ApiCall("departments/save")}

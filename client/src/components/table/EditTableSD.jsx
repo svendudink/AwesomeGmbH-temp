@@ -1,20 +1,13 @@
-/////////////////////////////////////////Sven's//Coding////////////////////////////////  
- // Editable Table 
- /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
-
-
-// Imports
 import React, { useState } from "react";
 import { Table, TableBody, TableRow } from "@material-ui/core";
 import FileUpload from "../../utils/FileUpload.js";
+
 import TableHeadSD from "./TableHead.jsx";
 import TableCellSD from "./TableCell.jsx";
 import DeleteDialog from "./DeleteDialog.jsx";
 import SaveAndEdit from "./SaveAndEdit.jsx";
 
 export default function EditTableSD(props) {
-
-  // useStates
   const [edit, setEdit] = useState(false);
   const [disable, setDisable] = useState(true);
 
@@ -24,14 +17,16 @@ export default function EditTableSD(props) {
 
   return (
     <div>
-      {(props.privilege === "true" ||
-        (props.src === "dep" ? false : props.assignedDepartment)) && (
+      {(props.privileges.current.employeePrivileges ||
+        props.privileges.current.assignedDepartment ||
+        (props.src === "dep" &&
+          props.privileges.current.departmentPrivileges)) && (
         <>
           <FileUpload />
           <SaveAndEdit
             edit={edit}
             setEdit={setEdit}
-            privilege={props.privilege}
+            privileges={props.privileges}
             setRows={props.setRows}
             rows={props.rows}
             setDisable={setDisable}
@@ -41,59 +36,85 @@ export default function EditTableSD(props) {
           />
         </>
       )}
+
       <Table>
         <TableHeadSD rows={props.rows} />
-        {!props.loggedIn.current ? (
-          "Please login"
-        ) : (
-          <TableBody>
-            {props.rows.map((row, i) => {
-              return (props.privilege === "true" || props.assignedDepartment) &&
-                edit ? (
-                <TableRow>
-                  {Object.keys(row).map((cell) => {
+        <TableBody>
+          {props.rows.map((row, i) => {
+            return (
+              <TableRow key={`${row[i]}${i}Table`}>
+                {Object.entries(props.rows[0])
+                  .filter(
+                    (element) =>
+                      element[0] !== "_id" &&
+                      element[0] !== "__v" &&
+                      element[0] !== "id"
+                  )
+                  .map((cell, i) => {
                     let cellType = "";
-                    if (props.privilege === "true") {
-                      if (cell === "assignedBy") {
-                        cellType = "static";
-                      }
-                      if (cell === "Abteilung") {
-                        cellType = "dropdown";
-                      } else {
-                        cellType = "editable";
-                      }
+                    // Cellrules for Employeelist
+                    // console.log(row, cell, i);
+                    // Scenario where editing is disabled
+                    if (!edit) {
+                      cellType = "static";
                     } else {
-                      if (row["Abteilung"] === props.assignedDepartment) {
-                        if (cell === "Abteilung" || cell === "assignedBy") {
+                      // Scenario where user has all privileges
+                      if (props.privileges.current.employeePrivileges) {
+                        if (cell[0] === "Abteilung") {
+                          cellType = "dropdown";
+                        } else if (cell[0] === "assignedBy") {
                           cellType = "static";
                         } else {
                           cellType = "editable";
                         }
                       } else {
-                        cellType = "static";
+                        // Scenario where user has pribileges to modify its own department
+                        console.log(
+                          row["Abteilung"] ===
+                            props.privileges.current.assignedDepartment,
+                          row["Abteilung"],
+                          props.privileges.current.assignedDepartment
+                        );
+                        if (
+                          row["Abteilung"] ===
+                          props.privileges.current.assignedDepartment
+                        ) {
+                          if (cell[0] === "Abteilung") {
+                            cellType = "dropdown";
+                          } else if (cell[0] === "assignedBy") {
+                            cellType = "static";
+                          } else {
+                            cellType = "editable";
+                          }
+                        } else {
+                          cellType = "static";
+                        }
                       }
                     }
 
-                    return cell !== "id" && cell !== "__v" && cell !== "_id" ? (
+                    return (
                       <TableCellSD
+                        key={`${row[i]}${i}Cell`}
                         updateMongo={props.updateMongo}
                         setRows={props.setRows}
                         rows={props.rows}
                         setDisable={setDisable}
-                        value={row[cell]}
+                        value={row[cell[0]]}
                         rowname={cell}
                         index={i}
                         type={cellType}
                         row={row}
                         departments={props.departments}
                       />
-                    ) : (
-                      <></>
                     );
                   })}
-                  {(row["Abteilung"] === props.assignedDepartment ||
-                    props.privilege === "true") && (
+
+                {(row["Abteilung"] ===
+                  props.privileges.current.assignedDepartment ||
+                  props.privileges.current.employeePrivileges) &&
+                  edit && (
                     <DeleteDialog
+                      key={`${row[i]}${i}Bin`}
                       setRows={props.setRows}
                       rows={props.rows}
                       updateMongo={props.updateMongo}
@@ -102,32 +123,10 @@ export default function EditTableSD(props) {
                       fields={props.fields}
                     />
                   )}
-                </TableRow>
-              ) : (
-                <TableRow>
-                  {Object.keys(row).map((cell) => {
-                    return cell !== "id" && cell !== "__v" && cell !== "_id" ? (
-                      <TableCellSD
-                        updateMongo={props.updateMongo}
-                        setRows={props.setRows}
-                        rows={props.rows}
-                        setDisable={props.setDisable}
-                        value={row[cell]}
-                        rowname={props.cell}
-                        index={i}
-                        type={"static"}
-                        row={props.row}
-                        departments={props.departments}
-                      />
-                    ) : (
-                      <></>
-                    );
-                  })}
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        )}
+              </TableRow>
+            );
+          })}
+        </TableBody>
       </Table>
     </div>
   );

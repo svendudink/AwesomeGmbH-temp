@@ -44,7 +44,7 @@ export const signUp = async (req, res) => {
     mailSender(req, "admin");
     console.log("whatis", createdUser);
     res.status(200).json({
-      msg: "your account has been created, Your account still needs to be approved by a supervisor ((For demonstration purposes you will also receive the administrator email))",
+      msg: "your account has been created, \nYour account still needs to be approved by a Supervisor \n\n\n((For demonstration purposes \nyou will also receive the supervisor email to approve your account))",
     });
   } catch {
     console.log("unknown error");

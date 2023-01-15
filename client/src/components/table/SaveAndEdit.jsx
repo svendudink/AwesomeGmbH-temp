@@ -1,8 +1,6 @@
-/////////////////////////////////////////Sven's//Coding////////////////////////////////  
- // Save add and edit button and logic 
- /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
-
-
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// Save add and edit button and logic
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
 
 // imports
 import SaveIcon from "@mui/icons-material/Save";
@@ -17,10 +15,13 @@ export default function SaveAndEdit(props) {
   const [addFirstmode, setAddFirstMode] = useState(true);
 
   const handleAdd = () => {
+    console.log("does it lay here?", props.rows);
     if (props.rows.length === 1) {
+      console.log("length is one", props.rows);
       const emptyCheck = Object.values(props.rows[0]).filter((el) => {
         return el !== "";
       });
+      console.log("checked for emptys", emptyCheck);
       if (emptyCheck.length === 1 && addFirstmode) {
         props.setEdit(true);
         setAddFirstMode(false);
@@ -45,9 +46,9 @@ export default function SaveAndEdit(props) {
   return (
     <div style={{ display: "flex", justifyContent: "space-between" }}>
       <div>
-        {!props.privilege ? (
-          <div></div>
-        ) : props.edit ? (
+        {(props.privileges.current.employeePrivileges ||
+          props.privileges.current.assignedDepartment) &&
+        props.edit ? (
           <div>
             <Button onClick={handleAdd}>
               <AddBoxIcon onClick={handleAdd} />

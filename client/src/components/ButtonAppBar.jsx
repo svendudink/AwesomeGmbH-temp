@@ -33,7 +33,7 @@ export default function ButtonAppBar() {
     }
   }, [loggedIn]);
 
-  console.log(loggedIn);
+
 
   const logout = () => {
     localStorage.removeItem("token");
