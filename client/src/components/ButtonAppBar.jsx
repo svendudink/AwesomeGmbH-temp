@@ -9,10 +9,9 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+
 import { useNavigate } from "react-router-dom";
-import { ListItem } from "@mui/material";
+
 import { ApiContext } from "../context/ApiContext";
 import { getToken } from "../Helpers/getToken";
 import { useState } from "react";
@@ -20,8 +19,8 @@ import { visitForAll } from "../config/config";
 
 export default function ButtonAppBar() {
   const navigate = useNavigate();
-  const { loggedIn, rows, ApiCall } = useContext(ApiContext);
-  const [appBarLoggedIn, setAppBarLoggedIn] = useState();
+  const { loggedIn, rows, ApiCall, appBarLoggedIn, setAppBarLoggedIn } =
+    useContext(ApiContext);
 
   useEffect(() => {
     ApiCall("employeeList");

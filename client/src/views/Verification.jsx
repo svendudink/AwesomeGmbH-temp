@@ -2,6 +2,7 @@ import { useLocation } from "react-router";
 import { useState, useContext, useEffect } from "react";
 import { ApiContext } from "../context/ApiContext";
 
+
 export default function Verification() {
   const { setUserData, ApiCall, userData } = useContext(ApiContext);
   const location = useLocation();

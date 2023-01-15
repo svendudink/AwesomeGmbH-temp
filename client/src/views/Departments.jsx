@@ -25,7 +25,31 @@ function Departments() {
   };
 
   return (
-    <>
+    <div
+      style={{
+        position: "obsolute",
+        textAlign: "center",
+        height: "auto",
+        width: "40%",
+        top: "0",
+        bottom: "0",
+        left: "0",
+        right: "0",
+        margin: "auto",
+        // top: "50%",
+        // left: "50%",
+        marginTop: "50px",
+        marginLeft: "30%",
+        marginRight: "30%",
+        // height: "600px",
+        // width: "200px",
+        paddingTop: "10px",
+        paddingLeft: "20px",
+        paddingReft: "20px",
+        border: "solid 3px #1976D2",
+        borderRadius: "10px",
+      }}
+    >
       <EditTableSD
         employeeCount={employeeCount}
         src={"dep"}
@@ -39,7 +63,7 @@ function Departments() {
         loggedIn={loggedIn}
         departments={departments}
       />
-    </>
+    </div>
   );
 }
 
