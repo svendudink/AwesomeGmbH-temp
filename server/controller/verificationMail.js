@@ -34,21 +34,21 @@ const mailSender = async (req, action) => {
       req.body.assignedDepartment
         ? ` assigned to ${req.body.assignedDepartment}`
         : ""
-    }, ${
+    },\n ${
       req.body.departmentPrivileges || req.body.employeePrivileges
-        ? `requested an account with the following privileges: ${
+        ? `requested an account with the following privileges:\n ${
             req.body.departmentPrivileges
-              ? "[add delete and Change departments]"
+              ? "add delete and Change departments\n"
               : ""
           }${
             req.body.employeePrivileges
-              ? " [add delete and Change Employee entries]"
+              ? " add delete and Change Employee entries\n"
               : ""
           }`
         : ""
-    } to approve click here: ${`http://localhost:3000/verification/${issueToken(
+    } \n\n\nto approve click here: ${`http://localhost:3000/verification/${issueToken(
       `approve,${req.body.email}`
-    )}`} else click here: ${`http://localhost:3000/verification/${issueToken(
+    )}`} \n\n\nto decline click here: ${`http://localhost:3000/verification/${issueToken(
       `decline,${req.body.email}`
     )}`}`;
     email = req.body.email;

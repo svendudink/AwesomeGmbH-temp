@@ -12,7 +12,7 @@ export default function EmployeeList(props) {
     updateMongo,
     loggedIn,
     departments,
-    privileges,
+    privileges,employeeCount
   } = useContext(ApiContext);
 
   useEffect(() => {
@@ -39,6 +39,8 @@ export default function EmployeeList(props) {
   return (
     <>
       <EditTableSD
+        employeeCount={employeeCount}
+        src={"emp"}
         privileges={privileges}
         setRows={setRows}
         rows={rows}

@@ -7,15 +7,16 @@ import { TableCell } from "@material-ui/core";
 
 export default function TableCellSD(props) {
   const handleInputChange = (e, index) => {
-    console.log(e);
     props.setDisable(false);
     const { name, value } = e.target;
+    console.log("check1", e, index, name, value);
+    console.log("checkInputCHange", name, value, e.target);
     const list = [...props.rows];
-    console.log("check value", value, name);
+
     list[index][name] = value;
-    console.log("where to put", list[index][name]);
-    console.log("final", list);
+
     props.setRows(list);
+
     const temp = props.updateMongo.current.filter((row) => {
       return row._id === props.rows[index]._id;
     });
@@ -23,6 +24,7 @@ export default function TableCellSD(props) {
       props.updateMongo.current.push(props.rows[index]);
     }
   };
+
   if (props.type === "editable") {
     return (
       <TableCell
@@ -31,6 +33,7 @@ export default function TableCellSD(props) {
       >
         <input
           key={`inputcellsel${props.rowname}${props.index}${props.value}`}
+          autoFocus="autoFocus"
           value={props.value}
           name={props.rowname}
           onChange={(e) => handleInputChange(e, props.index)}

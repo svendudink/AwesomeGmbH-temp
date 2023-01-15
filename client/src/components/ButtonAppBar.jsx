@@ -33,8 +33,6 @@ export default function ButtonAppBar() {
     }
   }, [loggedIn]);
 
-
-
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("departmentPrivilegessettings");
@@ -57,13 +55,7 @@ export default function ButtonAppBar() {
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Awesome Company GmbH: Employee Registry.
-            <h1 style={{ textAlign: "center", fontSize: "1em" }}>
-              {!rows.length
-                ? ""
-                : rows.length === 1
-                ? "1 Employee And still growing"
-                : `${rows.length} Employees and still growing`}
-            </h1>
+            <h1 style={{ textAlign: "center", fontSize: "1em" }}></h1>
           </Typography>
           {!appBarLoggedIn ? (
             <Button onClick={login} color="inherit">

@@ -17,10 +17,10 @@ export default function EditTableSD(props) {
 
   return (
     <div>
-      {(props.privileges.current.employeePrivileges ||
-        props.privileges.current.assignedDepartment ||
-        (props.src === "dep" &&
-          props.privileges.current.departmentPrivileges)) && (
+      {" "}
+      {((props.src === "dep" &&
+        props.privileges.current.departmentPrivileges) ||
+        (props.src === "emp" && props.privileges.current.editRights)) && (
         <>
           <FileUpload />
           <SaveAndEdit
@@ -36,13 +36,13 @@ export default function EditTableSD(props) {
           />
         </>
       )}
-
+      {`Number of Employees: ${props.employeeCount}`}
       <Table>
         <TableHeadSD rows={props.rows} />
         <TableBody>
-          {props.rows.map((row, i) => {
+          {props.rows.map((row, index) => {
             return (
-              <TableRow key={`${row[i]}${i}Table`}>
+              <TableRow key={`${row[index]}${index}Table`}>
                 {Object.entries(props.rows[0])
                   .filter(
                     (element) =>
@@ -100,8 +100,8 @@ export default function EditTableSD(props) {
                         rows={props.rows}
                         setDisable={setDisable}
                         value={row[cell[0]]}
-                        rowname={cell}
-                        index={i}
+                        rowname={cell[0]}
+                        index={index}
                         type={cellType}
                         row={row}
                         departments={props.departments}
@@ -114,11 +114,11 @@ export default function EditTableSD(props) {
                   props.privileges.current.employeePrivileges) &&
                   edit && (
                     <DeleteDialog
-                      key={`${row[i]}${i}Bin`}
+                      key={`${row[index]}${index}Bin`}
                       setRows={props.setRows}
                       rows={props.rows}
                       updateMongo={props.updateMongo}
-                      index={i}
+                      index={index}
                       setDisable={setDisable}
                       fields={props.fields}
                     />

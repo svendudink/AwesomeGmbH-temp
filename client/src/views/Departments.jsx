@@ -12,6 +12,7 @@ function Departments() {
     loggedIn,
     updateMongoDepartment,
     privileges,
+    employeeCount,
   } = useContext(ApiContext);
 
   useEffect(() => {
@@ -26,6 +27,7 @@ function Departments() {
   return (
     <>
       <EditTableSD
+        employeeCount={employeeCount}
         src={"dep"}
         key={"HEADxcm"}
         privileges={privileges}

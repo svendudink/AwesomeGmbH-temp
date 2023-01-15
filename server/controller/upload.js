@@ -29,8 +29,29 @@ export const upload = async (req, res) => {
         if (err) console.log("ERROR: " + err);
       }
     );
-    // Convertz XLSX and CSV into an object
+    // Converts XLSX and CSV into an object
     const json = await xlsxAndCsvToObj(fileName);
+
+    //check if document is usable
+    const CheckIfCompatible = async (json, filterSetting) => {
+      console.log(json);
+      const count = Object.keys(json[0]).filter((el) => {
+        console.log("whatis", el);
+        return (
+          "Vorname" ||
+          "Nachname" ||
+          "Strasse" ||
+          "Nr" ||
+          "PLZ" ||
+          "Ort" ||
+          "Land" ||
+          "Abteilung" ||
+          "Position"
+        );
+      });
+      console.log("counter", count.length);
+    };
+    CheckIfCompatible(json);
 
     // Saves to mongo and gets back counter saying how many employees have been added
     const counter = await saveToMongoAndAddUser(json, privileges.user);
@@ -42,9 +63,9 @@ export const upload = async (req, res) => {
     // User with all privileges
     if (privileges.all) {
       res.status(200).send({
-        msg: `Employees added: ${counter.employees}. Departments added: ${
+        msg: `Employees added: ${counter.employees}\nDepartments added: ${
           counter.departments
-        }.${
+        }\n\n${
           json.length !== counter.employees
             ? ` ${
                 json.length - counter.employees
@@ -116,8 +137,7 @@ const departmentReturn = async (department) => {
   return result;
 };
 
-
-// save files to mongo 
+// save files to mongo
 const saveToMongoAndAddUser = async (json, user) => {
   const departmentArray = await departmentReturn();
   let newDepartments = [];

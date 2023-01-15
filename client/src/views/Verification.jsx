@@ -13,5 +13,10 @@ export default function Verification() {
     ApiCall("verification");
   }, []);
 
-  return <div>User </div>;
+  return (
+    <div style={{ fontSize: "20px" }}>
+      Request send to server, <br />
+      this screen will close automatically{" "}
+    </div>
+  );
 }
