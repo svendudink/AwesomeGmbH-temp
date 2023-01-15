@@ -36,7 +36,7 @@ export default function EditTableSD(props) {
           />
         </>
       )}
-      {`Number of Employees: ${props.employeeCount}`}
+      {props.src === "emp" && `Number of Employees: ${props.employeeCount}`}
       <Table>
         <TableHeadSD rows={props.rows} />
         <TableBody>

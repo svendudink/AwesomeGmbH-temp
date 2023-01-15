@@ -18,17 +18,3 @@ export default function TableHeadSD(props) {
     </TableHead>
   );
 }
-
-// import { TableCell, TableHead, TableRow } from "@material-ui/core";
-
-// export default function TableHeadSD(props) {
-//   return (
-//     <TableHead key={`${props.src}thvg`}>
-//       <TableRow key={`${props.src}rowvg`}>
-//         {Object.keys(props.rows[0]).filter((element, i) => {
-//           return element !== "id" && element !== "__v" && element !== "_id";
-//         })}
-//       </TableRow>
-//     </TableHead>
-//   );
-// }
