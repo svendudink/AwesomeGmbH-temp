@@ -5,10 +5,12 @@ import User from "../schema/User.js";
 import { verifyPriviliges } from "../utils/jwt.js";
 
 export const employeeRegistrySave = async (req, res) => {
+  console.log(req.body.changeList);
   //Check for privileges
   let privileges = await verifyPriviliges(req.body.token);
 
-  if (privileges.assignedDepartment) {
+  // extra layer of security to filter only for assigned department privileges
+  if (privileges.assignedDepartment && !privileges.employeePrivileges) {
     (function () {
       req.body.changeList = req.body.changeList.filter((row) => {
         return privileges.assignedDepartment === row.Abteilung;
@@ -16,14 +18,13 @@ export const employeeRegistrySave = async (req, res) => {
     })();
   }
 
-  console.log("validate", req.body.changeList);
   await (async function () {
     // delete all marked for delete from MongoDB
     const markForDelete = await req.body.changeList.map((row) => {
       console.log("individualrow", row);
       return row.delete ? row._id : null;
     });
-    console.log("marked", markForDelete);
+
     await Employees.deleteMany({ _id: markForDelete });
 
     //Update MongoDB Employee List

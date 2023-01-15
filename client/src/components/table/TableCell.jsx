@@ -9,9 +9,14 @@ export default function TableCellSD(props) {
   const handleInputChange = (e, index) => {
     props.setDisable(false);
     const { name, value } = e.target;
+    console.log("check1", e, index, name, value);
+    console.log("checkInputCHange", name, value, e.target);
     const list = [...props.rows];
+
     list[index][name] = value;
+
     props.setRows(list);
+
     const temp = props.updateMongo.current.filter((row) => {
       return row._id === props.rows[index]._id;
     });
@@ -19,10 +24,16 @@ export default function TableCellSD(props) {
       props.updateMongo.current.push(props.rows[index]);
     }
   };
+
   if (props.type === "editable") {
     return (
-      <TableCell padding="none">
+      <TableCell
+        key={`cellsel${props.rowname}${props.index}${props.value}`}
+        padding="none"
+      >
         <input
+          key={`inputcellsel${props.rowname}${props.index}${props.value}`}
+          autoFocus="autoFocus"
           value={props.value}
           name={props.rowname}
           onChange={(e) => handleInputChange(e, props.index)}
@@ -32,21 +43,33 @@ export default function TableCellSD(props) {
   }
   if (props.type === "dropdown") {
     return (
-      <TableCell padding="none">
+      <TableCell
+        key={`cellstel${props.rowname}v${props.index}${props.value}`}
+        padding="none"
+      >
         <select
+          key={`cellskjhgeltr${props.rowname}${props.index}${props.value}`}
           style={{ width: "100px" }}
           name="Abteilung"
           value={props.row.Abteilung}
           onChange={(e) => handleInputChange(e, props.index)}
         >
-          <option value={props.row.Abteilung}>
+          <option
+            key={`cellseggltr${props.rowname}${props.index}${props.value}`}
+            value={props.row.Abteilung}
+          >
             {props.row.Abteilung ? props.row.Abteilung : "Not assigned"}
           </option>
           {props.departments.map((option, i) => {
-            return props.row.Abteilung !== option.abteilung ? (
-              <option value={option.abteilung}>{option.abteilung}</option>
-            ) : (
-              <></>
+            return (
+              props.row.Abteilung !== option.abteilung && (
+                <option
+                  key={`cell${option.Abteilung}${i}${props.value}bhj`}
+                  value={option.abteilung}
+                >
+                  {option.abteilung}
+                </option>
+              )
             );
           })}
         </select>
@@ -55,7 +78,11 @@ export default function TableCellSD(props) {
   }
   if (props.type === "static") {
     return (
-      <TableCell component="th" scope="row">
+      <TableCell
+        key={`statcellsel${props.rowname}${props.index}${props.value}`}
+        component="th"
+        scope="row"
+      >
         {props.value}
       </TableCell>
     );

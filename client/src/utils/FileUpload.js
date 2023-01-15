@@ -6,7 +6,7 @@ import FormControl from "@mui/material/FormControl";
 
 function FileUpload() {
   const { ApiCall } = useContext(ApiContext);
-  const [fileData, setFileData] = useState("");
+  const [fileData, setFileData, employeeCounter] = useState("");
   const getFile = (e) => {
     setFileData(e.target.files[0]);
   };

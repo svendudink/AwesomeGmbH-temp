@@ -4,6 +4,38 @@ import { useLocation } from "react-router";
 export const ApiContext = createContext();
 
 export const ApiContextProvider = (props) => {
+  const privileges = useRef({
+    editRights:
+      localStorage.getItem("assignedDepartment") ||
+      localStorage.getItem("employeePrivilegessettings") === "true",
+    employeePrivileges:
+      localStorage.getItem("employeePrivilegessettings") === "true",
+    departmentPrivileges:
+      localStorage.getItem("departmentPrivilegessettings") === "true",
+    assignedDepartment: localStorage.getItem("assignedDepartment"),
+    none:
+      localStorage.getItem("departmentPrivilegessettings") === "false" &&
+      localStorage.getItem("departmentPrivilegessettings") === "false" &&
+      localStorage.getItem("employeePrivilegessettings") === "false"
+        ? true
+        : false,
+    all:
+      localStorage.getItem("departmentPrivilegessettings") === "true" &&
+      localStorage.getItem("employeePrivilegessettings") === "true"
+        ? true
+        : false,
+    employeeOnly:
+      localStorage.getItem("departmentPrivilegessettings") === "false" &&
+      localStorage.getItem("employeePrivilegessettings") === "true"
+        ? true
+        : false,
+    departmentOnly:
+      localStorage.getItem("departmentPrivilegessettings") === "true" &&
+      localStorage.getItem("employeePrivilegessettings") === "false"
+        ? true
+        : false,
+  });
+
   const location = useLocation();
   const [userData, setUserData] = useState({
     password: "",
@@ -23,7 +55,6 @@ export const ApiContextProvider = (props) => {
       abteilung: "",
     },
   ]);
-  console.log(userData.token);
 
   const loggedIn = useRef(false);
   const updateMongo = useRef([]);
@@ -67,6 +98,29 @@ export const ApiContextProvider = (props) => {
       abteilung: "",
     },
   ];
+
+  const [employeeCount, setEmployeeCount] = useState(0);
+
+  const employeeCounter = () => {
+    let employees = 0;
+    if (rows.length === 1) {
+      console.log("length is one", rows);
+      const emptyCheck = Object.values(rows[0]).filter((el) => {
+        return el !== "";
+      });
+      console.log("checked for emptys", emptyCheck.length);
+      if (emptyCheck.length === 1) {
+        console.log("0");
+        employees = 0;
+      } else {
+        employees = 1;
+      }
+    } else {
+      console.log("it did something", rows.length);
+      employees = rows.length;
+    }
+    setEmployeeCount(employees);
+  };
 
   const ApiCall = async (request) => {
     let route = "";
@@ -141,7 +195,6 @@ export const ApiContextProvider = (props) => {
     })
       .then((res) => res.json())
       .then((resData) => {
-        console.log(resData);
         if (resData.verification) {
           window.close();
         } else if (resData.error) {
@@ -164,12 +217,14 @@ export const ApiContextProvider = (props) => {
               );
             }
             updateMongo.current = [];
+            console.log("does it really do all of that ?");
+            employeeCounter();
           }
 
           if (request === "login") {
             if (resData.user.disabled) {
               alert(
-                "Account is not yet approved by your system administrator, this can take up to 24 hours"
+                "Account is not yet approved by your supervisor, this can take up to 24 hours\n\n as this is a demonstration project you have also received the supervisor email and you can approve your account "
               );
             } else if (resData.token) {
               localStorage.setItem("token", resData.token);
@@ -198,18 +253,20 @@ export const ApiContextProvider = (props) => {
           if (request === "departments" || request === "departments/save") {
             if (resData.abteilung.length === 0) {
               setRows(Departmentsempty);
+              return null;
             } else {
               setDepartments(
                 resData.abteilung.map((obj, ind) => {
-                  return { ...obj, id: ind + 1 };
+                  return obj;
                 })
               );
+              employeeCounter();
             }
             updateMongoDepartment.current = [];
           }
         }
       })
-      .catch((err) => console.log("chicken e", err));
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -227,6 +284,9 @@ export const ApiContextProvider = (props) => {
         setDepartments,
         updateMongoDepartment,
         Employeesempty,
+        privileges,
+        employeeCount,
+        employeeCounter,
       }}
     >
       {props.children}

@@ -9,7 +9,6 @@ import { useContext } from "react";
 
 function PageRoutes() {
   const { loggedIn } = useContext(ApiContext);
-  console.log(loggedIn.current);
 
   return (
     <Routes>
