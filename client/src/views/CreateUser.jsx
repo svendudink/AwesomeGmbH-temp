@@ -8,6 +8,7 @@ import { ApiContext } from "../context/ApiContext";
 import { useContext, useState, useEffect } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { Button } from "@mui/material";
+import { websiteColor } from "../config/config";
 
 export default function CreateUser() {
   const [departmentMod, setDepartmentMod] = useState(false);
@@ -74,7 +75,7 @@ export default function CreateUser() {
         // height: "600px",
         // width: "200px",
         paddingTop: "10px",
-        border: "solid 3px #1976D2",
+        border: `solid 3px ${websiteColor}`,
         borderRadius: "10px",
       }}
     >
@@ -144,7 +145,9 @@ export default function CreateUser() {
         <Checkbox id="employeePrivileges" onChange={checkBoxHandler} />
         <br />
         <br />
-        <Button onClick={registerHandler}>Register</Button>
+        <Button onClick={registerHandler}>
+          <div style={{ color: `${websiteColor}` }}>Register</div>
+        </Button>
       </div>
     </div>
   );

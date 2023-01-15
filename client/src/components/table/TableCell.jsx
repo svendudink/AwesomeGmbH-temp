@@ -6,13 +6,11 @@
 import { TableCell } from "@material-ui/core";
 
 export default function TableCellSD(props) {
+  // handle changing the input and update to temporaty mongo ref
   const handleInputChange = (e, index) => {
     props.setDisable(false);
     const { name, value } = e.target;
-    console.log("check1", e, index, name, value);
-    console.log("checkInputCHange", name, value, e.target);
     const list = [...props.rows];
-
     list[index][name] = value;
 
     props.setRows(list);
@@ -32,6 +30,7 @@ export default function TableCellSD(props) {
         padding="none"
       >
         <input
+          autoComplete="off"
           key={`inputcellsel${props.rowname}${props.index}${props.value}`}
           autoFocus="autoFocus"
           value={props.value}

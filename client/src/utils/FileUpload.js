@@ -1,12 +1,17 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// File uploader
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+// imports
 import { useState, useContext } from "react";
 import axios from "axios";
 import { ApiContext } from "../context/ApiContext";
 import { Input } from "@mui/material";
-import FormControl from "@mui/material/FormControl";
+import { websiteColor } from "../config/config";
 
 function FileUpload() {
   const { ApiCall } = useContext(ApiContext);
-  const [fileData, setFileData, employeeCounter] = useState("");
+  const [fileData, setFileData] = useState("");
   const getFile = (e) => {
     setFileData(e.target.files[0]);
   };
@@ -46,16 +51,11 @@ function FileUpload() {
         left: "0",
         right: "0",
         margin: "auto",
-        // top: "50%",
-        // left: "50%",
         marginTop: "5px",
-        // marginLeft: "-100px",
-        // height: "600px",
-        // width: "200px",
         paddingTop: "10px",
         paddingLeft: "10px",
         paddingRight: "10px",
-        border: "solid 2px #1976D2",
+        border: `solid 2px ${websiteColor}`,
         borderRadius: "10px",
       }}
     >
