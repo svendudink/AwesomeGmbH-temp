@@ -6,6 +6,8 @@ import { departments } from "./departmentRegistry.js";
 import path from "path";
 import { employeeRegistry } from "./employeeRegistry.js";
 import { xlsxAndCsvToObj } from "../utils/xlsxAndCsvToObj.js";
+import { CheckIfCompatible } from "../utils/checkifCOmpatible.js";
+import { amountToBeValid } from "../config/config.js";
 
 let privileges = [];
 let counter = { departments: "", employees: "" };
@@ -33,75 +35,64 @@ export const upload = async (req, res) => {
     const json = await xlsxAndCsvToObj(fileName);
 
     //check if document is usable
-    const CheckIfCompatible = async (json, filterSetting) => {
-      console.log(json);
-      const count = Object.keys(json[0]).filter((el) => {
-        console.log("whatis", el);
-        return (
-          "Vorname" ||
-          "Nachname" ||
-          "Strasse" ||
-          "Nr" ||
-          "PLZ" ||
-          "Ort" ||
-          "Land" ||
-          "Abteilung" ||
-          "Position"
-        );
+    const check = await CheckIfCompatible(json, amountToBeValid);
+    if (check) {
+      return res.status(200).send({
+        msg: `your file does not match the criteria, at least ${amountToBeValid} collum${
+          amountToBeValid >= 2 ? "s" : ""
+        } needs to match`,
       });
-      console.log("counter", count.length);
-    };
-    CheckIfCompatible(json);
+    } else {
+      // Saves to mongo and gets back counter saying how many employees have been added
+      const counter = await saveToMongoAndAddUser(json, privileges.user);
+      // Deletes file after being processed
+      deleteFile(fileName);
 
-    // Saves to mongo and gets back counter saying how many employees have been added
-    const counter = await saveToMongoAndAddUser(json, privileges.user);
-    // Deletes file after being processed
-    deleteFile(fileName);
+      //return messages in different scenarios
 
-    //return messages in different scenarios
-
-    // User with all privileges
-    if (privileges.all) {
-      res.status(200).send({
-        msg: `Employees added: ${counter.employees}\nDepartments added: ${
-          counter.departments
-        }\n\n${
-          json.length !== counter.employees
-            ? ` ${
-                json.length - counter.employees
-              } entries where skipped, Identical entries are not added`
-            : ""
-        }`,
-      });
-      //user with privlegesd to modify employee fileds only
-    } else if (privileges.employeeOnly) {
-      res.status(200).send({
-        msg: `Employees added: ${counter.employees}.${
-          json.length !== counter.employees
-            ? ` ${
-                json.length - counter.employees
-              } entries where skipped, Identical entries are not added`
-            : ""
-        }`,
-      });
-      // user with privleges to modify Depaertments only
-    } else if (privileges.departmentOnly) {
-      res.status(200).send({
-        msg: `Departments added: ${counter.departments}.`,
-      });
-      // user with privilege to add to one specific department
-    } else if (privileges.assignedDepartment) {
-      res.status(200).send({
-        msg: `Employees added: ${counter.employees}. ${
-          json.length !== counter.employees
-            ? `${
-                json.length - counter.employees
-              } entries where skipped, they do not belong to the ${
-                privileges.assignedDepartment
-              } department or they where identical`
-            : ""
-        }`,
-      });
+      // User with all privileges
+      if (privileges.all) {
+        res.status(200).send({
+          msg: `Employees added: ${counter.employees}\nDepartments added: ${
+            counter.departments
+          }\n\n${
+            json.length !== counter.employees
+              ? ` ${
+                  json.length - counter.employees
+                } entries where skipped, Identical entries are not added`
+              : ""
+          }`,
+        });
+        //user with privlegesd to modify employee fileds only
+      } else if (privileges.employeeOnly) {
+        res.status(200).send({
+          msg: `Employees added: ${counter.employees}.${
+            json.length !== counter.employees
+              ? ` ${
+                  json.length - counter.employees
+                } entries where skipped, Identical entries are not added`
+              : ""
+          }`,
+        });
+        // user with privleges to modify Depaertments only
+      } else if (privileges.departmentOnly) {
+        res.status(200).send({
+          msg: `Departments added: ${counter.departments}.`,
+        });
+        // user with privilege to add to one specific department
+      } else if (privileges.assignedDepartment) {
+        res.status(200).send({
+          msg: `Employees added: ${counter.employees}. ${
+            json.length !== counter.employees
+              ? `${
+                  json.length - counter.employees
+                } entries where skipped, they do not belong to the ${
+                  privileges.assignedDepartment
+                } department or they where identical`
+              : ""
+          }`,
+        });
+      }
     }
     // return message if something went wrong
   } catch {
@@ -155,7 +146,7 @@ const saveToMongoAndAddUser = async (json, user) => {
       };
       //user has all privileges
     } else if (privileges.all || privileges.departmentOnly) {
-      console.log("dps");
+      console.log("checkfacts", departmentArray, employee.Abteilung);
       if (
         !departmentArray.includes(employee.Abteilung) &&
         employee.Abteilung !== undefined
@@ -166,7 +157,10 @@ const saveToMongoAndAddUser = async (json, user) => {
       return {
         ...employee,
         Abteilung: employee.Abteilung ? employee.Abteilung : "",
-        assignedBy: user,
+        assignedBy:
+          employee.Abteilung === "" || employee.Abteilung === undefined
+            ? ""
+            : user,
       };
       //user has privleges to import data from own department
     } else if (privileges.assignedDepartment) {

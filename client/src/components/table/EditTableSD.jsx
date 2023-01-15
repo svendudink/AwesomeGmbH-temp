@@ -80,7 +80,7 @@ export default function EditTableSD(props) {
                           props.privileges.current.assignedDepartment
                         ) {
                           if (cell[0] === "Abteilung") {
-                            cellType = "dropdown";
+                            cellType = "static";
                           } else if (cell[0] === "assignedBy") {
                             cellType = "static";
                           } else {
