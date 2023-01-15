@@ -1,9 +1,73 @@
-import { createContext, useState, useEffect, useRef } from "react";
+import { createContext, useState, useRef } from "react";
 import { useLocation } from "react-router";
 
 export const ApiContext = createContext();
 
 export const ApiContextProvider = (props) => {
+  //Usestates and userefs
+  const loggedIn = useRef(false);
+  const updateMongo = useRef([]);
+  const updateMongoDepartment = useRef([]);
+  const originalEmployeeList = useRef([]);
+  const location = useLocation();
+  const [appBarLoggedIn, setAppBarLoggedIn] = useState();
+  const [userData, setUserData] = useState({
+    password: "",
+    confirmPassword: "",
+    email: "",
+    departmentPrivileges: false,
+    employeePrivileges: false,
+    loginPassword: "",
+    loginEmail: "",
+    token: "",
+    assignedDepartment: "",
+  });
+  const [departments, setDepartments] = useState([
+    {
+      id: 1,
+      _id: "TEMP8",
+      abteilung: "",
+    },
+  ]);
+  const [rows, setRows] = useState([
+    {
+      _id: `TEMPID${Math.random()}`,
+      Vorname: "",
+      Nachname: "",
+      Strasse: "",
+      Nr: "",
+      PLZ: "",
+      Ort: "",
+      Land: "",
+      Position: "",
+      Abteilung: "",
+      assignedBy: "",
+    },
+  ]);
+  const Employeesempty = [
+    {
+      _id: `TEMPID${rows.length + 1}`,
+      Vorname: "",
+      Nachname: "",
+      Strasse: "",
+      Nr: "",
+      PLZ: "",
+      Ort: "",
+      Land: "",
+      Position: "",
+      Abteilung: "",
+      assignedBy: "",
+    },
+  ];
+  const Departmentsempty = [
+    {
+      _id: `TEMPID${rows.length + 1}`,
+      abteilung: "",
+    },
+  ];
+  const [employeeCount, setEmployeeCount] = useState(0);
+
+  // collection of privileges and combinations of privileges
   const privileges = useRef({
     editRights:
       localStorage.getItem("assignedDepartment") ||
@@ -35,83 +99,14 @@ export const ApiContextProvider = (props) => {
         ? true
         : false,
   });
-
-  const location = useLocation();
-  const [appBarLoggedIn, setAppBarLoggedIn] = useState();
-  const [userData, setUserData] = useState({
-    password: "",
-    confirmPassword: "",
-    email: "",
-    departmentPrivileges: false,
-    employeePrivileges: false,
-    loginPassword: "",
-    loginEmail: "",
-    token: "",
-    assignedDepartment: "",
-  });
-  const [departments, setDepartments] = useState([
-    {
-      id: 1,
-      _id: "TEMP8",
-      abteilung: "",
-    },
-  ]);
-
-  const loggedIn = useRef(false);
-  const updateMongo = useRef([]);
-  const updateMongoDepartment = useRef([]);
-  const originalEmployeeList = useRef([]);
-
-  const [rows, setRows] = useState([
-    {
-      _id: `TEMPID${Math.random()}`,
-      Vorname: "",
-      Nachname: "",
-      Strasse: "",
-      Nr: "",
-      PLZ: "",
-      Ort: "",
-      Land: "",
-      Position: "",
-      Abteilung: "",
-      assignedBy: "",
-    },
-  ]);
-  const Employeesempty = [
-    {
-      _id: `TEMPID${rows.length + 1}`,
-      Vorname: "",
-      Nachname: "",
-      Strasse: "",
-      Nr: "",
-      PLZ: "",
-      Ort: "",
-      Land: "",
-      Position: "",
-      Abteilung: "",
-      assignedBy: "",
-    },
-  ];
-
-  const Departmentsempty = [
-    {
-      _id: `TEMPID${rows.length + 1}`,
-      abteilung: "",
-    },
-  ];
-
-  const [employeeCount, setEmployeeCount] = useState(0);
-
+  // count the employees
   const employeeCounter = () => {
     let employees = 0;
     if (rows.length === 1) {
-      console.log("length is one", rows);
       const emptyCheck = Object.values(rows[0]).filter((el) => {
         return el !== "";
       });
-      console.log("checked for emptys", emptyCheck.length);
       if (emptyCheck.length === 1) {
-        console.log("0");
         employees = 0;
       } else {
         employees = 1;
@@ -126,7 +121,7 @@ export const ApiContextProvider = (props) => {
   const ApiCall = async (request) => {
     let route = "";
     let querys = {};
-
+// requests
     if (request === "login") {
       route = "http://localhost:8080/login";
       querys = {
@@ -204,7 +199,7 @@ export const ApiContextProvider = (props) => {
           if (resData.msg) {
             alert(resData.msg);
           }
-          console.log(resData);
+          // if token is expired or account or department is removed
           if (resData.tokenReset) {
             console.log("check this out");
             localStorage.removeItem("token");
@@ -229,7 +224,6 @@ export const ApiContextProvider = (props) => {
               );
             }
             updateMongo.current = [];
-            console.log("does it really do all of that ?");
             employeeCounter();
           }
 

@@ -11,6 +11,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { Button } from "@material-ui/core";
 import { useState } from "react";
+import { websiteColor } from "../../config/config";
 
 export default function DeleteDialog(props) {
   //usestates
@@ -21,8 +22,9 @@ export default function DeleteDialog(props) {
     setDeleteRow(i);
     setShowConfirm(true);
   };
-
+  //handling remove of row
   const handleRemoveClick = (i) => {
+    // add to temp row and put it back to the usestate
     const list = [...props.rows];
     if (props.rows.length === 1) {
       props.setRows([props.fields]);
@@ -49,6 +51,7 @@ export default function DeleteDialog(props) {
       console.log(props.updateMongo.current);
     }
   };
+  //handle rejection
   const handleNo = () => {
     setShowConfirm(false);
   };
@@ -56,7 +59,7 @@ export default function DeleteDialog(props) {
   return (
     <td>
       <Button className="mr10" onClick={() => handleConfirm(props.index)}>
-        <DeleteOutlineIcon />
+        <DeleteOutlineIcon sx={{ color: `${websiteColor}` }} />
       </Button>
       {showConfirm && (
         <div>

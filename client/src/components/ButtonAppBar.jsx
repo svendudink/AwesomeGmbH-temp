@@ -9,19 +9,18 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-
 import { useNavigate } from "react-router-dom";
-
 import { ApiContext } from "../context/ApiContext";
 import { getToken } from "../Helpers/getToken";
-import { useState } from "react";
 import { visitForAll } from "../config/config";
+import { websiteColor2 } from "../config/config";
 
 export default function ButtonAppBar() {
   const navigate = useNavigate();
-  const { loggedIn, rows, ApiCall, appBarLoggedIn, setAppBarLoggedIn } =
+  const { loggedIn, ApiCall, appBarLoggedIn, setAppBarLoggedIn } =
     useContext(ApiContext);
 
+  // load employeelist
   useEffect(() => {
     ApiCall("employeeList");
     const token = getToken();
@@ -33,13 +32,13 @@ export default function ButtonAppBar() {
     }
   }, [loggedIn]);
 
+  // logout and remove tokens
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("departmentPrivilegessettings");
     localStorage.removeItem("employeePrivilegessettings");
     localStorage.removeItem("assignedDepartment");
     alert("You are logged out");
-
     loggedIn.current = false;
     setAppBarLoggedIn(false);
     window.location.reload(false);
@@ -51,7 +50,7 @@ export default function ButtonAppBar() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar style={{ background: `${websiteColor2}` }} position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Awesome Company GmbH: Employee Registry.

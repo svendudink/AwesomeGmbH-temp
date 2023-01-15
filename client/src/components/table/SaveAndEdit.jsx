@@ -7,6 +7,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Button } from "@material-ui/core";
 import AddBoxIcon from "@material-ui/icons/AddBox";
 import { useState } from "react";
+import { websiteColor } from "../../config/config";
 
 export default function SaveAndEdit(props) {
   const handleEdit = (i) => {
@@ -14,6 +15,7 @@ export default function SaveAndEdit(props) {
   };
   const [addFirstmode, setAddFirstMode] = useState(true);
 
+  //Handle add of row, to mongo as well as to usestate
   const handleAdd = () => {
     console.log("does it lay here?", props.rows);
     if (props.rows.length === 1) {
@@ -51,30 +53,36 @@ export default function SaveAndEdit(props) {
         props.edit ? (
           <div>
             <Button onClick={handleAdd}>
-              <AddBoxIcon onClick={handleAdd} />
-              ADD
+              <AddBoxIcon
+                sx={{ color: `${websiteColor}` }}
+                onClick={handleAdd}
+              />
+              <div style={{ color: `${websiteColor}` }}>ADD</div>
             </Button>
             {props.disable ? (
               <Button disabled align="right" onClick={handleSave}>
-                <SaveIcon />
-                SAVE
+                <SaveIcon sx={{ color: `${websiteColor}` }} />
+                <div style={{ color: `${websiteColor}` }}>SAVE</div>
               </Button>
             ) : (
               <Button align="right" onClick={handleSave}>
-                <SaveIcon />
-                SAVE
+                <SaveIcon sx={{ color: `${websiteColor}` }} />
+                <div style={{ color: `${websiteColor}` }}>SAVE</div>
               </Button>
             )}
           </div>
         ) : (
-          <div>
+          <div style={{ color: `${websiteColor}` }}>
             <Button onClick={handleAdd}>
-              <AddBoxIcon onClick={handleAdd} />
-              ADD
+              <AddBoxIcon
+                sx={{ color: `${websiteColor}` }}
+                onClick={handleAdd}
+              />
+              <div style={{ color: `${websiteColor}` }}>ADD</div>
             </Button>
             <Button align="right" onClick={handleEdit}>
-              <SaveIcon />
-              EDIT
+              <SaveIcon sx={{ color: `${websiteColor}` }} />
+              <div style={{ color: `${websiteColor}` }}>EDIT</div>
             </Button>
           </div>
         )}

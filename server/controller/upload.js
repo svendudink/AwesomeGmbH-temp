@@ -38,7 +38,7 @@ export const upload = async (req, res) => {
     const check = await CheckIfCompatible(json, amountToBeValid);
     if (check) {
       return res.status(200).send({
-        msg: `your file does not match the criteria, at least ${amountToBeValid} collum${
+        msg: `your file does not match the criteria, \nat least ${amountToBeValid} collum${
           amountToBeValid >= 2 ? "s" : ""
         } needs to match`,
       });
@@ -74,21 +74,21 @@ export const upload = async (req, res) => {
               : ""
           }`,
         });
-        // user with privleges to modify Depaertments only
+        // user with privleges to modify their own Depaertments employees only
       } else if (privileges.departmentOnly) {
         res.status(200).send({
-          msg: `Departments added: ${counter.departments}.`,
+          msg: `Departments added: ${counter.departments}.\n`,
         });
         // user with privilege to add to one specific department
       } else if (privileges.assignedDepartment) {
         res.status(200).send({
-          msg: `Employees added: ${counter.employees}. ${
+          msg: `Employees added: ${counter.employees}.\n ${
             json.length !== counter.employees
               ? `${
                   json.length - counter.employees
-                } entries where skipped, they do not belong to the ${
+                } entries where skipped,\n they do not belong to the ${
                   privileges.assignedDepartmentName
-                } department or they where identical`
+                } department\n or they are identical`
               : ""
           }`,
         });

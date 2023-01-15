@@ -1,22 +1,36 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// login screen
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
 import { TextField } from "@mui/material";
 import { ApiContext } from "../context/ApiContext";
 import { useContext, useEffect } from "react";
 import { getToken } from "../Helpers/getToken";
 import { Button } from "@material-ui/core";
+import { useNavigate } from "react-router-dom";
+import { websiteColor } from "../config/config";
 
 export default function Login() {
   const { ApiCall, userData, setUserData, loggedIn } = useContext(ApiContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = getToken();
     if (token) {
       loggedIn.current = true;
+      navigate("/EmployeeList");
     } else {
     }
   });
 
   const InputHandler = (e) => {
     setUserData({ ...userData, [e.target.id]: e.target.value });
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      ApiCall("login");
+    }
   };
 
   return (
@@ -31,14 +45,9 @@ export default function Login() {
         left: "0",
         right: "0",
         margin: "auto",
-        // top: "50%",
-        // left: "50%",
         marginTop: "50px",
-        // marginLeft: "-100px",
-        // height: "600px",
-        // width: "200px",
         paddingTop: "10px",
-        border: "solid 3px #1976D2",
+        border: `solid 3px ${websiteColor}`,
         borderRadius: "10px",
       }}
     >
@@ -50,6 +59,7 @@ export default function Login() {
           type="Email"
           variant="filled"
           onChange={InputHandler}
+          sx={{ color: `${websiteColor}` }}
         />
         <br />
         <br />
@@ -59,10 +69,13 @@ export default function Login() {
           type="password"
           autoComplete="current-password"
           onChange={InputHandler}
+          onKeyDown={handleKeyDown}
         />
         <br />
         <br />
-        <Button onClick={() => ApiCall("login")}>Login</Button>
+        <Button onClick={() => ApiCall("login")}>
+          <div style={{ color: `${websiteColor}` }}>Login</div>
+        </Button>
       </div>
     </div>
   );

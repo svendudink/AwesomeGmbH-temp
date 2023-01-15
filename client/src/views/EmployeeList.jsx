@@ -1,7 +1,13 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// employee list
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+//imports
 import React, { useEffect } from "react";
 import { ApiContext } from "../context/ApiContext";
 import { useContext } from "react";
 import EditTableSD from "../components/table/EditTableSD";
+import { websiteColor } from "../config/config";
 export default function EmployeeList(props) {
   const {
     ApiCall,
@@ -57,7 +63,7 @@ export default function EmployeeList(props) {
         paddingTop: "10px",
         paddingLeft: "20px",
         paddingReft: "20px",
-        border: "solid 3px #1976D2",
+        border: `solid 3px ${websiteColor}`,
         borderRadius: "10px",
       }}
     >
