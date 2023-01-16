@@ -1,12 +1,10 @@
-/////////////////////////////////////////Sven's//Coding////////////////////////////////  
- // short popup fro conformation email to administrator 
- /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
-
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// short popup fro conformation email to administrator
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
 
 import { useLocation } from "react-router";
-import {  useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { ApiContext } from "../context/ApiContext";
-
 
 export default function Verification() {
   const { setUserData, ApiCall } = useContext(ApiContext);

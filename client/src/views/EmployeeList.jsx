@@ -18,14 +18,21 @@ export default function EmployeeList(props) {
     departments,
     privileges,
     employeeCount,
+    employeeCounter,
   } = useContext(ApiContext);
 
+
+  //Loading Initial values
   useEffect(() => {
     (async function () {
       await ApiCall("departments");
       await ApiCall("employeeList");
     })();
   }, []);
+
+  useEffect(() => {
+    employeeCounter();
+  }, [rows, employeeCounter]);
 
   const fields = {
     _id: `TEMPID${rows.length + 1}`,

@@ -39,7 +39,6 @@ const XLStoObj = (path) => {
 
 const xlsConvert = (path) => {
   try {
-    console.log("checkthispath", path);
     let obj = XLStoObj(path);
 
     let rows = [];

@@ -1,6 +1,10 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// Save in department registry
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+// Imports
 import Abteilung from "../schema/Departments.js";
 import User from "../schema/User.js";
-import jwt from "jsonwebtoken";
 import { verifyPriviliges } from "../utils/jwt.js";
 import Employees from "../schema/Employees.js";
 

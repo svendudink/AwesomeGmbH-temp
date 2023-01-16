@@ -11,6 +11,7 @@ export const ApiContextProvider = (props) => {
   const originalEmployeeList = useRef([]);
   const location = useLocation();
   const [appBarLoggedIn, setAppBarLoggedIn] = useState();
+  const [employeeCount, setEmployeeCount] = useState(0);
   const [userData, setUserData] = useState({
     password: "",
     confirmPassword: "",
@@ -22,13 +23,7 @@ export const ApiContextProvider = (props) => {
     token: "",
     assignedDepartment: "",
   });
-  const [departments, setDepartments] = useState([
-    {
-      id: 1,
-      _id: "TEMP8",
-      abteilung: "",
-    },
-  ]);
+
   const [rows, setRows] = useState([
     {
       _id: `TEMPID${Math.random()}`,
@@ -59,13 +54,19 @@ export const ApiContextProvider = (props) => {
       assignedBy: "",
     },
   ];
+  const [departments, setDepartments] = useState([
+    {
+      id: 1,
+      _id: "TEMP8",
+      abteilung: "",
+    },
+  ]);
   const Departmentsempty = [
     {
       _id: `TEMPID${rows.length + 1}`,
       abteilung: "",
     },
   ];
-  const [employeeCount, setEmployeeCount] = useState(0);
 
   // collection of privileges and combinations of privileges
   const privileges = useRef({
@@ -112,16 +113,15 @@ export const ApiContextProvider = (props) => {
         employees = 1;
       }
     } else {
-      console.log("it did something", rows.length);
       employees = rows.length;
     }
     setEmployeeCount(employees);
   };
-
+  // REST API
   const ApiCall = async (request) => {
     let route = "";
     let querys = {};
-// requests
+    // requests
     if (request === "login") {
       route = "http://localhost:8080/login";
       querys = {
@@ -191,10 +191,13 @@ export const ApiContextProvider = (props) => {
     })
       .then((res) => res.json())
       .then((resData) => {
+        // if verification email link is clicked
         if (resData.verification) {
           window.close();
+          // if there is a server error
         } else if (resData.error) {
           errorhandler(resData.error);
+          // alert message from serrver
         } else {
           if (resData.msg) {
             alert(resData.msg);
@@ -210,7 +213,7 @@ export const ApiContextProvider = (props) => {
             setAppBarLoggedIn(false);
             window.location.reload(false);
           }
-
+          //if user want to save data
           if (request === "employeeList/save" || request === "employeeList") {
             if (resData.employees.length === 0) {
               setRows(Employeesempty);
@@ -226,7 +229,7 @@ export const ApiContextProvider = (props) => {
             updateMongo.current = [];
             employeeCounter();
           }
-
+          // if user wants to login
           if (request === "login") {
             if (resData.user.disabled) {
               alert(
@@ -252,7 +255,7 @@ export const ApiContextProvider = (props) => {
               alert("your are logged in");
             }
           }
-
+          // if user wants to signup
           if (request === "signup") {
             console.log(resData);
           }
@@ -301,7 +304,7 @@ export const ApiContextProvider = (props) => {
     </ApiContext.Provider>
   );
 };
-
+// any further errors
 const errorhandler = (error) => {
   alert(error);
 };

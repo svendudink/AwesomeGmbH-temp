@@ -16,6 +16,7 @@ function FileUpload() {
     setFileData(e.target.files[0]);
   };
 
+  // Upload file and append with token
   const uploadFile = async (e) => {
     if (e) {
       e.preventDefault();

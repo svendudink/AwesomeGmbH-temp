@@ -1,7 +1,6 @@
-/////////////////////////////////////////Sven's//Coding////////////////////////////////  
- // Editable table 
- /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
-
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// Editable table
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
 
 //imports
 import React, { useState } from "react";
@@ -11,16 +10,13 @@ import TableHeadSD from "./TableHead.jsx";
 import TableCellSD from "./TableCell.jsx";
 import DeleteDialog from "./DeleteDialog.jsx";
 import SaveAndEdit from "./SaveAndEdit.jsx";
-import { websiteColor } from "../../config/config.js";
 
 export default function EditTableSD(props) {
-
   // usestates
   const [edit, setEdit] = useState(false);
   const [disable, setDisable] = useState(true);
 
-
-// set the assigned department for user with one specific department assigned
+  // set the assigned department for user with one specific department assigned
   if (props.assignedDepartment) {
     props.fields["Abteilung"] = props.assignedDepartment;
   }
@@ -62,7 +58,7 @@ export default function EditTableSD(props) {
                   )
                   .map((cell, i) => {
                     let cellType = "";
-                   
+
                     // Scenario where editing is disabled
                     if (!edit) {
                       cellType = "static";

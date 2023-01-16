@@ -1,3 +1,8 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////  
+ // Upload logic 
+ /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+
 import fs from "fs";
 import Employees from "../schema/Employees.js";
 import Abteilung from "../schema/Departments.js";
@@ -48,7 +53,11 @@ export const upload = async (req, res) => {
       // Deletes file after being processed
       deleteFile(fileName);
 
-      //return messages in different scenarios
+
+
+      /////////////////////////////////////////Sven's//Coding////////////////////////////////  
+       // Return messages in differen scenarios 
+       /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
 
       // User with all privileges
       if (privileges.all) {
@@ -133,7 +142,11 @@ const saveToMongoAndAddUser = async (json, user) => {
   const departmentArray = await departmentReturn();
   let newDepartments = [];
 
-  //Return the different scenarios
+ /////////////////////////////////////////Sven's//Coding////////////////////////////////  
+  // Responses to different scenarios 
+  /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+
   json = await json.map((employee) => {
     // user has employee privileges but no department privileges
     if (privileges.employeeOnly) {

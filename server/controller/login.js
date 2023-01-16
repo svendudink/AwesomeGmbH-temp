@@ -1,10 +1,12 @@
-import User from "../schema/User.js";
-import { verifyPassword } from "../utils/bcrypt.js";
-import { issueToken } from "../utils/jwt.js";
-
 /////////////////////////////////////////Sven's//Coding////////////////////////////////
 // Login
 /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+
+// Imports
+import User from "../schema/User.js";
+import { verifyPassword } from "../utils/bcrypt.js";
+import { issueToken } from "../utils/jwt.js";
 
 export const login = async (req, res, next) => {
   try {
