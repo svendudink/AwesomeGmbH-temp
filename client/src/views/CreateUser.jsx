@@ -9,6 +9,7 @@ import { useContext, useState, useEffect } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import { Button } from "@mui/material";
 import { websiteColor } from "../config/config";
+import { passwordLength } from "../config/config";
 
 export default function CreateUser() {
   const [departmentMod, setDepartmentMod] = useState(false);
@@ -47,14 +48,14 @@ export default function CreateUser() {
   const registerHandler = () => {
     if (userData.password === userData.confirmPassword) {
       ApiCall("signup");
-    } else if (userData.password.length < 4) {
-      alert("Password is to short");
+    } else if (userData.password.length < passwordLength) {
+      alert(
+        `Password is to short, \n\nyour password needs to be a minimum of ${passwordLength} Characters`
+      );
     } else {
       alert("Passwords do not match");
     }
   };
-
-  //JSX Code
 
   return (
     <div

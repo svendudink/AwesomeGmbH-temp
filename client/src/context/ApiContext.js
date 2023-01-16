@@ -191,10 +191,13 @@ export const ApiContextProvider = (props) => {
     })
       .then((res) => res.json())
       .then((resData) => {
+        // if verification email link is clicked
         if (resData.verification) {
           window.close();
+          // if there is a server error
         } else if (resData.error) {
           errorhandler(resData.error);
+          // alert message from serrver
         } else {
           if (resData.msg) {
             alert(resData.msg);
@@ -210,7 +213,7 @@ export const ApiContextProvider = (props) => {
             setAppBarLoggedIn(false);
             window.location.reload(false);
           }
-
+          //if user want to save data
           if (request === "employeeList/save" || request === "employeeList") {
             if (resData.employees.length === 0) {
               setRows(Employeesempty);
@@ -226,7 +229,7 @@ export const ApiContextProvider = (props) => {
             updateMongo.current = [];
             employeeCounter();
           }
-
+          // if user wants to login
           if (request === "login") {
             if (resData.user.disabled) {
               alert(
@@ -252,7 +255,7 @@ export const ApiContextProvider = (props) => {
               alert("your are logged in");
             }
           }
-
+          // if user wants to signup
           if (request === "signup") {
             console.log(resData);
           }
@@ -301,7 +304,7 @@ export const ApiContextProvider = (props) => {
     </ApiContext.Provider>
   );
 };
-
+// any further errors
 const errorhandler = (error) => {
   alert(error);
 };

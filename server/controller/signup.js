@@ -6,6 +6,7 @@ import validator from "validator";
 import User from "../schema/User.js";
 import bcrypt from "bcrypt";
 import { mailSender } from "./verificationMail.js";
+import { passwordLength } from "../config/config.js";
 
 export const signUp = async (req, res) => {
   try {
@@ -17,9 +18,11 @@ export const signUp = async (req, res) => {
 
     if (
       validator.isEmpty(req.body.password) ||
-      !validator.isLength(req.body.password, { min: 4 })
+      !validator.isLength(req.body.password, { min: passwordLength })
     ) {
-      res.json({ error: "Password is to short, use minimum 4 characters" });
+      res.json({
+        error: `Password is to short, use minimum ${passwordLength} characters`,
+      });
       return;
     }
     // check if user allready exists
