@@ -1,9 +1,9 @@
-import Abteilung from "../schema/Departments.js";
-
 /////////////////////////////////////////Sven's//Coding////////////////////////////////
-// sends back all querys from MongoDB as repsonse, or if req.internal is set, repsonse is
-// an oject
+// Import all deparrtment
 /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+// imports
+import Abteilung from "../schema/Departments.js";
 
 export const departments = async (req, res) => {
   const abteilung = await Abteilung.find();

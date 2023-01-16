@@ -6,6 +6,5 @@ const router = express.Router();
 
 router.post("/", departments);
 router.post("/save", departmentsSave);
-//router.post("/save", employeeRegistrySave);
 
 export default router;

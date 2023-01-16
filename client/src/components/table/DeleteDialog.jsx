@@ -83,10 +83,10 @@ export default function DeleteDialog(props) {
                 color="primary"
                 autoFocus
               >
-                Yes
+                <div style={{ color: `${websiteColor}` }}>Yes</div>
               </Button>
               <Button onClick={handleNo} color="primary" autoFocus>
-                No
+                <div style={{ color: `${websiteColor}` }}>No</div>
               </Button>
             </DialogActions>
           </Dialog>

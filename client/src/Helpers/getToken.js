@@ -1,3 +1,7 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+//Check if Token exists
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
 const getToken = () => {
   const token = localStorage.getItem("token");
   if (token) {
@@ -8,5 +12,3 @@ const getToken = () => {
 };
 
 export { getToken };
-
-

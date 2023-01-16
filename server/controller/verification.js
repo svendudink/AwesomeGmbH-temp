@@ -1,5 +1,5 @@
 /////////////////////////////////////////Sven's//Coding////////////////////////////////
-//
+// Activate or delete Account based on Supervisor email response
 /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
 
 //import
@@ -13,6 +13,7 @@ export const verification = async (req, res) => {
   const approved = message.split(",", 1)[0] === "approve" ? true : false;
   const user = message.substring(message.indexOf(",") + 1);
   console.log(approved);
+  // Activate account
   if (approved) {
     const check = await User.updateOne(
       { email: user },
@@ -26,6 +27,7 @@ export const verification = async (req, res) => {
     });
     mailSender(user, "approved");
   } else {
+    // Delete account
     User.deleteOne({ email: user }, function (err) {
       if (err) console.log(err);
       console.log("Successful deletion");

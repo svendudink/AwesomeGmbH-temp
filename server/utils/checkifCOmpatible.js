@@ -1,7 +1,5 @@
 export const CheckIfCompatible = async (json, filterSetting) => {
-  console.log("hippietesrt", json);
   const count = Object.keys(json[0]).filter((el) => {
-    console.log("whatis", el);
     return (
       "Vorname" === el ||
       "Nachname" === el ||

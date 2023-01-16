@@ -1,5 +1,7 @@
-import * as dotenv from "dotenv";
-import mongoose from "mongoose";
+/////////////////////////////////////////Sven's//Coding////////////////////////////////
+// Sign up form
+/////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
 import validator from "validator";
 import User from "../schema/User.js";
 import bcrypt from "bcrypt";
@@ -29,6 +31,8 @@ export const signUp = async (req, res) => {
         error: "User exists allready",
       });
     }
+
+    // Create new user
     const hashedPw = await bcrypt.hash(req.body.password, 12);
     console.log(hashedPw, req.body.email);
     const user = new User({

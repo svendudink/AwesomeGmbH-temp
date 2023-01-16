@@ -14,6 +14,7 @@ export default function Login() {
   const { ApiCall, userData, setUserData, loggedIn } = useContext(ApiContext);
   const navigate = useNavigate();
 
+  //Load initial values
   useEffect(() => {
     const token = getToken();
     if (token) {
@@ -27,6 +28,7 @@ export default function Login() {
     setUserData({ ...userData, [e.target.id]: e.target.value });
   };
 
+  // Send with enter press
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
       ApiCall("login");

@@ -1,7 +1,12 @@
+/////////////////////////////////////////Sven's//Coding////////////////////////////////  
+ // Employee saving in MongoDB 
+ /////////////////////////////////////////gnidoC//s'nevS////////////////////////////////
+
+
+
+
+// imports
 import Employees from "../schema/Employees.js";
-import * as dotenv from "dotenv";
-import jwt from "jsonwebtoken";
-import User from "../schema/User.js";
 import { verifyPriviliges } from "../utils/jwt.js";
 
 export const employeeRegistrySave = async (req, res) => {
